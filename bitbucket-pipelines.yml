@@ -1,0 +1,37 @@
+pipelines:
+
+  branches:
+    production:
+    #  - step:
+    #       name: Deploy React Production
+    #       image: circleci/node:16
+    #       script:
+    #         - sudo apt-get update && sudo apt-get install -y rsync
+    #         - ssh-keyscan -H 162.213.255.3 >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+    #         - cd frontend && CI=false npm install && npm run test
+    #         - mv .env.example .env
+    #         - sed -i -e 's#REACT_APP_API_URL=https://api.tibilon.skillzserver.com/api#REACT_APP_API_URL=https://api.tibilon.com/api#g' .env
+    #         - npm -v  && CI=false npm run  build
+    #         - rsync -va -e 'ssh -p 21098 -o StrictHostKeyChecking=no' --delete build/ .htaccess tibicons23@162.213.255.3:tibilon/frontend
+     - step:
+          name: Deploy Laravel Production
+          #image: circleci/node:16
+          image: cimg/php:8.1
+          script:
+            - sudo apt-get update && sudo apt-get install -y zip unzip rsync openssh-client
+            - ssh-keyscan -H 162.213.255.3 >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+            - mkdir -p ~/.ssh && echo "$SSH_PRIVATE_KEY" | base64 -d > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
+            - mkdir -p ~/.ssh && echo "<base64-encoded-string>" | base64 -d > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
+            - echo "HostKeyAlgorithms +ssh-rsa,ssh-dss" >> ~/.ssh/config
+            # - apt-get update && apt-get install -y software-properties-common
+            # - add-apt-repository ppa:ondrej/php
+            # - apt-get update && apt-get install -y php8.2-cli zip unzip rsync openssh-client
+            # - cd backend/laravel && CI=false /home/circleci/.composer/bin/composer update && CI=false /home/circleci/.composer/bin/composer install && CI=false php artisan key:generate
+            # - curl -sS https://getcomposer.org/installer | php -- --install-dir=/home/circleci/.composer/bin --filename=composer
+            # - export PATH="/home/circleci/.composer/bin:$PATH"
+            # - sed -i -e 's:/public/index.php:/index.php:g' backend/laravel/public/index.php && sed -i -e 's:/../vendor/autoload.php:/vendor/autoload.php:g' backend/laravel/public/index.php && sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=tibicons23_tibilon_admin:g' backend/laravel/.env.example && sed -i -e 's:DB_USERNAME=forge:DB_USERNAME=tibicons23_tibilon:g' backend/laravel/.env.example && sed -i -e 's:/../bootstrap/app.php:/bootstrap/app.php:g' backend/laravel/public/index.php && sed -i -e 's:DB_PASSWORD=forge:DB_PASSWORD="Ubuxa##99":g' backend/laravel/.env.example
+            # - mv backend/laravel/.env.example backend/laravel/.env
+            - rsync -va -e 'ssh -p 21098 -o StrictHostKeyChecking=no'     backend/laravel/ tibicons23@162.213.255.3:tibilon/laravel
+            #- ssh tibicons23@162.213.255.3 -p 21098 "cd tibilon/laravel && composer install --no-dev --optimize-autoloader && sed -i -e 's:/public/index.php:/index.php:g' public/index.php && sed -i -e 's:/../vendor/autoload.php:/vendor/autoload.php:g' public/index.php && sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=tibicons23_tibilon_admin:g' .env.example && sed -i -e 's:DB_USERNAME=forge:DB_USERNAME=tibicons23_tibilon:g' .env.example  && sed -i -e 's:/../bootstrap/app.php:/bootstrap/app.php:g' public/index.php && sed -i -e 's:DB_PASSWORD=forge:DB_PASSWORD="Ubuxa##99":g' .env.example  && php artisan migrate --force "
+      
+            

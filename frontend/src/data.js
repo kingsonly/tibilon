@@ -1,0 +1,53 @@
+import project1 from "./assests/project_1.svg";
+import project2 from "./assests/project_2.svg";
+
+export const projectData = [
+    {
+      id: 1,
+      name: "Mabushi Project",
+      image: project1,
+      bed: 3,
+      bathroom: 3,
+      car: 3,
+      living: 6,
+      pool: 9,
+      duration: "365 days",
+      description: "5 Bedroom Stand-alone Duplex with BQ (House A01)",
+    },
+    {
+      id: 2,
+      name: "Mabushi Project",
+      image: project2,
+      bed: 3,
+      bathroom: 3,
+      car: 3,
+      living: 6,
+      pool: 9,
+      duration: "365 days",
+      description: "5 Bedroom Stand-alone Duplex with BQ(House A04)",
+    },
+    {
+      id:3,
+      name: "Mabushi Project",
+      image: project1,
+      bed: 3,
+      bathroom: 3,
+      car: 3,
+      living: 6,
+      pool: 9,
+      duration: "365 days",
+      description: "Course of Construction",
+    },
+    {
+      id: 4,
+      name: "Mabushi Project",
+      image: project2,
+      bed: 3,
+      bathroom: 3,
+      car: 3,
+      living: 6,
+      pool: 9,
+      duration: "365 days",
+      description: "Course of Construction",
+    },
+  ];

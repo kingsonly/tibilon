@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Resources;
+
+use App\Models\PropertySalesAgent;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class PropertyList extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        $agent = "";
+        if(!empty($this->agent)){
+            if($this->agent_type == PropertySalesAgent::Affiliate){
+                $agent = $this->agent->affiliates;
+            }else{
+                $agent = $this->agent->users;
+                //$agent = $this->agent->affiliates;
+            }
+        }
+        
+        return [
+            "id" => $this->id,
+            "name" => $this->name,
+            "description" => $this->description,
+            "amenity" => $this->amenity ,
+            "project" => $this->project,
+            "amount" => $this->amount,
+            "cover_image" => $this->cover_image,
+            "agent" => $agent,
+            "client" => new ClientResource($this->client->client),
+            "payment" => $this->payments
+        ];
+    }
+}

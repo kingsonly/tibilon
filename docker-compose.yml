@@ -1,0 +1,74 @@
+version: '3.2'
+
+services:
+
+  laravel:
+    build:
+      context: ./backend/laravel
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8000
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./backend/laravel:/app
+    networks:
+      - tibilon
+
+  react:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    volumes:
+      # Re-use local composer cache via host-volume
+      - "./frontend:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    networks:
+      - tibilon
+
+  nest:
+    build:
+      context: ./backend/nestjs
+      dockerfile: Dockerfile
+
+    ports:
+      - 3000:3000
+    command: npm run start
+    volumes:
+      # Re-use local composer cache via host-volume
+      - ./backend/nestjs:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - tibilon
+
+  mysql:
+    image: mariadb:10.5.8
+    environment:
+      - MYSQL_ROOT_PASSWORD=Ubuxa##99
+      - MYSQL_DATABASE=forge
+      - MYSQL_USER=forge
+      - MYSQL_PASSWORD=Ubuxa##99
+    networks:
+      - tibilon
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - 5050:80
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PASSWORD=Ubuxa##99
+    restart: unless-stopped
+    volumes:
+    # Re-use local composer cache via host-volume
+    - ~/.composer-docker/cache:/root/.composer/cache:delegated
+    # Mount source-code for development
+    - ./:/app
+    networks:
+      - tibilon
+  
+networks:
+  tibilon:
+    driver: bridge
