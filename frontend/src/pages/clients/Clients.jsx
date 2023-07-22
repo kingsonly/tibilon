@@ -88,6 +88,7 @@ export default function Clients() {
     "phone",
     "type",
     "address",
+    "CTA",
   ];
 
   const searchFunction = () => {

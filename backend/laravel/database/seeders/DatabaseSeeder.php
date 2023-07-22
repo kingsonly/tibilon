@@ -13,6 +13,18 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Client::factory(100)->create();
+        \App\Models\User::factory(100)->create();
+        \App\Models\Affiliate::factory(100)->create();
+        // $this->call([
+        //     StockFileSeeder::class,
+        //     TagsSeeder::class,
+        //     StockFilePathTagSeeder::class,
+        //     ChallengesSeeder::class,
+        //     ChallengeEntriesSeeder::class,
+        //     AlbumSeeder::class,
+        //     AlbumFileLinkSeeder::class
+
+        // ]);
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
