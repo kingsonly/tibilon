@@ -96,6 +96,36 @@ export default function AllDocuments() {
     }
   };
 
+  const fetchDataDel = async () => {
+    var token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/document`, { project: id }, {
+
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if(!hasMore){
+        setLoader(true)
+      }
+      setDocument(prevData => [...prevData, ...response.data.data]);
+      if(response.data.links.next == null){
+        console.log(response.data.links.next,"abc")
+        setHasMore(false)
+      }else{
+        setHasMore(true)
+      }
+      setLink(response.data.links.next);
+      setLoader(false)
+
+    } catch (error) {
+      // Handle the error
+      setLoader(false)
+      console.error(error);
+    }
+  };
+
   const searchFunction = (e) => {
     //Api call to search and update table data
     // Set a timeout to wait for the user to finish typing
@@ -108,6 +138,26 @@ export default function AllDocuments() {
         setDocument(data);
       }
     }, delay);
+  };
+  const action = async (e) => {
+    var token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/document/delete/${e}`, {
+
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setLoader(false)
+      setLink(`${process.env.REACT_APP_API_URL}/document`)
+      setDocument([])
+      fetchDataDel()
+
+    } catch (error) {
+      // Handle the error
+      setLoader(false)
+      console.error(error);
+    }
   };
   return (
     <div>
@@ -163,7 +213,7 @@ export default function AllDocuments() {
 
         
           {document?.map((document) => (
-            <FileTypeComponent document={document} />
+            <FileTypeComponent document={document} action={action} />
           ))}
         
       </div>
