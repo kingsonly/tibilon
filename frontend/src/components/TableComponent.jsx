@@ -71,7 +71,9 @@ export default function TableComponent({
   deleteAction,
   loading,
   fetchMoreDataProps,
-  hasMore
+  hasMore,
+  editAction,
+  viewAction
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -122,8 +124,8 @@ export default function TableComponent({
             ) :null}
              {dataKeyAccessors[index] == "CTA" ? (
               <div className="flex gap-4">
-                <AiFillEdit className="cursor-pointer" />
-                <AiFillEye className="cursor-pointer" />
+                <AiFillEdit className="cursor-pointer" onClick={() => editAction && editAction()} />
+                <AiFillEye className="cursor-pointer" onClick={() => viewAction && viewAction()} />
                 <AiFillDelete
                   className="cursor-pointer"
                   onClick={() => deleteAction && deleteAction(row)}
