@@ -72,8 +72,9 @@ export default function TableComponent({
   loading,
   fetchMoreDataProps,
   hasMore,
+  openEditModal,
+  viewAction,
   editAction,
-  viewAction
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

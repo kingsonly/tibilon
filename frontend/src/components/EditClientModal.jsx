@@ -8,7 +8,7 @@ import avatarIcon from "../assests/avatarUploadIcon.svg";
 import axios from "axios";
 import SnackbarComponent from "./SnackbarComponent";
 
-export default function ClientListView(props) {
+export default function EditClientModal(props) {
   const { modalIsOpen, setIsOpen } = props;
   const [name, setName] = useState();
   const [email, setEmail] = useState();
@@ -63,7 +63,7 @@ export default function ClientListView(props) {
     { label: "Property Owner", value: 2 },
   ];
 
-  const addClient = async () => {
+  const editClient = async () => {
     let status = false;
     // setError({
     //   name: false,
@@ -99,7 +99,7 @@ export default function ClientListView(props) {
     var token = localStorage.getItem("token");
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/client/create`,
+        `${process.env.REACT_APP_API_URL}/client/update`,
         data,
         {
           headers: {
@@ -107,12 +107,13 @@ export default function ClientListView(props) {
           },
         }
       );
+
       await props.fetchData();
       setStatus("success");
       setshow(true);
       setLoading(false);
       setIsOpen(false);
-      setMessage("Client was Created Successfully");
+      setMessage("Client was Updated Successfully");
       // setStatus("error")
     } catch (error) {
       // Handle the error
@@ -130,30 +131,86 @@ export default function ClientListView(props) {
       <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
-        title={"Client Information"}
+        title={"Edit Client Details"}
       >
         <div className="flex flex-col">
 
-          <p>Name: Engr jkhjhjk klwjj</p>
-            
-          <p>Address: hjfhdflkj fdfdnolhdfoikdckjlh</p>
-            
+          <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="outlined-required"
+            label="Client Name"
+            error={error["name"]}
+            defaultValue={name}
+            onChange={(e) => {
+              handleOnChange(e, "name");
+            }}
+          />
+          <TextInput
+            className="h-[70px] mt-6"
+            required
+            id="outlined-required"
+            label="Client Address"
+            error={error["address"]}
+            defaultValue={address}
+            onChange={(e) => {
+              handleOnChange(e, "address");
+            }}
+          />
           <div className="w-[100%] flex items-end gap-4">
             <div className="w-1/2">
-              <p>Phone Number</p>
+              <TextInput
+                className="h-[70px]"
+                required
+                id="outlined-required"
+                label="Phone Number"
+                error={error["phone"]}
+                defaultValue={phone}
+                onChange={(e) => {
+                  handleOnChange(e, "phone");
+                }}
+              />
             </div>
-            <p>email Address: ikhkhjh@hjhda.com</p>
+            <div className="w-1/2">
+              <TextInput
+                className="h-[70px]"
+                required
+                id="outlined-required"
+                label="Email Address"
+                error={error["email"]}
+                defaultValue={email}
+                onChange={(e) => {
+                  handleOnChange(e, "email");
+                }}
+              />
+            </div>
           </div>
 
-         <p>Project</p>
+          <div className="w-[100%] flex items-end gap-4">
+            <div className="w-1/2">
+              <TextInput
+                className="h-[70px]"
+                required
+                id="outlined-required"
+                label="Project"
+                defaultValue={project}
+                type="select"
+                error={error["project"]}
+                options={types}
+                onChange={(e) => {
+                  handleOnChange(e, "project");
+                }}
+              />
+            </div>
+          </div>
 
           <div className="flex justify-end">
             <Button
               variant="contained"
               color="success"
-              onClick={() => addClient()}
+              onClick={() => editClient()}
             >
-              {loading ? "saving..." : "Save"}
+              {loading ? "Updating..." : "Update"}
             </Button>
           </div>
         </div>
