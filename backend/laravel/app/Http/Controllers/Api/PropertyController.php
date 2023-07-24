@@ -22,6 +22,7 @@ use App\Models\PropertyPayment;
 use App\Models\PropertySalesAgent;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Dompdf\Dompdf;
 
 class PropertyController extends Controller
 {
@@ -433,5 +434,26 @@ class PropertyController extends Controller
             return response()->json(["status" => "error", "message" => "something went wrong, please retry."], 400);
         }
         return response()->json(["status" => "error", "message" => "something went wrong, please retry."], 400);
+    }
+
+    public function paymentReceipt($id){
+        // Generate PDF content (you can use your own view here)
+        $pdfContent = '<html><body><h1>Hello, this is your PDF content!</h1></body></html>';
+
+        // Initialize Dompdf
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($pdfContent);
+
+        // (Optional) Set paper size and orientation (e.g., A4, portrait)
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the PDF content
+        $dompdf->render();
+
+        // Generate PDF filename (you can customize this as needed)
+        $filename = 'receipt.pdf';
+
+        // Download the PDF file
+        return $dompdf->stream($filename);
     }
 }

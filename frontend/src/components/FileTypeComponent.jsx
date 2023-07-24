@@ -30,7 +30,7 @@ export default function FileTypeComponent({ document }) {
             <AiFillEdit className="cursor-pointer text-[20px]"  />
           </div>
           <div>
-            <AiFillDelete className="cursor-pointer text-[20px]"  />
+            <AiFillDelete onClick={()=>alert(123)} className="cursor-pointer text-[20px]"  />
           </div>
         </div>
       </div>
