@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import TextInput from "./TextInput";
 import AppModal from "./AppModal";
 import UploadButton from "./UploadButton";
-import UploadIcon from "../assests/upload.svg";
+import clientpassport from "../assests/client-passport.png";
+import idcard from "../assests/idcard.jpeg";
 import avatarIcon from "../assests/avatarUploadIcon.svg";
 import axios from "axios";
 import SnackbarComponent from "./SnackbarComponent";
@@ -132,31 +133,41 @@ export default function ClientListView(props) {
         setIsOpen={setIsOpen}
         title={"Client Information"}
       >
-        <div className="flex flex-col">
-
-          <p>Name: Engr jkhjhjk klwjj</p>
+        <div className="flex gap-[300px] h-[450px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]" >
+        <div className="text-lg leading-[50px]">
+        <div className="ml-2 text-[25px]" style={{color: "orange"}}>Client Information</div>
+          <div className="ml-2"><span className="font-bold">Name:</span>Engr Joseph Labar</div>
             
-          <p>Address: hjfhdflkj fdfdnolhdfoikdckjlh</p>
+          <div className="ml-2"><span className="font-bold">Address:</span> 2 Julius Berger Estate</div>
+          <div className="ml-2"><span className="font-bold">Email Address:</span> jlabar@gmail.com</div>
             
-          <div className="w-[100%] flex items-end gap-4">
-            <div className="w-1/2">
-              <p>Phone Number</p>
-            </div>
-            <p>email Address: ikhkhjh@hjhda.com</p>
-          </div>
+              <div className="ml-2"><span className="font-bold">Phone Number:</span> 080876644247</div>
+        
 
-         <p>Project</p>
+         <div className="ml-2"><span className="font-bold">Occupation:</span> Engineer</div>
 
-          <div className="flex justify-end">
+         <div className="ml-2"><span className="font-bold">Client Type:</span> Individual</div>
+
+         <div className="ml-2"><span className="font-bold">Date of Birth:</span> 12/07/89</div>
+         </div>
+
+         <div className="">
+         <img src={clientpassport} alt="client passport" width="125px" />
+         </div>
+          {/* <div className="flex justify-end">
             <Button
               variant="contained"
               color="success"
               onClick={() => addClient()}
             >
-              {loading ? "saving..." : "Save"}
+              {loading ? "saving..." : "View  Transaction History"}
             </Button>
+            </div> */}
           </div>
-        </div>
+          <div className="h-[300px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
+    <div className="ml-2 text-[25px]" style={{color: "orange"}}>Proof of Identification</div>
+    <img className="ml-2 mt-4" src={idcard} alt="client passport" width="350px" />
+    </div>
       </AppModal>
     </div>
   );
