@@ -52,46 +52,50 @@ const documents = [
     type: "pdf",
   },
 ];
-import InfiniteScroll from 'react-infinite-scroll-component'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function AllDocuments() {
   const [document, setDocument] = useState([]);
   const [loader, setLoader] = useState(true);
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [hasMore, setHasMore] = React.useState(false);
-  const [link, setLink] = React.useState(`${process.env.REACT_APP_API_URL}/document`);
+  const [link, setLink] = React.useState(
+    `${process.env.REACT_APP_API_URL}/document`
+  );
   const [perpage, setPerpage] = React.useState(10);
   const { id } = useParams();
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     var token = localStorage.getItem("token");
     try {
-      const response = await axios.post(`${link}`, { project: id }, {
+      const response = await axios.post(
+        `${link}`,
+        { project: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if(!hasMore){
-        setLoader(true)
+      if (!hasMore) {
+        setLoader(true);
       }
-      setDocument(prevData => [...prevData, ...response.data.data]);
-      if(response.data.links.next == null){
-        console.log(response.data.links.next,"abc")
-        setHasMore(false)
-      }else{
-        setHasMore(true)
+      setDocument((prevData) => [...prevData, ...response.data.data]);
+      if (response.data.links.next == null) {
+        console.log(response.data.links.next, "abc");
+        setHasMore(false);
+      } else {
+        setHasMore(true);
       }
       setLink(response.data.links.next);
-      setLoader(false)
-
+      setLoader(false);
     } catch (error) {
       // Handle the error
-      setLoader(false)
+      setLoader(false);
       console.error(error);
     }
   };
@@ -111,62 +115,61 @@ export default function AllDocuments() {
   };
   return (
     <div>
-      <AddDocumentModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} action={fetchData} project={id} />
+      <AddDocumentModal
+        setIsOpen={setIsOpen}
+        modalIsOpen={modalIsOpen}
+        action={fetchData}
+        project={id}
+      />
       <InfiniteScroll
-          dataLength={document.length}
-          next={fetchData}
-          hasMore={hasMore}
-          loader={<h4>Loading...</h4>}
-          initialScrollY={1}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
+        dataLength={document.length}
+        next={fetchData}
+        hasMore={hasMore}
+        loader={<h4>Loading...</h4>}
+        initialScrollY={1}
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Yay! You have seen it all.....I wan try something</b>
+          </p>
+        }
+      >
+        <div className="bg-white flex gap-4 flex-wrap mt-6">
+          <div className="flex justify-center w-[100%]">
+            {loader ? <CircularProgress /> : null}
+          </div>
 
-        >
-
-      <div className="bg-white flex gap-4 flex-wrap mt-6">
-        <div className="flex justify-center w-[100%]">
-          {loader ? <CircularProgress /> : null}
-        </div>
-      
-        <div className="flex items-center justify-between mb-[19px] w-[100%]">
-          <div className="border-2 rounded w-[292px] h-[45px] flex items-center">
-            <div className="flex items-center justify-center border-r-2 h-[100%] w-[47px]">
-              <AiOutlineSearch role="search-icon" />
+          <div className="flex items-center justify-between mb-[19px] w-[100%]">
+            <div className="border-2 rounded w-[292px] h-[45px] flex items-center">
+              <div className="flex items-center justify-center border-r-2 h-[100%] w-[47px]">
+                <AiOutlineSearch role="search-icon" />
+              </div>
+              <input
+                className="w-[100%] ml-[20px] border-none focus:outline-0 placeholder-red-300::placeholder"
+                placeholder="Quick Search"
+                onChange={searchFunction}
+                role="search-input"
+              />
             </div>
-            <input
-              className="w-[100%] ml-[20px] border-none focus:outline-0 placeholder-red-300::placeholder"
-              placeholder="Quick Search"
-              onChange={searchFunction}
-              role="search-input"
-            />
+
+            <div
+              className="border-2 rounded w-[200px] h-[48px] bg-[#40A74E] text-white flex items-center text-[15px] font-bold justify-center cursor-pointer"
+              onClick={() => setIsOpen(true)}
+              role="action-button"
+            >
+              Add New Document
+            </div>
           </div>
 
-          <div
-            className="border-2 rounded w-[200px] h-[48px] bg-[#40A74E] text-white flex items-center text-[15px] font-bold justify-center cursor-pointer"
-            onClick={() => setIsOpen(true)}
-            role="action-button"
-          >
-            Add New Document
-          </div>
-        </div>
-
-        {
-          document.length < 1 ?
+          {document.length < 1 ? (
             <div className="flex justify-center w-[100%]">
               There is no document at the moment.
-            </div> : null
+            </div>
+          ) : null}
 
-        }
-
-        
           {document?.map((document) => (
             <FileTypeComponent document={document} />
           ))}
-        
-      </div>
+        </div>
       </InfiniteScroll>
     </div>
   );

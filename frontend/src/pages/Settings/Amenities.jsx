@@ -5,6 +5,7 @@ import AppModal from "../../components/AppModal";
 import AddEmployeeModalDetails from "../../components/AddEmployeeModalDetails";
 import AddAmenitiesModal from "../../components/AddAmenitiesModal";
 import BreadCrumb from "../../components/BreadCrumb";
+import { imageBaseUrl } from "../../services/apiservices/urls";
 
 export default function Amenities() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -61,7 +62,7 @@ export default function Amenities() {
         response.data.data[index]["SN"] = i;
         response.data.data[index][
           "image"
-        ] = `https://api.tibilon.skillzserver.com/public/${response.data.data[index]["image"]}`;
+        ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
         i++;
       });
 
