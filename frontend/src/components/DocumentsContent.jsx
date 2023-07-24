@@ -6,10 +6,7 @@ import { Viewer } from "react-doc-viewer";
 export default function DocumentsContent({ document }) {
   function renderDocument(fileName) {
     const extentionType = fileName.split(".").pop().toLowerCase();
-
-    // console.log(fileName.split(".").pop().toLowerCase(), "kkkkkkggggg");
-
-    console.log(`${imageBaseUrl}/${document.file}`, "ggggggg");
+   // fileName checks the extension of the file to determine how to render the document.
 
     const validImageExtensions = ["jpg", "jpeg", "png", "gif", "bmp"];
 
@@ -25,13 +22,13 @@ export default function DocumentsContent({ document }) {
       );
     } else if (validDocExtensions.includes(extentionType)) {
       return <Viewer file={`${imageBaseUrl}/${document.file}`} />;
-      
+
     } else {
       return <img src={`${imageBaseUrl}/${document.file}`} />;
     }
   }
 
-  console.log(document, "jjfjfjfjjfjfjfjjf");
-
-  <div>{renderDocument(document.file)}</div>;
+  return (
+    <div>{renderDocument(document.file)}</div>
+  )
 }

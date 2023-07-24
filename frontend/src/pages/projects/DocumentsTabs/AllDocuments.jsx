@@ -129,7 +129,7 @@ export default function AllDocuments() {
         initialScrollY={1}
         endMessage={
           <p style={{ textAlign: "center" }}>
-            <b>Yay! You have seen it all.....I wan try something</b>
+            <b>Yay! You have seen it all.</b>
           </p>
         }
       >
