@@ -12,7 +12,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import SnackbarComponent from "./SnackbarComponent";
 
 export default function AddDocumentModal(props) {
-  const { modalIsOpen, setIsOpen, action,project } = props;
+  const {modalIsOpen, setIsOpen, action, project } = props;
   const [title, setTitle] = useState("");
   const [file, setFile] = useState([]);
   const [documentType, setDocumentType] = useState("");
