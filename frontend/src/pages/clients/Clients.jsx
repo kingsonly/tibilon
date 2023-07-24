@@ -4,10 +4,13 @@ import AddProjectModal from "../../components/AddProjectModal";
 import AddClientModal from "../../components/AddClientModal";
 import axios from "axios";
 import ClientListView from "../../components/ClientListView";
+import EditClientModal from "../../components/EditClientModal";
 
 
 export default function Clients() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [viewModalIsOpen, setViewModalIsOpen] = React.useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = React.useState(false);
   const [perpage, setPerpage] = React.useState(10);
   const [hasMore, setHasMore] = React.useState(false);
   const [data, setData] = React.useState([]);
@@ -112,20 +115,21 @@ export default function Clients() {
 
   const displayClientList = () => {
     // setopenPaymentModal(true);
-    setIsOpen(true);
+    setViewModalIsOpen(true);
   };
-  const editClientList = () => {
+  const editClientModal = () => {
     // setopenPaymentModal(true);
-    setIsOpen(true);
+    setEditModalIsOpen(true);
   };
 
 
   return (
     <div className="bg-[white] p-[47px]">
       <hr className="my-6" />
-
       <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}  />
-      <ClientListView setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}  />
+      <EditClientModal setIsOpen={setEditModalIsOpen} modalIsOpen={editModalIsOpen} />
+      <ClientListView setIsOpen={setViewModalIsOpen} modalIsOpen={viewModalIsOpen}  />
+      
 
       <TableComponent
         actionText="Add New Client"
@@ -137,7 +141,7 @@ export default function Clients() {
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
         fetchMoreDataProps={fetchData}
-        editAction = {editClientList}
+        editAction = {editClientModal}
         viewAction = {displayClientList}
       />
     </div>
