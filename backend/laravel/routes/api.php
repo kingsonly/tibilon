@@ -128,6 +128,7 @@ Route::group(['prefix' => 'property', 'middleware' => ['auth:sanctum']], functio
     Route::post("/allpayment/{id}",[PropertyController::class,"allPayment"]);
     Route::get("/agent/{id}",[PropertyController::class,"agent"]);
     Route::post("/addcommission/{id}",[PropertyController::class,"agentCommision"]);
+    Route::get("/paymentreceipt/{id}",[PropertyController::class,"paymentReceipt"]);
 });
 
 Route::group(['prefix' => 'amenity', 'middleware' => ['auth:sanctum']], function(){
@@ -156,4 +157,5 @@ Route::group(['prefix' => 'document', 'middleware' => ['auth:sanctum']], functio
     Route::post('/', [ProjectDocumentsController::class, 'index'])->name('documentindex');
     Route::post('/create', [ProjectDocumentsController::class, 'store'])->name('createdocument');
     Route::post('/show/{id}', [ProjectDocumentsController::class, 'show'])->name('viewdocument');
+    Route::delete('/delete/{id}', [ProjectDocumentsController::class, 'destroy'])->name('destroy');
 });

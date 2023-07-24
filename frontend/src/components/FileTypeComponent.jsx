@@ -35,6 +35,7 @@ export default function FileTypeComponent({ document }) {
         </div>
         <div className="w-[37px]">
           <div>
+<<<<<<< HEAD
             <input type="checkbox" />
           </div>
           <div className="bg-[white] rounded h-[154px] flex flex-col items-center justify-around mt-4">
@@ -52,6 +53,9 @@ export default function FileTypeComponent({ document }) {
             <div>
               <AiFillDelete className="cursor-pointer text-[20px]" />
             </div>
+=======
+            <AiFillDelete onClick={()=>alert(123)} className="cursor-pointer text-[20px]"  />
+>>>>>>> e5c55515f26116f5a05b1f5a8a4c5971259b331f
           </div>
         </div>
       </div>

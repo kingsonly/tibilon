@@ -119,7 +119,8 @@ export default function TableComponent({
               <>
                 <img className="w-[50px] h-[50px]" alt="icon" src={row.image} />
               </>
-            ) : dataKeyAccessors[index] == "CTA" ? (
+            ) :null}
+             {dataKeyAccessors[index] == "CTA" ? (
               <div className="flex gap-4">
                 <AiFillEdit className="cursor-pointer" />
                 <AiFillEye className="cursor-pointer" />
@@ -128,7 +129,9 @@ export default function TableComponent({
                   onClick={() => deleteAction && deleteAction(row)}
                 />
               </div>
-            ) : (
+            ) : null}
+            
+            {(
               // moment(e).format("YYYY-MM-DD")
               //TO DO;>> ADD A BETTER WAY TO CHECK IS STRING DATE IS VALID
               <>
