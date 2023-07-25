@@ -19,6 +19,7 @@ export default function DocumentsContent({ document }) {
         <Document file={`${imageBaseUrl}/${document.file}`}>
           <Page pageNumber={1} />
         </Document>
+        // This checks for doc extension
       );
     } else if (validDocExtensions.includes(extentionType)) {
       return <Viewer file={`${imageBaseUrl}/${document.file}`} />;
@@ -29,6 +30,8 @@ export default function DocumentsContent({ document }) {
   }
 
   return (
-    <div>{renderDocument(document.file)}</div>
+    <div>
+      {renderDocument(document.file)}
+      </div>
   )
 }
