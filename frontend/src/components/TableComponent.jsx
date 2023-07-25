@@ -207,7 +207,7 @@ export default function TableComponent({
                 <StyledTableCell key={uuidv4()} role="table-header-cell">
                   {column}
                 </StyledTableCell>
-              ))}
+                ))}
             </TableRow>
           </TableHead>
           
