@@ -135,20 +135,20 @@ export default function ClientListView(props) {
       >
         <div className="flex gap-[300px] h-[450px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]" >
         <div className="text-lg leading-[50px]">
-        <div className="ml-2 text-[25px]" style={{color: "orange"}}>Client Information</div>
-          <div className="ml-2"><span className="font-bold">Name:</span>Engr Joseph Labar</div>
+        <div className="ml-4 text-[25px]" style={{color: "orange"}}>Client Information</div>
+          <div className="ml-4"><span className="font-bold">Name:</span>Engr Joseph Labar</div>
             
-          <div className="ml-2"><span className="font-bold">Address:</span> 2 Julius Berger Estate</div>
-          <div className="ml-2"><span className="font-bold">Email Address:</span> jlabar@gmail.com</div>
+          <div className="ml-4"><span className="font-bold">Address:</span> 2 Julius Berger Estate</div>
+          <div className="ml-4"><span className="font-bold">Email Address:</span> jlabar@gmail.com</div>
             
-              <div className="ml-2"><span className="font-bold">Phone Number:</span> 080876644247</div>
+              <div className="ml-4"><span className="font-bold">Phone Number:</span> 080876644247</div>
         
 
-         <div className="ml-2"><span className="font-bold">Occupation:</span> Engineer</div>
+         <div className="ml-4"><span className="font-bold">Occupation:</span> Engineer</div>
 
-         <div className="ml-2"><span className="font-bold">Client Type:</span> Individual</div>
+         <div className="ml-4"><span className="font-bold">Client Type:</span> Individual</div>
 
-         <div className="ml-2"><span className="font-bold">Date of Birth:</span> 12/07/89</div>
+         <div className="ml-4"><span className="font-bold">Date of Birth:</span> 12/07/89</div>
          </div>
 
          <div className="">
@@ -165,8 +165,8 @@ export default function ClientListView(props) {
             </div> */}
           </div>
           <div className="h-[300px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
-    <div className="ml-2 text-[25px]" style={{color: "orange"}}>Proof of Identification</div>
-    <img className="ml-2 mt-4" src={idcard} alt="client passport" width="350px" />
+    <div className="ml-4 text-[25px]" style={{color: "orange"}}>Proof of Identification</div>
+    <img className="ml-4 mt-4" src={idcard} alt="client passport" width="350px" />
     </div>
       </AppModal>
     </div>
