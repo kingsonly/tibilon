@@ -121,6 +121,10 @@ export default function Clients() {
     // setopenPaymentModal(true);
     setEditModalIsOpen(true);
   };
+  const deleteAction = (id) => {
+    setData(data.filter((datas) => datas != id));
+    console.log(id)
+  };
 
 
   return (
@@ -143,6 +147,7 @@ export default function Clients() {
         fetchMoreDataProps={fetchData}
         editAction = {editClientModal}
         viewAction = {displayClientList}
+        deleteAction={deleteAction}
       />
     </div>
   );
