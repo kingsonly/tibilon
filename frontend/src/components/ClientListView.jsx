@@ -8,6 +8,12 @@ import idcard from "../assests/idcard.jpeg";
 import avatarIcon from "../assests/avatarUploadIcon.svg";
 import axios from "axios";
 import SnackbarComponent from "./SnackbarComponent";
+import {
+  AiFillDelete,
+  AiFillEdit,
+  AiFillEye,
+  AiOutlineSearch,
+} from "react-icons/ai";
 
 export default function ClientListView(props) {
   const { modalIsOpen, setIsOpen } = props;
@@ -133,15 +139,15 @@ export default function ClientListView(props) {
         setIsOpen={setIsOpen}
         title={"Client Information"}
       >
-        <div className="flex gap-[300px] h-[450px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]" >
-        <div className="text-lg leading-[50px]">
+        <div className="flex justify-between h-[350px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]" >
+        <div className="text-lg leading-[45px]">
         <div className="ml-4 text-[25px]" style={{color: "orange"}}>Client Information</div>
           <div className="ml-4"><span className="font-bold">Name:</span>Engr Joseph Labar</div>
             
           <div className="ml-4"><span className="font-bold">Address:</span> 2 Julius Berger Estate</div>
           <div className="ml-4"><span className="font-bold">Email Address:</span> jlabar@gmail.com</div>
             
-              <div className="ml-4"><span className="font-bold">Phone Number:</span> 080876644247</div>
+              <div className="ml-4"><span className="font-bold">Phone No:</span> 080876644247</div>
         
 
          <div className="ml-4"><span className="font-bold">Occupation:</span> Engineer</div>
@@ -151,8 +157,10 @@ export default function ClientListView(props) {
          <div className="ml-4"><span className="font-bold">Date of Birth:</span> 12/07/89</div>
          </div>
 
-         <div className="">
+         <div className="mr-4">
          <img src={clientpassport} alt="client passport" width="125px" />
+         <div className="text-[25px]" style={{color: "orange"}}>Proof of Identification</div>
+          <img className="mt-4" src={idcard} alt="client passport" width="200px" />
          </div>
           {/* <div className="flex justify-end">
             <Button
@@ -164,10 +172,96 @@ export default function ClientListView(props) {
             </Button>
             </div> */}
           </div>
-          <div className="h-[300px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
-    <div className="ml-4 text-[25px]" style={{color: "orange"}}>Proof of Identification</div>
-    <img className="ml-4 mt-4" src={idcard} alt="client passport" width="350px" />
-    </div>
+            <div className="h-[300px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
+            <div className="text-[25px] ml-4" style={{color: "orange"}}>Property Details</div>
+            <table className="w-[800px] ml-4">
+
+    <tr className="font-bold border-b-2 h-[50px]">    
+
+        <td>Property Type</td>
+
+        <td>Property Name/Number</td>
+
+        <td>Location</td>
+
+        <td>Units</td>
+
+        <td>Paid(%)</td>
+
+    </tr>
+
+    <tr className="h-[50px]">    
+
+        <td>5 Bedroom Stand alone with BQ</td>
+
+        <td>Mabushi Project phase 1/A05</td>
+
+        <td>Mabushi</td>
+
+        <td>1</td>
+
+        <td>40%</td>
+
+    </tr>
+    </table>
+    <div className="text-[25px] border-b-2 ml-4" style={{color: "orange"}}>Payment Information</div>
+    <table className="ml-4 w-[1050px]">
+    <tr className="border-b-2 h-[50px]">    
+
+<td>Payment Amount: <b>55,000,000.00</b></td>
+
+<td className="ml-8">Total Paid: <b>20,000,000.00</b></td>
+</tr>
+<tr className="h-[50px]">
+<td>Balance: <span className="text-red-600 font-bold">35,000,000.00</span></td>
+<td className="ml-8">Next Payment Due Date: 23/07/23 </td>
+</tr>
+    </table>
+            </div>
+            <input type="date" value="set Reminder" placeholder="set Reminder" className="border-4 ml-[650px]" />
+            <table className="w-[800px]">
+
+        <tr className="font-bold border-b-2 h-[50px] bg-slate-50">    
+
+            <td>SN</td>
+
+            <td>Amount Paid</td>
+
+            <td>Date of Payment</td>
+
+            <td>Type of Payment</td>
+
+            <td>Proof</td>
+
+        </tr>
+
+        <tr className="border-b-2 h-[50px]">    
+
+            <td>1</td>
+
+            <td>5,000,000.00</td>
+
+            <td>23/07/23</td>
+
+            <td>Bank Transfer</td>
+
+            <td><AiFillEye /></td>
+
+        </tr>
+        <tr>    
+
+<td>2</td>
+
+<td>15,000,000.00</td>
+
+<td>23/07/23</td>
+
+<td>Bank Transfer</td>
+
+<td><AiFillEye /></td>
+
+</tr>
+        </table>
       </AppModal>
     </div>
   );
