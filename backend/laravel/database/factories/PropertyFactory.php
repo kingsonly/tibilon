@@ -21,6 +21,8 @@ class PropertyFactory extends Factory
             "cover_image" => $this->faker->image(),
             "name" => $this->faker->name,
             "description" => $this->faker->text(),
+            "amount" => 500,
+            "log_user_id" => 1,
             "status" => 1,
         ];
     }

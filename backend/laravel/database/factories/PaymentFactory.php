@@ -21,6 +21,7 @@ class PaymentFactory extends Factory
             "amount" => $this->faker->numberBetween(100,1000),
             "payment_type" => "credit",
             "status" => 1,
+            "log_user_id" => 1,
         ];
     }
 }
