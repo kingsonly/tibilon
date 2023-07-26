@@ -1,16 +1,37 @@
-import React from "react";
+import React,{useState} from "react";
 import pdfIcon from "../assests/pdf-icon-file.svg";
 import docsIcon from "../assests/docs-icon.svg";
 import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
+import DialogModal from "./DialogModal";
 import AppModal from "./AppModal";
 import DocumentsContent from "./DocumentsContent";
 
 export default function FileTypeComponent({ document }) {
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [dialogMessage, setDialogMessage] = useState("");
+  const [DialogTitle, setDialogTitle] = useState("");
 
-  console.log(document, "kkkkkkssssss");
+  const deleteapiDocumet = async () => {
+   action(document.id)
+   
+  };
+  const deleteDocument = async () => {
+    setOpen(true)
+    setDialogMessage("test")
+   setDialogTitle("test title")
+  };
+
   return (
     <div>
+      <DialogModal
+        open={open}
+        setOpen={setOpen}
+        message={dialogMessage}
+        title={DialogTitle}
+        action={deleteapiDocumet}
+        buttonText={"Delete"}
+      />
       <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setModalIsOpen}
@@ -20,6 +41,7 @@ export default function FileTypeComponent({ document }) {
          document={document} />
       </AppModal>
       <div className="flex bg-[#ECECEC] p-[18px] items-end justify-between w-[236px] cursor-pointer">
+
         <div>
           <img
             src={`${document.type == "pdf" ? `${pdfIcon}` : `${docsIcon}`}`}
@@ -35,7 +57,9 @@ export default function FileTypeComponent({ document }) {
         </div>
         <div className="w-[37px]">
           <div>
-            <AiFillDelete onClick={()=>alert(123)} className="cursor-pointer text-[20px]"  />
+            <AiFillDelete className="cursor-pointer text-[20px]" onClick={() => 
+    deleteDocument()
+  }  /> 
           </div>
         </div>
       </div>
