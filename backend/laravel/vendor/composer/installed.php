@@ -370,6 +370,15 @@
                 0 => '*',
             ),
         ),
+        'kwn/number-to-words' => array(
+            'pretty_version' => '2.6.4',
+            'version' => '2.6.4.0',
+            'reference' => 'c4c14c84374baaeef35c47373c500ec7aa28b1b5',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../kwn/number-to-words',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'laravel/framework' => array(
             'pretty_version' => 'v10.3.3',
             'version' => '10.3.3.0',

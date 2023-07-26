@@ -25,7 +25,9 @@ class ProjectFactory extends Factory
             "client_id" => 1,
             "start_date" => $this->faker->date(),
             "end_date" => $this->faker->date(),
+            "image" => "just an image",
             "status" => 1,
+            "log_user_id" => 1,
         ];
     }
 }

@@ -35,8 +35,8 @@ class PropertyStat extends JsonResource
             "paymentBalance" => $balance,
             "totalProperty" => $totalProperty,
             "totalPropertySold" => $totalPropertySold,
-            "totalPropertySold" => $totalPropertyPertiallySold,
-            "totalPropertyAvailable" => $$totalAvailableProperty,
+            "totalPropertyPertiallSold" => $totalPropertyPertiallySold,
+            "totalPropertyAvailable" => $totalAvailableProperty,
 
             //"totalproperties" => $this->properties->count(),
         ];
