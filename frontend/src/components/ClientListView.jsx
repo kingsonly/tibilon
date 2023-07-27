@@ -139,28 +139,28 @@ export default function ClientListView(props) {
         setIsOpen={setIsOpen}
         title={"Client Information"}
       >
-        <div className="flex justify-between h-[350px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]" >
-        <div className="text-lg leading-[45px]">
-        <div className="ml-4 text-[25px]" style={{color: "orange"}}>Client Information</div>
-          <div className="ml-4"><span className="font-bold">Name:</span>Engr Joseph Labar</div>
+        <div className="flex justify-between h-[355px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]" >
+        <div className="text-lg leading-[43px] pl-4 pb-4">
+        <div className="text-[25px]" style={{color: "orange"}}>Client Information</div>
+          <p><span className="font-bold">Name:</span>Engr Joseph Labar</p>
             
-          <div className="ml-4"><span className="font-bold">Address:</span> 2 Julius Berger Estate</div>
-          <div className="ml-4"><span className="font-bold">Email Address:</span> jlabar@gmail.com</div>
+          <p><span className="font-bold">Address:</span> 2 Julius Berger Estate</p>
+          <p><span className="font-bold">Email Address:</span> jlabar@gmail.com</p>
             
-              <div className="ml-4"><span className="font-bold">Phone No:</span> 080876644247</div>
+              <p><span className="font-bold">Phone No:</span> 080876644247</p>
         
 
-         <div className="ml-4"><span className="font-bold">Occupation:</span> Engineer</div>
+         <p><span className="font-bold">Occupation:</span> Engineer</p>
 
-         <div className="ml-4"><span className="font-bold">Client Type:</span> Individual</div>
+         <p><span className="font-bold">Client Type:</span> Individual</p>
 
-         <div className="ml-4"><span className="font-bold">Date of Birth:</span> 12/07/89</div>
+         <p><span className="font-bold">Date of Birth:</span> 12/07/89</p>
          </div>
 
-         <div className="mr-4">
+         <div className="pr-4">
          <img src={clientpassport} alt="client passport" width="125px" />
          <div className="text-[25px]" style={{color: "orange"}}>Proof of Identification</div>
-          <img className="mt-4" src={idcard} alt="client passport" width="200px" />
+          <img className="pt-4" src={idcard} alt="client passport" width="200px" />
          </div>
           {/* <div className="flex justify-end">
             <Button
@@ -173,50 +173,50 @@ export default function ClientListView(props) {
             </div> */}
           </div>
             <div className="h-[300px] shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)]">
-            <div className="text-[25px] ml-4" style={{color: "orange"}}>Property Details</div>
-            <table className="w-[800px] ml-4">
+            <div className="text-[25px] pl-4 pt-4" style={{color: "orange"}}>Clients Property Details</div>
+            <table className= "w-[800px]">
 
-    <tr className="font-bold border-b-2 h-[50px]">    
+        <tr className="font-bold border-b-2 h-[50px] bg-slate-50">    
 
-        <td>Property Type</td>
+            <td>SN</td>
 
-        <td>Property Name/Number</td>
+            <td>Names</td>
 
-        <td>Location</td>
+            <td>Type of Property</td>
 
-        <td>Units</td>
+            <td>Phone Number</td>
 
-        <td>Paid(%)</td>
+            <td>View</td>
 
-    </tr>
+        </tr>
 
-    <tr className="h-[50px]">    
+        <tr className="border-b-2 h-[50px]">    
 
-        <td>5 Bedroom Stand alone with BQ</td>
+            <td>1</td>
 
-        <td>Mabushi Project phase 1/A05</td>
+            <td>Engr Joseph Labar</td>
 
-        <td>Mabushi</td>
+            <td>jlabar@gmail.com</td>
 
-        <td>1</td>
+            <td>08097543322 </td>
 
-        <td>40%</td>
+            <td><AiFillEye /></td>
 
-    </tr>
-    </table>
-    <div className="text-[25px] border-b-2 ml-4" style={{color: "orange"}}>Payment Information</div>
-    <table className="ml-4 w-[1050px]">
-    <tr className="border-b-2 h-[50px]">    
+        </tr>
+        <tr>    
 
-<td>Payment Amount: <b>55,000,000.00</b></td>
+        <td>2</td>
 
-<td className="ml-8">Total Paid: <b>20,000,000.00</b></td>
+<td>Engr Joseph Labar</td>
+
+<td>jlabar@gmail.com</td>
+
+<td>08097543322 </td>
+
+<td><AiFillEye /></td>
+
 </tr>
-<tr className="h-[50px]">
-<td>Balance: <span className="text-red-600 font-bold">35,000,000.00</span></td>
-<td className="ml-8">Next Payment Due Date: 23/07/23 </td>
-</tr>
-    </table>
+        </table>
             </div>
             <input type="date" value="set Reminder" placeholder="set Reminder" className="border-4 ml-[650px]" />
             <table className= "w-[800px]">
