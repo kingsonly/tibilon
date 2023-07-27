@@ -4,6 +4,8 @@ export default function AddBudgetWorkStage() {
 
 
     return(
-        <div></div>
+        <div>
+            
+        </div>
     )
 } 
