@@ -43,6 +43,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth:sanctum']], function ()
     Route::post("adduser", [UserController::class, 'register']);
     Route::post("/search",[UserController::class,"search"]);
     Route::post("/addcommission/{id}",[PropertyController::class,"agentCommision"]);
+    Route::get("/logout",[UserController::class,"logout"])->name("logout");
 });
 
 
