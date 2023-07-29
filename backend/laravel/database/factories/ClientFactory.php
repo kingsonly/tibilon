@@ -22,6 +22,7 @@ class ClientFactory extends Factory
             "phone" => $this->faker->phoneNumber(),
             "address_id" => 1,
             "client_type" => "project",
+            "image" => "project",
             "status" => 0,
             "log_user_id" => 1,
             "password" => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password

@@ -19,6 +19,8 @@ class PropertyPaymentFactory extends Factory
         return [
             "property_id" => 1,
             "payment_id" => 1,
+            "log_user_id" => 1,
+            "prof_of_payment" => "just",
             "status" => 1,
         ];
     }

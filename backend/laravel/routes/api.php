@@ -33,6 +33,7 @@ Route::group(['prefix' => 'user', ], function () {
     Route::post("login",[UserController::class , "login"]);
     Route::post("recoverpassword/{id}", [UserController::class, 'resetpassword']);
     Route::post("sendpasswordresetlink", [UserController::class, 'sendpasswordresetlink']);
+    Route::get("/paymentreceipt/{id}",[PropertyController::class,"paymentReceipt"]);
 });
 
 Route::group(['prefix' => 'user', 'middleware' => ['auth:sanctum']], function () {

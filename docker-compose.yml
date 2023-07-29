@@ -7,7 +7,7 @@ services:
       context: ./backend/laravel
       dockerfile: Dockerfile
     ports:
-      - 8080:8000
+      - 8050:8000
     volumes:
       # Re-use local composer cache via host-volume
       - ~/.composer-docker/cache:/root/.composer/cache:delegated

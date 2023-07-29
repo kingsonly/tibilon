@@ -121,6 +121,11 @@ return [
     |
     */
 
+    'currency' => [
+        'iso' => 'NGN', // Use the currency symbol for the Nigerian Naira (NGN)
+        'symbol' => '₦', // Set the currency symbol to ₦
+    ],
+
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
