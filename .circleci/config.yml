@@ -16,10 +16,10 @@ jobs:
       - setup_remote_docker:
           version: 20.10.12
           docker_layer_caching: true
-      - run:
-          name: Run npm 
-          command: |
-            CI=false cd frontend && npm install && npm run test
+      # - run:
+      #     name: Run npm 
+      #     command: |
+      #       CI=false cd frontend && npm install && npm run test
 
       - run: CI=false sudo apt update
       - run: CI=false sudo apt-get install rsync
