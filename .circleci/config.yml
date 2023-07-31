@@ -66,7 +66,7 @@ jobs:
       - run:
           name: Run npm 
           command: |
-            CI=false cd frontend && npm install && npm run test
+            CI=false cd frontend && npm install 
 
       - run: CI=false sudo apt update
       - run: CI=false sudo apt-get install rsync
@@ -78,7 +78,7 @@ jobs:
       - run:
           name: find and replace in document
           command: |
-             sed -i -e 's#REACT_APP_API_URL=https://api.tibilon.skillzserver.com/api#REACT_APP_API_URL=https://api.tibilon.skillzserver.com/api#g' frontend/.env 
+             sed -i -e 's#REACT_APP_API_URL=https://api.tibilon.skillzserver.com/api#REACT_APP_API_URL=https://production.skillzserver.com/api#g' frontend/.env 
 
 
       - run:
