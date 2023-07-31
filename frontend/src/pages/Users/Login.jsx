@@ -120,7 +120,7 @@ export default function Login() {
                     </div>
                     <div className="mt-[50px]">
                         {!passworderror ?
-                            <h3 className="text-red-600"> u need an password</h3>
+                            <h3 className="text-red-600"> Password can not be empty</h3>
                             : null}
                         <input className="flex  items-center pl-[10px] w-[300px] h-[40px] rounded-md text-[14px] font-normal text-gray-950"
                             type="password"

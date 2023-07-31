@@ -141,6 +141,49 @@ jobs:
       #     command: |
       #       ssh -p 7822 -o StrictHostKeyChecking=no  skillz@185.160.67.60 && cd tibilon/laravel  &&  composer install && exit
   
+  deploy-laravel-production-fake:
+    docker:
+        - image: cimg/php:8.1
+    working_directory: ~/repo
+    steps:
+      - add_ssh_keys:
+          fingerprints: 
+          - "94:f3:79:6d:db:f2:27:8e:98:e2:7f:30:bb:da:5c:03"
+      - checkout
+      # install dependencies
+      - setup_remote_docker:
+          version: 20.10.12
+          docker_layer_caching: true
+      - run:
+          name: Install dependencies
+          command: cd backend/laravel && CI=false  composer update && CI=false  composer install &&  CI=false php artisan key:generate
+
+      - run: sudo apt update
+      - run: sudo apt-get install rsync
+
+      # - run:
+      #     name: Update known hosts
+      #     command:  CI=false ssh-keyscan -H 185.160.67.60 >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+      - run:
+          name: find and replace in document
+          command: |
+            sed -i -e 's:/public/index.php:/index.php:g' backend/laravel/public/index.php && sed -i -e 's:/../vendor/autoload.php:/vendor/autoload.php:g' backend/laravel/public/index.php && sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=skillz_tibiproduction:g' backend/laravel/.env.example && sed -i -e 's:DB_USERNAME=forge:DB_USERNAME=skillz_tibilon:g' backend/laravel/.env.example  && sed -i -e 's:/../bootstrap/app.php:/bootstrap/app.php:g' backend/laravel/public/index.php && sed -i -e 's:DB_PASSWORD=forge:DB_PASSWORD="Ubuxa##99":g' backend/laravel/.env.example 
+
+      - run:
+          name: rename .env.example file to .env 
+          command: |
+            mv backend/laravel/.env.example backend/laravel/.env
+
+      - run:
+          name: ssh login  
+          command: |
+            cd backend/laravel && rsync -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no' --ignore-existing --exclude='public/' --include='public/' --delete-excluded app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json skillz@185.160.67.60:tibilonproduction
+            
+      # - run:
+      #     name: ssh and run migration on live server  
+      #     command: |
+      #       ssh -p 7822 -o StrictHostKeyChecking=no  skillz@185.160.67.60 && cd tibilon/laravel  &&  composer install && exit
+  
   deploy-laravel-production:
     docker:
         - image: circleci/node:16
@@ -232,8 +275,8 @@ workflows:
 
           filters:
             branches:
-              only: production 
-      - deploy-react-production:
+              only: live 
+      - deploy-laravel-production-fake:
           filters:
             branches:
               only: production 
