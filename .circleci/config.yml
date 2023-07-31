@@ -38,7 +38,7 @@ jobs:
       - run:
           name: build file
           command: |
-            cd frontend && CI=false npm run build
+            cd frontend && CI=false npm run build 
      
       - run:
           name: ssh login  
