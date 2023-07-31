@@ -271,15 +271,18 @@ workflows:
           filters:
             branches:
               only: staging
-      - deploy-laravel-production:
-
+      - deploy-react-production:
           filters:
             branches:
-              only: live 
+              only: production 
       - deploy-laravel-production-fake:
           filters:
             branches:
               only: production 
+      - deploy-laravel-production:
+          filters:
+            branches:
+              only: live 
       # - deploy-nest: # Use the pre-configured job, deploy-via-git
       #     filters:
       #       branches:
