@@ -215,16 +215,16 @@ workflows:
       - deploy-laravel: # Use the pre-configured job, deploy-via-git
           filters:
             branches:
-              only: laravel
+              only: staging
       - deploy-react: # Use the pre-configured job, deploy-via-git
           filters:
             branches:
-              only: react
+              only: staging
       - deploy-laravel-production:
 
           filters:
             branches:
-              only: production
+              only: production 
       - deploy-react-production:
           filters:
             branches:
