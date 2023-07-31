@@ -20,6 +20,10 @@ jobs:
       #     name: Run npm 
       #     command: |
       #       CI=false cd frontend && npm install && npm run test
+      - run:
+          name: Run npm 
+          command: |
+            CI=false cd frontend && npm install 
 
       - run: CI=false sudo apt update
       - run: CI=false sudo apt-get install rsync
