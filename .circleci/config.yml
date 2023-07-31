@@ -32,6 +32,10 @@ jobs:
           name: Update known hosts
           command: ssh-keyscan -H 185.160.67.60 >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - run:
+          name: rename .env.example file to .env 
+          command: |
+            mv frontend/.env.example frontend/.env
+      - run:
           name: build file
           command: |
             cd frontend && CI=false npm run build
