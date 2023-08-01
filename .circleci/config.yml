@@ -134,7 +134,13 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            cd backend/laravel && rsync -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no' --ignore-existing --exclude='public/' --include='public/' --delete-excluded app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json skillz@185.160.67.60:tibilon/laravel
+            cd backend/laravel && rsync --delete -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'   app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json skillz@185.160.67.60:tibilon/laravel
+            
+      - run:
+          name: ssh login for public folder   
+          command: |
+            cd backend/laravel && rsync --delete -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no' --ignore-existing public/ skillz@185.160.67.60:tibilon/laravel
+
             
       # - run:
       #     name: ssh and run migration on live server  
@@ -178,6 +184,11 @@ jobs:
           name: ssh login  
           command: |
             cd backend/laravel && rsync -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no' --ignore-existing --exclude='public/' --include='public/' --delete-excluded app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json skillz@185.160.67.60:tibilonproduction
+      - run:
+          name: ssh login for public folder   
+          command: |
+            cd backend/laravel && rsync --delete -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no' --ignore-existing public/ skillz@185.160.67.60:tibilonproduction
+
             
       # - run:
       #     name: ssh and run migration on live server  
