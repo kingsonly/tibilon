@@ -17,6 +17,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
 import InfiniteScroll from 'react-infinite-scroll-component'
+import DialogModal from "./DialogModal";
 
 /**
  * Represents the Table component.
@@ -78,6 +79,17 @@ export default function TableComponent({
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [open, setOpen] = React.useState(false);
+  const [dialogMessage, setDialogMessage] = React.useState("");
+  const [DialogTitle, setDialogTitle] = React.useState("");
+
+  const openDialogModal = (title, message) => {
+    setDialogMessage(message);
+    setDialogTitle(title);
+    setOpen(true);
+    // deleteAction();
+  };
+ 
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -129,7 +141,15 @@ export default function TableComponent({
                 <AiFillEye className="cursor-pointer" onClick={() => viewAction && viewAction()} />
                 <AiFillDelete
                   className="cursor-pointer"
-                  onClick={() => deleteAction && deleteAction(row)}
+                  // onClick={() => deleteAction && deleteAction(row)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openDialogModal(
+                      "Delete Client Details",
+                      "Are you sure you want to delete Client Details?",
+                    ) ? deleteAction && deleteAction(row):null
+                  }}
                 />
               </div>
             ) : null}
@@ -153,6 +173,14 @@ export default function TableComponent({
 
   return (
     <>
+     <DialogModal
+        open={open}
+        setOpen={setOpen}
+        message={dialogMessage}
+        title={DialogTitle}
+        action={deleteAction}
+        buttonText={"Delete"}
+      />
       <div className="flex items-center justify-between mb-[19px]">
         {searchFunction && (
           <div className="border-2 rounded w-[292px] h-[45px] flex items-center">
