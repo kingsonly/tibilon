@@ -218,7 +218,9 @@ export default function ClientListView(props) {
 </tr>
         </table>
             </div>
+            <div className="mt-[20px] mb-[20px]">
             <input type="date" value="set Reminder" placeholder="set Reminder" className="border-4 ml-[650px]" />
+            </div>
             <table className= "w-[800px]">
 
         <tr className="font-bold border-b-2 h-[50px] bg-slate-50">    

@@ -9,7 +9,7 @@ import axios from "axios";
 import SnackbarComponent from "./SnackbarComponent";
 
 export default function EditClientModal(props) {
-  const { modalIsOpen, setIsOpen } = props;
+  const { modalIsOpen, setIsOpen, data } = props;
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
@@ -141,7 +141,7 @@ export default function EditClientModal(props) {
             id="outlined-required"
             label="Client Name"
             error={error["name"]}
-            defaultValue={name}
+            defaultValue={data.name}
             onChange={(e) => {
               handleOnChange(e, "name");
             }}
@@ -152,7 +152,7 @@ export default function EditClientModal(props) {
             id="outlined-required"
             label="Client Address"
             error={error["address"]}
-            defaultValue={address}
+            defaultValue={data.address}
             onChange={(e) => {
               handleOnChange(e, "address");
             }}
@@ -165,7 +165,7 @@ export default function EditClientModal(props) {
                 id="outlined-required"
                 label="Phone Number"
                 error={error["phone"]}
-                defaultValue={phone}
+                defaultValue={data.phone}
                 onChange={(e) => {
                   handleOnChange(e, "phone");
                 }}
@@ -178,7 +178,7 @@ export default function EditClientModal(props) {
                 id="outlined-required"
                 label="Email Address"
                 error={error["email"]}
-                defaultValue={email}
+                defaultValue={data.email}
                 onChange={(e) => {
                   handleOnChange(e, "email");
                 }}
@@ -193,7 +193,7 @@ export default function EditClientModal(props) {
                 required
                 id="outlined-required"
                 label="Project"
-                defaultValue={project}
+                defaultValue={data.project}
                 type="select"
                 error={error["project"]}
                 options={types}

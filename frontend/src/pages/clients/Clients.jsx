@@ -131,10 +131,8 @@ export default function Clients() {
     <div className="bg-[white] p-[47px]">
       <hr className="my-6" />
       <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}  />
-      <EditClientModal setIsOpen={setEditModalIsOpen} modalIsOpen={editModalIsOpen} />
+      <EditClientModal setIsOpen={setEditModalIsOpen} modalIsOpen={editModalIsOpen} data={data} />
       <ClientListView setIsOpen={setViewModalIsOpen} modalIsOpen={viewModalIsOpen}  />
-      
-
       <TableComponent
         actionText="Add New Client"
         columns={columns}
