@@ -16,7 +16,7 @@ import {
 } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import InfiniteScroll from 'react-infinite-scroll-component'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 /**
  * Represents the Table component.
@@ -71,7 +71,7 @@ export default function TableComponent({
   deleteAction,
   loading,
   fetchMoreDataProps,
-  hasMore
+  hasMore,
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -119,8 +119,8 @@ export default function TableComponent({
               <>
                 <img className="w-[50px] h-[50px]" alt="icon" src={row.image} />
               </>
-            ) :null}
-             {dataKeyAccessors[index] == "CTA" ? (
+            ) : null}
+            {dataKeyAccessors[index] == "CTA" ? (
               <div className="flex gap-4">
                 <AiFillEdit className="cursor-pointer" />
                 <AiFillEye className="cursor-pointer" />
@@ -130,8 +130,8 @@ export default function TableComponent({
                 />
               </div>
             ) : null}
-            
-            {(
+
+            {
               // moment(e).format("YYYY-MM-DD")
               //TO DO;>> ADD A BETTER WAY TO CHECK IS STRING DATE IS VALID
               <>
@@ -141,15 +141,30 @@ export default function TableComponent({
                   <> {row[dataKeyAccessors[index]]}</>
                 )}
               </>
-            )}
+            }
           </StyledTableCell>
         ))}
-      </StyledTableRow>
+      </StyledTableRow> 
     );
   };
 
   return (
     <>
+      {/* <hr className="w-[100%] mt-10 mb-10"></hr>
+      <div className="flex space-x-72">
+        <div className="space-y-8">
+          <div>Budget Title</div>
+          <div>Budget 1 (Structure)</div>
+        </div>
+        <div>
+          <div>No of Units</div>
+          <div>20</div>
+        </div>
+        <div>
+          <div>Budget Cost (#)</div>
+          <div>40,317,000.00</div>
+        </div>
+      </div> */}
       <div className="flex items-center justify-between mb-[19px]">
         {searchFunction && (
           <div className="border-2 rounded w-[292px] h-[45px] flex items-center">
@@ -183,41 +198,37 @@ export default function TableComponent({
           <CircularProgress />
         </div>
       )}
-      <TableContainer component={Paper} >
-      <InfiniteScroll
-              dataLength={data.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
-              initialScrollY ={1}
-              endMessage={
-                <p style={{ textAlign: 'center' }}>
-                  <b>Yay! You have seen it all edenjdnej</b>
-                </p>
-              }
-              
-            >
-        <Table sx={{ minWidth: 700 }} aria-label="customized table" >
-          <TableHead style={{ border: "1px solid #CCCCCC" }}>
-            <TableRow role="table-header">
-              {columns?.map((column) => (
-                <StyledTableCell key={uuidv4()} role="table-header-cell">
-                  {column}
-                </StyledTableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          
-          <TableBody>
-            
+      <TableContainer component={Paper}>
+        <InfiniteScroll
+          dataLength={data.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<h4>Loading...</h4>}
+          initialScrollY={1}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all edenjdnej</b>
+            </p>
+          }
+        >
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead style={{ border: "1px solid #CCCCCC" }}>
+              <TableRow role="table-header">
+                {columns?.map((column) => (
+                  <StyledTableCell key={uuidv4()} role="table-header-cell">
+                    {column}
+                  </StyledTableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
               {data?.map((row) => (
                 // Render Dynamic Data Objects
                 <Fragment key={uuidv4()}>{renderRow(row)}</Fragment>
               ))}
-            
-          </TableBody>
-          
-        </Table>
+            </TableBody>
+          </Table>
         </InfiniteScroll>
       </TableContainer>
 
