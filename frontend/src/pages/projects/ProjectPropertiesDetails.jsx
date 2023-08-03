@@ -52,7 +52,6 @@ export default function ProjectPropertiesDetails() {
           name: amt?.amenity?.name,
           quantity: amt?.quantity,
           id: amt?.id,
-          CTA: "CTA",
         }))
       );
     } catch (error) {
