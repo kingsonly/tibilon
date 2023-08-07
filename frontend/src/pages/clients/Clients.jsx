@@ -5,6 +5,7 @@ import AddClientModal from "../../components/AddClientModal";
 import axios from "axios";
 import ClientListView from "../../components/ClientListView";
 import EditClientModal from "../../components/EditClientModal";
+import { imageBaseUrl } from "../../services/apiservices/urls";
 
 
 export default function Clients() {
@@ -35,8 +36,14 @@ export default function Clients() {
       await response.data.data.map((data, index) => {
         response.data.data[index]["SN"] = i;
         response.data.data[index]["address"] = response.data.data[index]["address"].full_address;
+        response.data.data[index][
+          "image"
+        ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
         i++;
       });
+
+
+      console.log(response,'responseresponse');
       
       
       setData(prevData => [...prevData, ...response.data.data]);
@@ -71,8 +78,12 @@ export default function Clients() {
       );
 
       let i = 1;
+
       await response.data.data.map((data, index) => {
         response.data.data[index]["SN"] = i;
+        response.data.data[index][
+          "image"
+        ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
         i++;
       });
 
@@ -83,7 +94,7 @@ export default function Clients() {
     }
   };
 
-  const columns = ["S/No", "Client Name", "email", "Phone No", "Client Type", "Address"];
+  const columns = ["S/No", "Client Name", "email", "Phone No", "Client Type", "Address", "image", "CTA"];
 
   const dataKeyAccessors = [
     "SN",
@@ -92,8 +103,11 @@ export default function Clients() {
     "phone",
     "type",
     "address",
+    "image",
     "CTA",
   ];
+
+  console.log(data,'datadatadata');
 
   const searchFunction = () => {
     //Api call to search and update table data
@@ -130,7 +144,7 @@ export default function Clients() {
   return (
     <div className="bg-[white] p-[47px]">
       <hr className="my-6" />
-      <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}  />
+      <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} fetchData={fetchData}  />
       <EditClientModal setIsOpen={setEditModalIsOpen} modalIsOpen={editModalIsOpen} data={data} />
       <ClientListView setIsOpen={setViewModalIsOpen} modalIsOpen={viewModalIsOpen}  />
       <TableComponent

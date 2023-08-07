@@ -54,7 +54,7 @@ export default function AppModal({ children, setIsOpen, modalIsOpen, title }) {
         >
           <div className="flex justify-between mb-10">
             <h2 className="cursor-pointer" ref={(_subtitle) => (subtitle = _subtitle)}>
-              <b>{title}</b>
+              <b>{title?.toUpperCase()}</b>
             </h2>
             <button onClick={closeModal}><b>Close</b></button>
           </div>
