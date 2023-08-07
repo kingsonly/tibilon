@@ -231,7 +231,7 @@ export default function TableComponent({
           initialScrollY={1}
           endMessage={
             <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all edenjdnej</b>
+              <b>Yay! You have seen it all</b>
             </p>
           }
         >
