@@ -24,6 +24,9 @@ class PropertyStat extends JsonResource
         });
 
         $balance = $totalPayment - $totalAmountPaid;
+        if($balance < 1){
+            $balance = 0;
+        }
 
         $totalProperty = $this->project->property->count();
         $totalPropertySold = $this->project->propertySold->count();
