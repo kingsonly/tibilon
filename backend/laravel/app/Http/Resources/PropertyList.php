@@ -29,7 +29,7 @@ class PropertyList extends JsonResource
             case 1:
                 $status = "Paid";
                 break;
-            case 1:
+            case 2:
                 $status = "Partial Payment";
                 break;
             default:
