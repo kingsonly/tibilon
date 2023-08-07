@@ -3,12 +3,7 @@ import TableComponent from "../../components/TableComponent";
 import AddProjectModal from "../../components/AddProjectModal";
 import AddClientModal from "../../components/AddClientModal";
 import axios from "axios";
-import {
-  AiFillDelete,
-  AiFillEdit,
-  AiFillEye,
-  AiOutlineSearch,
-} from "react-icons/ai";
+
 
 export default function Clients() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -96,9 +91,7 @@ export default function Clients() {
     }
   };
 
-  const hasCustomAction = () => {
-    alert(12345)
-  }
+  
   const columns = ["S/No", "Client Name", "email", "Phone No", "Client Type", "Address"];
 
   const dataKeyAccessors = [
@@ -162,10 +155,7 @@ export default function Clients() {
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
         fetchMoreDataProps={fetchData}
-        hasCustom={true}
-        hasCustomIcon={<AiFillDelete onClick={()=>{
-          hasCustomAction()
-        }}/>}
+        
       />
     </div>
   );

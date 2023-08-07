@@ -4,7 +4,16 @@ import { useNavigate } from "react-router-dom";
 import TableComponent from "./TableComponent";
 import { imageBaseUrl } from "../services/apiservices/urls";
 
-export default function PropertyPaymentInfo({ payments, projectId, property }) {
+
+import {
+  AiFillDelete,
+  AiFillEdit,
+  AiFillEye,
+  AiOutlineSearch,
+} from "react-icons/ai";
+import axios from "axios";
+export default function PropertyPaymentInfo({ payments, projectId, property, }) {
+
   const navigate = useNavigate();
   const [firstTimePayment, setfirstTimePayment] = React.useState(true);
 
@@ -36,6 +45,31 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
     "Payment Data",
     "action",
   ];
+
+  const getReciept = async (id) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`, { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'receipt.pdf');
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
+    // var token = localStorage.getItem("token");
+    // try {
+      
+    //   const response = await axios.get(
+    //     `${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`
+    //   );
+      
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
+  }
 
   return (
     <Fragment>
@@ -179,6 +213,9 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
             // searchFunction={searchFunction}
             // paginationChange={paginationChange}
             dataKeyAccessors={dataKeyAccessors}
+            hasCustom={true}
+            hasCustomIcon={<AiFillDelete />}
+            hasCustomAction={getReciept}
           />
         )}
       </div>
