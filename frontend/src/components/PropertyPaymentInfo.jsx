@@ -4,7 +4,13 @@ import React, { Fragment, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import clientImage from "../../src/assests/client-passport.png";
 import TableComponent from "./TableComponent";
-
+import {
+  AiFillDelete,
+  AiFillEdit,
+  AiFillEye,
+  AiOutlineSearch,
+} from "react-icons/ai";
+import axios from "axios";
 export default function PropertyPaymentInfo({ payments, projectId, property, }) {
   const navigate = useNavigate();
   const [firstTimePayment, setfirstTimePayment] = React.useState(true);
@@ -38,6 +44,31 @@ export default function PropertyPaymentInfo({ payments, projectId, property, }) 
     "Payment Data",
     "action",
   ];
+
+  const getReciept = async (id) => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`, { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'receipt.pdf');
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
+    // var token = localStorage.getItem("token");
+    // try {
+      
+    //   const response = await axios.get(
+    //     `${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`
+    //   );
+      
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
+  }
 
   return (
     <Fragment>
@@ -137,9 +168,9 @@ export default function PropertyPaymentInfo({ payments, projectId, property, }) 
         <div className="text-[#D7B569] font-bold text-[25px]">
           Payment Information
         </div>
-        {property?.payment.length == 0  ? (
+        {property?.payment.length == 0 ? (
           <>No Client Available</>
-          
+
         ) : (
           <TableComponent
             actionText={null}
@@ -149,6 +180,9 @@ export default function PropertyPaymentInfo({ payments, projectId, property, }) 
             // searchFunction={searchFunction}
             // paginationChange={paginationChange}
             dataKeyAccessors={dataKeyAccessors}
+            hasCustom={true}
+            hasCustomIcon={<AiFillDelete />}
+            hasCustomAction={getReciept}
           />
         )}
       </div>
