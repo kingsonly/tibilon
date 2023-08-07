@@ -114,17 +114,17 @@ export default function TableComponent({
   //   if(hasCustom){
   //     if(hasCustomIcon !== undefined){
   //       return (
-          
+
   //         {hasCustomIcon}
   //       )
   //     }else{
   //       return (
-          
+
   //         <div>Icon required</div>
   //       )
   //     }
   //   }
-    
+
   // }
   const renderRow = (row) => {
     return (
@@ -149,7 +149,8 @@ export default function TableComponent({
               <>
                 <img className="w-[50px] h-[50px]" alt="icon" src={row.image} />
               </>
-            ) : dataKeyAccessors[index] == "CTA" ? (
+            ) : null}
+            {dataKeyAccessors[index] == "CTA" ? (
               <div className="flex gap-4">
                 <AiFillEdit
                   className="cursor-pointer"
@@ -174,12 +175,16 @@ export default function TableComponent({
                   }}
                 />
                 {hasCustom && hasCustomIcon ? (
-            <div>{hasCustomIcon}</div>
-          ) : (
-            <div>Icon required</div>
-          )}
+                  <div onClick={() => {
+                    hasCustomAction(row.id)
+                  }}>{hasCustomIcon}</div>
+                ) : null}
               </div>
-            ) : (
+            ) : null}
+
+            {(
+              // moment(e).format("YYYY-MM-DD")
+              //TO DO;>> ADD A BETTER WAY TO CHECK IS STRING DATE IS VALID
               <>
                 {
                   // moment(e).format("YYYY-MM-DD")
@@ -243,7 +248,7 @@ export default function TableComponent({
           <CircularProgress />
         </div>
       )}
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} >
         <InfiniteScroll
           dataLength={data.length}
           next={fetchMoreData}
@@ -251,12 +256,13 @@ export default function TableComponent({
           loader={<h4>Loading...</h4>}
           initialScrollY={1}
           endMessage={
-            <p style={{ textAlign: "center" }}>
+            <p style={{ textAlign: 'center' }}>
               <b>Yay! You have seen it all</b>
             </p>
           }
+
         >
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <Table sx={{ minWidth: 700 }} aria-label="customized table" >
             <TableHead style={{ border: "1px solid #CCCCCC" }}>
               <TableRow role="table-header">
                 {columns?.map((column) => (
@@ -272,7 +278,9 @@ export default function TableComponent({
                 // Render Dynamic Data Objects
                 <Fragment key={uuidv4()}>{renderRow(row)}</Fragment>
               ))}
+
             </TableBody>
+
           </Table>
         </InfiniteScroll>
       </TableContainer>

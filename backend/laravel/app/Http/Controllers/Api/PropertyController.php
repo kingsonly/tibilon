@@ -450,24 +450,24 @@ class PropertyController extends Controller
     $propertyPayments = $model->property->payments->sum(function ($payment) {
       return $payment->amount ?? 0;
     });
-    $amount = number_format($model->payment->amount, 2, '.', ',') ;
+    $amount = number_format($model->payment->amount, 2, '.', ',');
     $carbonDate = Carbon::parse($dateOfPayment);
-    $balance = number_format($model->property->amount - $propertyPayments, 2, '.', ',') ; 
+    $balance = number_format($model->property->amount - $propertyPayments, 2, '.', ',');
     // Format the date as "April, 17, 2023"
     $dateOfPayment = $carbonDate->format('F, d, Y');
     $reciept = $model->reciept;
     if (empty($model)) {
       return response()->json(['status' => "error"], 400);
     }
-    if(empty($reciept)){
+    if (empty($reciept)) {
       // generate reciept save it and reset it 
-      $model->reciept = Str::random(5, 'abcdefghijklmnopqrstuvwxyz1234567890').$model->id;
+      $model->reciept = Str::random(5, 'abcdefghijklmnopqrstuvwxyz1234567890') . $model->id;
       $model->save();
-      $reciept= $model->reciept;
+      $reciept = $model->reciept;
     }
     $numberToWords = new NumberToWords();
     $currencyTransformer = $numberToWords->getCurrencyTransformer('en');
-    $money = $model->payment->amount."00";
+    $money = $model->payment->amount . "00";
     $amountInWords = $currencyTransformer->toWords($money, 'NGN');
     $imagePath = "https://tibilon.skillzserver.com/static/media/company_logo.861e326775b7cd6e6ac78c6d380a1dde.svg";
     $pdfContent = "
@@ -663,7 +663,7 @@ class PropertyController extends Controller
         ";
 
     // Initialize Dompdf
-   
+
     $dompdf = new Dompdf(array('enable_remote' => true));
     $dompdf->loadHtml($pdfContent);
 
@@ -674,10 +674,17 @@ class PropertyController extends Controller
     $dompdf->render();
 
     // Generate PDF filename (you can customize this as needed)
-    $filename = 'receipt.pdf';
+    $filename = 'receipt_' . $id . '.pdf';
 
     // Download the PDF file
-    return $dompdf->stream($filename);
-    
+    //return $dompdf->stream($filename);
+
+    $pdfFilePath = public_path('pdfs/' . $filename);
+    file_put_contents($pdfFilePath, $dompdf->output());
+
+    // $pdfFilePath = storage_path('app/public/pdfs/') . 'receipt_' . $id . '.pdf';
+    // file_put_contents($pdfFilePath, $dompdf->output());
+
+    return response()->json(['pdf_url' => asset('pdfs/' . 'receipt_' . $id . '.pdf')]);
   }
 }
