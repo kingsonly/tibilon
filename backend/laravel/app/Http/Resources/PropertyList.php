@@ -34,7 +34,7 @@ class PropertyList extends JsonResource
             "amount" => $this->amount,
             "cover_image" => $this->cover_image,
             "agent" => $agent,
-            "client" => new ClientResource($this->client->client),
+            "client" => !empty($this->client)? new ClientResource($this->client->client):null,
             "payment" => $this->payments
         ];
     }

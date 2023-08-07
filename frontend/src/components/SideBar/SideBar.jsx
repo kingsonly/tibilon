@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../../assests/company_logo.svg";
-
+import { FiLogOut } from 'react-icons/fi';
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from "@mui/material";
 /**
  * SideBar is a component used to manage menu page navigation.
  * @function
@@ -11,8 +14,40 @@ import Logo from "../../assests/company_logo.svg";
  */
 
 const Sidebar = ({ SideBarLinks }) => {
-  const logout = () => {
-    alert(1)
+  const [loginOut, setLoginOut] = useState(false);
+  const token = localStorage.getItem("token")
+  const navigate = useNavigate();
+  useEffect(() => {
+
+    if (token == null) {
+      navigate('/');
+    }
+
+  }, [])
+  const logout = async () => {
+
+    if (!loginOut) {
+      try {
+        setLoginOut(true)
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/user/logout`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        localStorage.clear();
+        setLoginOut(false)
+        navigate('/');
+      } catch (error) {
+        localStorage.clear();
+        setLoginOut(false)
+        navigate('/');
+        console.error(error);
+      }
+    }
+
   }
   return (
     <>
@@ -76,9 +111,13 @@ const Sidebar = ({ SideBarLinks }) => {
               }}
             >
               <div className="show-inactive pl-2">
-                regular
+                <FiLogOut style={{ fontSize: 30 }} />
               </div>
-              <span>Logout</span>
+              <span>
+                {loginOut ? "Logging Out" : null}
+                {loginOut ? <CircularProgress style={{ width: "15px", height: "15px" }} /> : null}
+                {!loginOut ? "Logout" : null}
+              </span>
             </NavLink>
           </div>
         </div>
