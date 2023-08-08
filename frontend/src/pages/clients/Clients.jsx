@@ -33,9 +33,9 @@ export default function Clients() {
       await response.data.data.map((data, index) => {
         response.data.data[index]["SN"] = i;
         response.data.data[index]["address"] = response.data.data[index]["address"].full_address;
-        response.data.data[index][
-          "image"
-        ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
+        // response.data.data[index][
+        //   "image"
+        // ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
         i++;
       });
 
@@ -78,9 +78,9 @@ export default function Clients() {
 
       await response.data.data.map((data, index) => {
         response.data.data[index]["SN"] = i;
-        response.data.data[index][
-          "image"
-        ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
+        // response.data.data[index][
+        //   "image"
+        // ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
         i++;
       });
 
@@ -101,7 +101,7 @@ export default function Clients() {
     "phone",
     "type",
     "address",
-    "image",
+    
     "CTA",
   ];
 
@@ -143,8 +143,6 @@ export default function Clients() {
     <div className="bg-[white] p-[47px]">
       <hr className="my-6" />
       <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} fetchData={fetchData}  />
-      <EditClientModal setIsOpen={setEditModalIsOpen} modalIsOpen={editModalIsOpen} data={data} />
-      <ClientListView setIsOpen={setViewModalIsOpen} modalIsOpen={viewModalIsOpen}  />
       <TableComponent
         actionText="Add New Client"
         columns={columns}
