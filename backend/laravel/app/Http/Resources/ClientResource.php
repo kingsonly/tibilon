@@ -22,6 +22,7 @@ class ClientResource extends JsonResource
             "phone" => $this->phone,
             "type" => $this->client_type == 1 ? Client::Type["project"]:Client::Type["property"] ,
             "address" => $this->address,
+            "image" => $this->image,
         ];
     }
 }

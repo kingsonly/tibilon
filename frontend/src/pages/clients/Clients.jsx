@@ -3,9 +3,6 @@ import TableComponent from "../../components/TableComponent";
 import AddProjectModal from "../../components/AddProjectModal";
 import AddClientModal from "../../components/AddClientModal";
 import axios from "axios";
-import ClientListView from "../../components/ClientListView";
-import EditClientModal from "../../components/EditClientModal";
-import { imageBaseUrl } from "../../services/apiservices/urls";
 
 
 export default function Clients() {
@@ -36,9 +33,9 @@ export default function Clients() {
       await response.data.data.map((data, index) => {
         response.data.data[index]["SN"] = i;
         response.data.data[index]["address"] = response.data.data[index]["address"].full_address;
-        response.data.data[index][
-          "image"
-        ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
+        // response.data.data[index][
+        //   "image"
+        // ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
         i++;
       });
 
@@ -81,9 +78,9 @@ export default function Clients() {
 
       await response.data.data.map((data, index) => {
         response.data.data[index]["SN"] = i;
-        response.data.data[index][
-          "image"
-        ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
+        // response.data.data[index][
+        //   "image"
+        // ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
         i++;
       });
 
@@ -94,7 +91,8 @@ export default function Clients() {
     }
   };
 
-  const columns = ["S/No", "Client Name", "email", "Phone No", "Client Type", "Address", "image", "CTA"];
+  
+  const columns = ["S/No", "Client Name", "email", "Phone No", "Client Type", "Address"];
 
   const dataKeyAccessors = [
     "SN",
@@ -103,7 +101,7 @@ export default function Clients() {
     "phone",
     "type",
     "address",
-    "image",
+    
     "CTA",
   ];
 
@@ -145,8 +143,6 @@ export default function Clients() {
     <div className="bg-[white] p-[47px]">
       <hr className="my-6" />
       <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} fetchData={fetchData}  />
-      <EditClientModal setIsOpen={setEditModalIsOpen} modalIsOpen={editModalIsOpen} data={data} />
-      <ClientListView setIsOpen={setViewModalIsOpen} modalIsOpen={viewModalIsOpen}  />
       <TableComponent
         actionText="Add New Client"
         columns={columns}
@@ -157,9 +153,7 @@ export default function Clients() {
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
         fetchMoreDataProps={fetchData}
-        editAction = {editClientModal}
-        viewAction = {displayClientList}
-        deleteAction={deleteAction}
+        
       />
     </div>
   );
