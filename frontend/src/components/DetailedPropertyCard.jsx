@@ -61,7 +61,7 @@ export default function DetailedPropertyCard(props) {
             <div className="output-container">
               <div
                 className="watermark-ribbon"
-                style={{ backgroundColor: rgba(182, 56, 56, 0.5) }}
+                style={{ backgroundColor: "rgba(182, 56, 56, 0.5)" }}
               >
                 Sold
               </div>

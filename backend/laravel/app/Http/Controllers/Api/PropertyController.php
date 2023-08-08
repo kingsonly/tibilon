@@ -286,6 +286,7 @@ class PropertyController extends Controller
     $paymentModel->status = Payment::Default;
     if ($paymentModel->save()) {
       // check if the payment is a full payment and update the property status and if its a pertial payment use the info to update too
+      $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
       $totalPayment = $getProperty->payments->sum(function ($payment) {
         return $payment->amount ?? 0;
       });
