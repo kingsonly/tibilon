@@ -47,10 +47,10 @@ export default function PropertyPaymentInfo({ payments, projectId, property, }) 
     console.log(id)
     try {
       const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`);
-      const url = window.URL.createObjectURL(new Blob(["https://api.tibilon.skillzserver.com/"+response.data.pdf_url]));
+      const url = window.URL.createObjectURL(new Blob([response.data.pdf_url]));
       const link = document.createElement('a');
       link.target ="_blank"
-      link.href = "https://api.tibilon.skillzserver.com/"+response.data.pdf_url;
+      link.href = response.data.pdf_url;
       link.setAttribute('download', 'receipt.pdf');
       document.body.appendChild(link);
       link.click();
