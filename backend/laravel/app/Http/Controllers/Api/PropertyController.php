@@ -447,7 +447,7 @@ class PropertyController extends Controller
   public function paymentReceipt($id)
   {
     //reciept;
-    $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->find($id)->first();
+    $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->where(["id"=>$id])->first();
     $dateOfPayment = $model->created_at;
     $client = $model->property->client->client->name;
     $address = $model->property->client->client->address->full_address;
@@ -466,7 +466,7 @@ class PropertyController extends Controller
     }
     if (empty($reciept)) {
       // generate reciept save it and reset it 
-      $model->reciept = Str::random(5, 'abcdefghijklmnopqrstuvwxyz1234567890') . $model->id;
+      $model->reciept = str_pad($model->id, 3, '0', STR_PAD_LEFT);
       $model->save();
       $reciept = $model->reciept;
     }

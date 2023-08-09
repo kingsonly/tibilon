@@ -6,11 +6,8 @@ import { imageBaseUrl } from "../services/apiservices/urls";
 
 
 import {
-  AiFillDelete,
-  AiFillEdit,
-  AiFillEye,
-  AiOutlineSearch,
-} from "react-icons/ai";
+  BsReceipt
+} from "react-icons/bs";
 import axios from "axios";
 export default function PropertyPaymentInfo({ payments, projectId, property, }) {
 
@@ -47,14 +44,17 @@ export default function PropertyPaymentInfo({ payments, projectId, property, }) 
   ];
 
   const getReciept = async (id) => {
+    console.log(id)
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`);
+      const url = window.URL.createObjectURL(new Blob(["https://api.tibilon.skillzserver.com/"+response.data.pdf_url]));
       const link = document.createElement('a');
-      link.href = url;
+      link.target ="_blank"
+      link.href = "https://api.tibilon.skillzserver.com/"+response.data.pdf_url;
       link.setAttribute('download', 'receipt.pdf');
       document.body.appendChild(link);
       link.click();
+      console.log(response.data)
     } catch (error) {
       console.error('Error downloading PDF:', error);
     }
@@ -214,7 +214,7 @@ export default function PropertyPaymentInfo({ payments, projectId, property, }) 
             // paginationChange={paginationChange}
             dataKeyAccessors={dataKeyAccessors}
             hasCustom={true}
-            hasCustomIcon={<AiFillDelete />}
+            hasCustomIcon={<BsReceipt className="cursor-pointer" />}
             hasCustomAction={getReciept}
           />
         )}
