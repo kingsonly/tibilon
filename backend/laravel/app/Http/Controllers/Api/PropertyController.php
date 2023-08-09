@@ -242,7 +242,7 @@ class PropertyController extends Controller
         'commision' => 'required', //commission for agent in percentage
       ]);
       if ($agentClientValidator->fails()) {
-        return response()->json(["status" => "error", "message" => "please ensure client and agent values are available", "data" => $getProperty], 400);
+        return response()->json(["status" => "error", "message" => "please ensure client and agent values are available", "data" => $agentClientValidator], 400);
       }
 
       $client = $request->input("client");
@@ -285,17 +285,7 @@ class PropertyController extends Controller
     $paymentModel->log_user_id = $loggedinuser->id;
     $paymentModel->status = Payment::Default;
     if ($paymentModel->save()) {
-      // check if the payment is a full payment and update the property status and if its a pertial payment use the info to update too
-      $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
-      $totalPayment = $getProperty->payments->sum(function ($payment) {
-        return $payment->amount ?? 0;
-      });
-      if ($totalPayment >= $getProperty->amount) {
-        $getProperty->status = (int)Property::Completed;
-      } else {
-        $getProperty->status = (int)Property::IncompletedPayment;
-      }
-      $getProperty->save();
+
       // take payment id and use it to create property payment relationship
       $image = $request->file('proofOfPayment');
       $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -307,7 +297,21 @@ class PropertyController extends Controller
       $propertyPaymentModel->prof_of_payment = '/images/proofofpayment/' . $imageName;
       $propertyPaymentModel->status = PropertyPayment::Default;
       if ($propertyPaymentModel->save()) {
-        return response()->json(["status" => "success",], 201);
+        $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
+        // check if the payment is a full payment and update the property status and if its a pertial payment use the info to update too
+        $totalPayment = $getProperty->payments->sum(function ($payment) {
+          return $payment->amount ?? 0;
+        });
+
+        if ($totalPayment >= $getProperty->amount) {
+          $getProperty->status = (int)Property::Completed;
+        } else {
+          $getProperty->status = (int)Property::IncompletedPayment;
+        }
+
+        if ($getProperty->save()) {
+          return response()->json(["status" => "success",], 201);
+        }
       }
       return response()->json(["status" => "error"], 400);
     }
