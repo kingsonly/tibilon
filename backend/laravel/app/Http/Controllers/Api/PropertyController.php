@@ -684,7 +684,7 @@ class PropertyController extends Controller
     $filename = 'receipt_' . $id . '.pdf';
 
     // Download the PDF file
-    return $dompdf->stream($filename);
+    //return $dompdf->stream($filename);
 
     $pdfFilePath = 'pdfs/' . $filename;
     file_put_contents($pdfFilePath, $dompdf->output());
