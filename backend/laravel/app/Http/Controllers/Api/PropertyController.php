@@ -473,7 +473,8 @@ class PropertyController extends Controller
     $numberToWords = new NumberToWords();
     $currencyTransformer = $numberToWords->getCurrencyTransformer('en');
     $money = $model->payment->amount . "00";
-    $amountInWords = $currencyTransformer->toWords($money, 'NGN');
+    $amountInWords = ucfirst($currencyTransformer->toWords($money, 'NGN'));
+    $amountInWords = str_replace("Nairas", " Naira", $amountInWords);
     $imagePath = "https://tibilon.skillzserver.com/static/media/company_logo.861e326775b7cd6e6ac78c6d380a1dde.svg";
     $pdfContent = "
         <!DOCTYPE html>
@@ -549,7 +550,7 @@ class PropertyController extends Controller
                 top: 8px;
               }
               .company-logo{
-                width: 100px;
+                width: 100%;
                 height: 100px;
                 background-image: url({$imagePath})
                 display: flex;
@@ -577,11 +578,11 @@ class PropertyController extends Controller
           <body>
             <div class='body'>
               <div class='parent-div'>
-                <div class='company-logo'>
-                  <img src='{$imagePath}' width='100' height='100'>
+                <div class='heading'>
+                <h1>Tibilon Construction Ltd</h1>
                 </div>
                 <div class='heading'>
-                  <h1>Payment Receipt</h1>
+                  <h2>Payment Receipt</h2>
                 </div>
         
                 <div style='display:flex ' class='receipt-information'>
@@ -621,11 +622,11 @@ class PropertyController extends Controller
                     </thead>
                     <tbody>
                     <tr style='height: 220px'>
-                      <td>1</td>
-                      <td>
+                      <td style='height: 220px'>1</td>
+                      <td style='height: 220px'>
                         {$propertyDescription}
                       </td>
-                      <td>N{$amount}</td>
+                      <td style='height: 220px'>N{$amount}</td>
                     </tr>
                     <tr style='height: 100px;'>
                       <td colspan='2' class='row-last'>  
@@ -682,7 +683,7 @@ class PropertyController extends Controller
     $filename = 'receipt_' . $id . '.pdf';
 
     // Download the PDF file
-    //return $dompdf->stream($filename);
+    return $dompdf->stream($filename);
 
     $pdfFilePath = 'pdfs/' . $filename;
     file_put_contents($pdfFilePath, $dompdf->output());
