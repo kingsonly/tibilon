@@ -232,6 +232,14 @@ class PropertyController extends Controller
     // check if a property has an agent and client
     //first fetch property with agent and client 
     $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
+    $totalPayment = $getProperty->payments->sum(function ($payment) {
+      return $payment->amount ?? 0;
+    }) + $request->amount;
+
+    if($getProperty->status == 1 ||  $totalPayment > $getProperty->amount){
+      return response()->json(["status" => "error", "message" => "You payment is complete or this amount is greater than the remaining balance"], 400);
+    }
+
     if (empty($getProperty->agent) or empty($getProperty->client)) {
       // check if post value exist to create 
       $agentClientValidator = Validator::make($request->all(), [
@@ -447,7 +455,7 @@ class PropertyController extends Controller
   public function paymentReceipt($id)
   {
     //reciept;
-    $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->where(["id"=>$id])->first();
+    $model = PropertyPayment::with(["payment", "property.payments","property.project"])->orderBy('created_at', 'desc')->where(["id"=>$id])->first();
     $dateOfPayment = $model->created_at;
     $client = $model->property->client->client->name;
     $address = $model->property->client->client->address->full_address;
@@ -579,10 +587,10 @@ class PropertyController extends Controller
             <div class='body'>
               <div class='parent-div'>
                 <div class='heading'>
-                <h1>Tibilon Construction Ltd</h1>
+                <h1 style='color:#DAB870'>Tibilon Construction Ltd</h1>
                 </div>
                 <div class='heading'>
-                  <h2>Payment Receipt</h2>
+                  <h2 style='text-decoration:underline'>Payment Receipt</h2>
                 </div>
         
                 <div style='display:flex ' class='receipt-information'>
@@ -624,7 +632,8 @@ class PropertyController extends Controller
                     <tr style='height: 220px'>
                       <td style='height: 220px'>1</td>
                       <td style='height: 220px'>
-                        {$propertyDescription}
+                      
+                      {$model->property->project->name} ( {$propertyDescription} )
                       </td>
                       <td style='height: 220px'>N{$amount}</td>
                     </tr>
@@ -657,7 +666,7 @@ class PropertyController extends Controller
                     <div>Kano Crescent, Abuja, FCT, Abuja.</div>
                   </div>
                   
-                  <div style='float:left;width:33%;border-right:solid 1px green;text-align:center;height:100px'><b>Phone:</b> 07031163634</div>
+                  <div style='float:left;width:33%;border-right:solid 1px green;text-align:center;height:100px'><b>Phone:</b> 07082985041</div>
                   <div style='float:left;text-align:center;height:100px;width:33%'><b>Email:</b> info@tibilon.com</div>
                 </div>
                 </div>
