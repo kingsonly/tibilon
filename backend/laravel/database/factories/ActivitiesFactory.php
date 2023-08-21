@@ -17,7 +17,7 @@ class ActivitiesFactory extends Factory
     public function definition(): array
     {
         return [
-            "title" => $this->faker->text(40),
+            "title" => $this->faker->text(50),
         ];
     }
 }
