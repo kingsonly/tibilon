@@ -2,10 +2,10 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { routes, PrivateAdminRoute } from "./routes";
 import Sidebar from "./components/SideBar/SideBar";
-
+import { pdfjs} from 'react-pdf';
 import { SideBarLinks } from "./sideBarLinks";
 import { SideBarClientLinks } from "./sideBarClientLinks";
-
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 function App() {
   const clientPrivateRoutes = routes.clientPrivateRoutes.map(

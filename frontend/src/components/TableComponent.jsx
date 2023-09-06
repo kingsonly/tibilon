@@ -118,7 +118,7 @@ export default function TableComponent({
             {dataKeyAccessors[index] == "image" ? (
               <>
                 <img className="w-[50px] h-[50px]" alt="icon" src={row.image} />
-              </>
+              </> 
             ) :null}
              {dataKeyAccessors[index] == "CTA" ? (
               <div className="flex gap-4">
