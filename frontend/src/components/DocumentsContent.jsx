@@ -1,6 +1,6 @@
 import React from "react";
 import { imageBaseUrl } from "../services/apiservices/urls";
-import { Document, Page } from "@react-pdf";
+import { Document, Page } from "react-pdf";
 import { Viewer } from "react-doc-viewer";
 // import { pdfjs } from 'react-pdf';
 
