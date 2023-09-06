@@ -71,7 +71,10 @@ export default function TableComponent({
   deleteAction,
   loading,
   fetchMoreDataProps,
-  hasMore
+  hasMore,
+  hasCustom,
+  hasCustomIcon,
+  hasCustomAction,
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -96,6 +99,22 @@ export default function TableComponent({
     fetchMoreDataProps();
   };
 
+  // const hasCustomRender = () => {
+  //   if(hasCustom){
+  //     if(hasCustomIcon !== undefined){
+  //       return (
+          
+  //         {hasCustomIcon}
+  //       )
+  //     }else{
+  //       return (
+          
+  //         <div>Icon required</div>
+  //       )
+  //     }
+  //   }
+    
+  // }
   const renderRow = (row) => {
     return (
       <StyledTableRow
@@ -128,6 +147,11 @@ export default function TableComponent({
                   className="cursor-pointer"
                   onClick={() => deleteAction && deleteAction(row)}
                 />
+                {hasCustom && hasCustomIcon ? (
+            <div>{hasCustomIcon}</div>
+          ) : (
+            <div>Icon required</div>
+          )}
               </div>
             ) : null}
             
