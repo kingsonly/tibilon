@@ -12,7 +12,7 @@ import {
   getPropertiesDetails,
 } from "../../services/apiservices/propertiesServices";
 import { CircularProgress } from "@mui/material";
-import InfiniteScroll from 'react-infinite-scroll-component'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function ProjectProperties() {
   const [properties, setProperties] = useState([]);
@@ -23,9 +23,11 @@ export default function ProjectProperties() {
   const [projectStat, setProjectStat] = useState();
   const [property, setproperty] = useState();
   const [isEdit, setisEdit] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = React.useState(false);
-  const [link, setLink] = React.useState(`${process.env.REACT_APP_API_URL}/property`);
+  const [link, setLink] = React.useState(
+    `${process.env.REACT_APP_API_URL}/property`
+  );
   const [perpage, setPerpage] = React.useState(10);
 
   const fetchData = async () => {
@@ -77,20 +79,22 @@ export default function ProjectProperties() {
 
   const getProperties = async () => {
     try {
-      setLoading(true)
-      const response = await getProjectPropertiesLists({ id,per_page:perpage },link);
-      setLoading(false)
-      setProperties(prevData => [...prevData, ...response.data.data]);
-      if(response.data.links.next == null){
-        console.log(response.data.links.next,"abc")
-        setHasMore(false)
-      }else{
-        setHasMore(true)
+      setLoading(true);
+      const response = await getProjectPropertiesLists(
+        { id, per_page: perpage },
+        link
+      );
+      setLoading(false);
+      setProperties((prevData) => [...prevData, ...response.data.data]);
+      if (response.data.links.next == null) {
+        console.log(response.data.links.next, "abc");
+        setHasMore(false);
+      } else {
+        setHasMore(true);
       }
       setLink(response.data.links.next);
-    
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       console.error(error);
     }
   };
@@ -117,6 +121,9 @@ export default function ProjectProperties() {
       link: "#",
     },
   ];
+
+
+  console.log(properties,'propertiesproperties');
   return (
     <div className="bg-white h-screen p-8">
       <BreadCrumb breadCrumbs={breadCrumbs} />
@@ -213,37 +220,34 @@ export default function ProjectProperties() {
           </div>
         </div>
         <InfiniteScroll
-              dataLength={properties.length}
-              next={getProperties}
-              hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
-              initialScrollY ={1}
-              endMessage={
-                <p style={{ textAlign: 'center' }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
-              
-            >
-        <div className="flex flex-wrap mt-20 justify-between align-between">
-          {loading && (
-            <div className="flex items-center justify-center w-[100%] mb-[20px]">
-              <CircularProgress />
-            </div>
-          )}
-    
-          {properties?.map((project) => (
-            <div className="w-1/2">
-              <DetailedPropertyCard
-                project={project}
-                openEditModal={openEditModal}
-                setproperty={setproperty}
-              />
-              
-            </div>
-          ))}
-          
-        </div>
+          dataLength={properties.length}
+          next={getProperties}
+          hasMore={hasMore}
+          loader={<h4>Loading...</h4>}
+          initialScrollY={1}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+        >
+          <div className="flex flex-wrap mt-20 justify-between align-between">
+            {loading && (
+              <div className="flex items-center justify-center w-[100%] mb-[20px]">
+                <CircularProgress />
+              </div>
+            )}
+
+            {properties?.map((project) => (
+              <div className="w-1/2">
+                <DetailedPropertyCard
+                  project={project}
+                  openEditModal={openEditModal}
+                  setproperty={setproperty}
+                />
+              </div>
+            ))}
+          </div>
         </InfiniteScroll>
       </div>
     </div>

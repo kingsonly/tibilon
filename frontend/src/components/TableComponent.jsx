@@ -16,7 +16,7 @@ import {
 } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import InfiniteScroll from 'react-infinite-scroll-component'
+import InfiniteScroll from "react-infinite-scroll-component";
 import DialogModal from "./DialogModal";
 
 /**
@@ -89,7 +89,6 @@ export default function TableComponent({
     setOpen(true);
     // deleteAction();
   };
- 
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -134,11 +133,16 @@ export default function TableComponent({
               <>
                 <img className="w-[50px] h-[50px]" alt="icon" src={row.image} />
               </>
-            ) :null}
-             {dataKeyAccessors[index] == "CTA" ? (
+            ) : dataKeyAccessors[index] == "CTA" ? (
               <div className="flex gap-4">
-                <AiFillEdit className="cursor-pointer" onClick={() => editAction && editAction()} />
-                <AiFillEye className="cursor-pointer" onClick={() => viewAction && viewAction()} />
+                <AiFillEdit
+                  className="cursor-pointer"
+                  onClick={() => editAction && editAction()}
+                />
+                <AiFillEye
+                  className="cursor-pointer"
+                  onClick={() => viewAction && viewAction()}
+                />
                 <AiFillDelete
                   className="cursor-pointer"
                   // onClick={() => deleteAction && deleteAction(row)}
@@ -147,22 +151,26 @@ export default function TableComponent({
                     e.stopPropagation();
                     openDialogModal(
                       "Delete Client Details",
-                      "Are you sure you want to delete Client Details?",
-                    ) ? deleteAction && deleteAction(row):null
+                      "Are you sure you want to delete Client Details?"
+                    )
+                      ? deleteAction && deleteAction(row)
+                      : null;
                   }}
                 />
               </div>
-            ) : null}
-            
-            {(
-              // moment(e).format("YYYY-MM-DD")
-              //TO DO;>> ADD A BETTER WAY TO CHECK IS STRING DATE IS VALID
+            ) : (
               <>
-                {moment(row[dataKeyAccessors[index]]).isValid() ? (
-                  <>{row[dataKeyAccessors[index]]}</>
-                ) : (
-                  <> {row[dataKeyAccessors[index]]}</>
-                )}
+                {
+                  // moment(e).format("YYYY-MM-DD")
+                  //TO DO;>> ADD A BETTER WAY TO CHECK IS STRING DATE IS VALID
+                  <>
+                    {moment(row[dataKeyAccessors[index]]).isValid() ? (
+                      <>{row[dataKeyAccessors[index]]}</>
+                    ) : (
+                      <> {row[dataKeyAccessors[index]]}</>
+                    )}
+                  </>
+                }
               </>
             )}
           </StyledTableCell>
@@ -173,7 +181,7 @@ export default function TableComponent({
 
   return (
     <>
-     <DialogModal
+      <DialogModal
         open={open}
         setOpen={setOpen}
         message={dialogMessage}
@@ -214,41 +222,37 @@ export default function TableComponent({
           <CircularProgress />
         </div>
       )}
-      <TableContainer component={Paper} >
-      <InfiniteScroll
-              dataLength={data.length}
-              next={fetchMoreData}
-              hasMore={hasMore}
-              loader={<h4>Loading...</h4>}
-              initialScrollY ={1}
-              endMessage={
-                <p style={{ textAlign: 'center' }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
-              
-            >
-        <Table sx={{ minWidth: 700 }} aria-label="customized table" >
-          <TableHead style={{ border: "1px solid #CCCCCC" }}>
-            <TableRow role="table-header">
-              {columns?.map((column) => (
-                <StyledTableCell key={uuidv4()} role="table-header-cell">
-                  {column}
-                </StyledTableCell>
+      <TableContainer component={Paper}>
+        <InfiniteScroll
+          dataLength={data.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<h4>Loading...</h4>}
+          initialScrollY={1}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all edenjdnej</b>
+            </p>
+          }
+        >
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead style={{ border: "1px solid #CCCCCC" }}>
+              <TableRow role="table-header">
+                {columns?.map((column) => (
+                  <StyledTableCell key={uuidv4()} role="table-header-cell">
+                    {column}
+                  </StyledTableCell>
                 ))}
-            </TableRow>
-          </TableHead>
-          
-          <TableBody>
-            
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
               {data?.map((row) => (
                 // Render Dynamic Data Objects
                 <Fragment key={uuidv4()}>{renderRow(row)}</Fragment>
               ))}
-            
-          </TableBody>
-          
-        </Table>
+            </TableBody>
+          </Table>
         </InfiniteScroll>
       </TableContainer>
 

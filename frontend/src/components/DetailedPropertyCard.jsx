@@ -13,10 +13,6 @@ export default function DetailedPropertyCard(props) {
   const [dialogMessage, setDialogMessage] = useState("");
   const [DialogTitle, setDialogTitle] = useState("");
 
- 
-  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
-
-
   const openDialogModal = (title, message) => {
     setDialogMessage(message);
     setDialogTitle(title);
@@ -61,12 +57,36 @@ export default function DetailedPropertyCard(props) {
       />
       <Link to={`/projects/actions/project-properties/details/${project?.id}`}>
         <div className="w-[449px] bg-white border-2 mb-[37px]">
-          {project?.payment?.length !== 0 && (
+          {project?.status == "Paid" && (
             <div className="output-container">
-              <div className="watermark-ribbon">Sold</div>
+              <div
+                className="watermark-ribbon"
+                style={{ backgroundColor: rgba(182, 56, 56, 0.5) }}
+              >
+                Sold
+              </div>
             </div>
           )}
-
+          {project?.status == "Partial Payment" && (
+            <div className="output-container">
+              <div
+                className="watermark-ribbon"
+                style={{ backgroundColor: "orange" }}
+              >
+                Allocated
+              </div>
+            </div>
+          )}
+          {project?.status == "available" && (
+            <div className="output-container">
+              <div
+                className="watermark-ribbon"
+                style={{ backgroundColor: "green" }}
+              >
+                Available
+              </div>
+            </div>
+          )}
 
           <div className="w-[100%] h-[300px]">
             <img
@@ -76,11 +96,14 @@ export default function DetailedPropertyCard(props) {
               style={{ width: "100%" }}
             />
 
-          {project?.amount && (
-            <div className="output-container-amount">
-              <div className="watermark-amount"> ₦{JSON.parse(project?.amount)?.toLocaleString()}</div>
-            </div>
-          )}
+            {project?.amount && (
+              <div className="output-container-amount">
+                <div className="watermark-amount">
+                  {" "}
+                  ₦{JSON.parse(project?.amount)?.toLocaleString()}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="border-4">
