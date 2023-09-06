@@ -3,6 +3,7 @@ import TableComponent from "../../components/TableComponent";
 import AddProjectModal from "../../components/AddProjectModal";
 import AddClientModal from "../../components/AddClientModal";
 import axios from "axios";
+import ClientListView from "../../components/ClientListView";
 
 
 export default function Clients() {
@@ -109,11 +110,22 @@ export default function Clients() {
     setIsOpen(true);
   };
 
+  const displayClientList = () => {
+    // setopenPaymentModal(true);
+    setIsOpen(true);
+  };
+  const editClientList = () => {
+    // setopenPaymentModal(true);
+    setIsOpen(true);
+  };
+
+
   return (
     <div className="bg-[white] p-[47px]">
       <hr className="my-6" />
 
       <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}  />
+      <ClientListView setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}  />
 
       <TableComponent
         actionText="Add New Client"
@@ -125,6 +137,8 @@ export default function Clients() {
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
         fetchMoreDataProps={fetchData}
+        editAction = {editClientList}
+        viewAction = {displayClientList}
       />
     </div>
   );
