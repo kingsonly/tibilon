@@ -24,7 +24,7 @@ export default function AddAffiliateModalDetails(props) {
     });
 
     const handleOnChange = (e, inputeName) => {
-        switch (inputeName) {
+        switch (inputeName) { 
             case "name":
                 // code to be executed when the expression matches value1
                 setName(e.target.value)
