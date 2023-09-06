@@ -11,6 +11,9 @@ import Logo from "../../assests/company_logo.svg";
  */
 
 const Sidebar = ({ SideBarLinks }) => {
+  const logout = () => {
+    alert(1)
+  }
   return (
     <>
       <div data-testid="sidebarlinks">
@@ -37,8 +40,8 @@ const Sidebar = ({ SideBarLinks }) => {
                     isPending
                       ? "pending"
                       : isActive
-                      ? "bg-[#F6F8FA] border-l-[10px] border-[#616161] flex flex-row gap-x-[24px] h-[64px] mt-[10px] nav-active text-[#D7B569]"
-                      : "flex flex-row border-l-[10px] border-[#FFFFFF] h-[64px] mt-[10px] nav-style gap-x-[24px] text-[#7E7E7E] nav-inactive"
+                        ? "bg-[#F6F8FA] border-l-[10px] border-[#616161] flex flex-row gap-x-[24px] h-[64px] mt-[10px] nav-active text-[#D7B569]"
+                        : "flex flex-row border-l-[10px] border-[#FFFFFF] h-[64px] mt-[10px] nav-style gap-x-[24px] text-[#7E7E7E] nav-inactive"
                   }
                   style={{
                     height: "64px",
@@ -46,7 +49,7 @@ const Sidebar = ({ SideBarLinks }) => {
                     columnGap: "40px",
                     textDecoration: "none",
                     marginTop: "10px",
-                    alignItems:'center'
+                    alignItems: 'center'
                   }}
                 >
                   <div className="show-active pl-2">
@@ -58,6 +61,25 @@ const Sidebar = ({ SideBarLinks }) => {
                   <span>{sideBar.name}</span>
                 </NavLink>
               ))}
+
+            <NavLink
+              onClick={() => logout()}
+              key="100"
+              className="flex flex-row border-l-[10px] border-[#FFFFFF] h-[64px] mt-[10px] nav-style gap-x-[24px] text-[#7E7E7E] nav-inactive"
+              style={{
+                height: "64px",
+                display: "flex",
+                columnGap: "40px",
+                textDecoration: "none",
+                marginTop: "10px",
+                alignItems: 'center'
+              }}
+            >
+              <div className="show-inactive pl-2">
+                regular
+              </div>
+              <span>Logout</span>
+            </NavLink>
           </div>
         </div>
       </div>
