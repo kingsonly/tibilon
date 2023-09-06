@@ -16,7 +16,7 @@ import {
 } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
-import InfiniteScroll from 'react-infinite-scroll-component'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 /**
  * Represents the Table component.
@@ -72,12 +72,19 @@ export default function TableComponent({
   loading,
   fetchMoreDataProps,
   hasMore,
-  hasCustom,
-  hasCustomIcon,
-  hasCustomAction,
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [open, setOpen] = React.useState(false);
+  const [dialogMessage, setDialogMessage] = React.useState("");
+  const [DialogTitle, setDialogTitle] = React.useState("");
+
+  const openDialogModal = (title, message) => {
+    setDialogMessage(message);
+    setDialogTitle(title);
+    setOpen(true);
+    // deleteAction();
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -141,11 +148,27 @@ export default function TableComponent({
             ) : null}
             {dataKeyAccessors[index] == "CTA" ? (
               <div className="flex gap-4">
-                <AiFillEdit className="cursor-pointer" />
-                <AiFillEye className="cursor-pointer" />
+                <AiFillEdit
+                  className="cursor-pointer"
+                  onClick={() => editAction && editAction()}
+                />
+                <AiFillEye
+                  className="cursor-pointer"
+                  onClick={() => viewAction && viewAction()}
+                />
                 <AiFillDelete
                   className="cursor-pointer"
-                  onClick={() => deleteAction && deleteAction(row)}
+                  // onClick={() => deleteAction && deleteAction(row)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openDialogModal(
+                      "Delete Client Details",
+                      "Are you sure you want to delete Client Details?"
+                    )
+                      ? deleteAction && deleteAction(row)
+                      : null;
+                  }}
                 />
                 {hasCustom && hasCustomIcon ? (
                   <div onClick={() => {
@@ -155,25 +178,46 @@ export default function TableComponent({
               </div>
             ) : null}
 
-            {(
+            {
               // moment(e).format("YYYY-MM-DD")
               //TO DO;>> ADD A BETTER WAY TO CHECK IS STRING DATE IS VALID
               <>
-                {moment(row[dataKeyAccessors[index]]).isValid() ? (
-                  <>{row[dataKeyAccessors[index]]}</>
-                ) : (
-                  <> {row[dataKeyAccessors[index]]}</>
-                )}
+                {
+                  // moment(e).format("YYYY-MM-DD")
+                  //TO DO;>> ADD A BETTER WAY TO CHECK IS STRING DATE IS VALID
+                  <>
+                    {moment(row[dataKeyAccessors[index]]).isValid() ? (
+                      <>{row[dataKeyAccessors[index]]}</>
+                    ) : (
+                      <> {row[dataKeyAccessors[index]]}</>
+                    )}
+                  </>
+                }
               </>
-            )}
+            }
           </StyledTableCell>
         ))}
-      </StyledTableRow>
+      </StyledTableRow> 
     );
   };
 
   return (
     <>
+      {/* <hr className="w-[100%] mt-10 mb-10"></hr>
+      <div className="flex space-x-72">
+        <div className="space-y-8">
+          <div>Budget Title</div>
+          <div>Budget 1 (Structure)</div>
+        </div>
+        <div>
+          <div>No of Units</div>
+          <div>20</div>
+        </div>
+        <div>
+          <div>Budget Cost (#)</div>
+          <div>40,317,000.00</div>
+        </div>
+      </div> */}
       <div className="flex items-center justify-between mb-[19px]">
         {searchFunction && (
           <div className="border-2 rounded w-[292px] h-[45px] flex items-center">
@@ -207,7 +251,7 @@ export default function TableComponent({
           <CircularProgress />
         </div>
       )}
-      <TableContainer component={Paper} >
+      <TableContainer component={Paper}>
         <InfiniteScroll
           dataLength={data.length}
           next={fetchMoreData}
@@ -215,13 +259,12 @@ export default function TableComponent({
           loader={<h4>Loading...</h4>}
           initialScrollY={1}
           endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all ......</b>
             </p>
           }
-
         >
-          <Table sx={{ minWidth: 700 }} aria-label="customized table" >
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead style={{ border: "1px solid #CCCCCC" }}>
               <TableRow role="table-header">
                 {columns?.map((column) => (
@@ -233,14 +276,11 @@ export default function TableComponent({
             </TableHead>
 
             <TableBody>
-
               {data?.map((row) => (
                 // Render Dynamic Data Objects
                 <Fragment key={uuidv4()}>{renderRow(row)}</Fragment>
               ))}
-
             </TableBody>
-
           </Table>
         </InfiniteScroll>
       </TableContainer>
