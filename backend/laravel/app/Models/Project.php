@@ -47,16 +47,27 @@ class Project extends Model
 
     
 
+    // public function propertyPayments()
+    // {
+    //     return $this->hasManyThrough(
+    //         Payment::class,
+    //         PropertyPayment::class,
+    //         'property_id', // Foreign key on the environments table...
+    //         'id', // Foreign key on the deployments table...
+    //         'id', // Local key on the projects table...
+    //         'id' // Local key on the environments table...);
+    //     );
+    // }
+    
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
+    }
+
     public function propertyPayments()
     {
-        return $this->hasManyThrough(
-            Payment::class,
-            PropertyPayment::class,
-            'property_id', // Foreign key on the environments table...
-            'id', // Foreign key on the deployments table...
-            'id', // Local key on the projects table...
-            'id' // Local key on the environments table...);
-        );
+        return $this->hasMany(Payment::class)->where(["payment_type"=>"credit"]);
     }
 
     

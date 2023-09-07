@@ -7,6 +7,8 @@ import axios from "axios";
 
 export default function Clients() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [viewModalIsOpen, setViewModalIsOpen] = React.useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = React.useState(false);
   const [perpage, setPerpage] = React.useState(10);
   const [hasMore, setHasMore] = React.useState(false);
   const [data, setData] = React.useState([]);
@@ -31,8 +33,14 @@ export default function Clients() {
       await response.data.data.map((data, index) => {
         response.data.data[index]["SN"] = i;
         response.data.data[index]["address"] = response.data.data[index]["address"].full_address;
+        // response.data.data[index][
+        //   "image"
+        // ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
         i++;
       });
+
+
+      console.log(response,'responseresponse');
       
       
       setData(prevData => [...prevData, ...response.data.data]);
@@ -67,8 +75,12 @@ export default function Clients() {
       );
 
       let i = 1;
+
       await response.data.data.map((data, index) => {
         response.data.data[index]["SN"] = i;
+        // response.data.data[index][
+        //   "image"
+        // ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
         i++;
       });
 
@@ -79,6 +91,7 @@ export default function Clients() {
     }
   };
 
+  
   const columns = ["S/No", "Client Name", "email", "Phone No", "Client Type", "Address"];
 
   const dataKeyAccessors = [
@@ -88,8 +101,11 @@ export default function Clients() {
     "phone",
     "type",
     "address",
+    
     "CTA",
   ];
+
+  console.log(data,'datadatadata');
 
   const searchFunction = () => {
     //Api call to search and update table data
@@ -109,12 +125,24 @@ export default function Clients() {
     setIsOpen(true);
   };
 
+  const displayClientList = () => {
+    // setopenPaymentModal(true);
+    setViewModalIsOpen(true);
+  };
+  const editClientModal = () => {
+    // setopenPaymentModal(true);
+    setEditModalIsOpen(true);
+  };
+  const deleteAction = (id) => {
+    setData(data.filter((datas) => datas != id));
+    console.log(id)
+  };
+
+
   return (
     <div className="bg-[white] p-[47px]">
       <hr className="my-6" />
-
-      <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}  />
-
+      <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} fetchData={fetchData}  />
       <TableComponent
         actionText="Add New Client"
         columns={columns}
@@ -125,6 +153,7 @@ export default function Clients() {
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
         fetchMoreDataProps={fetchData}
+        
       />
     </div>
   );

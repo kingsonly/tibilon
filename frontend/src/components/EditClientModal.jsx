@@ -7,12 +7,9 @@ import UploadIcon from "../assests/upload.svg";
 import avatarIcon from "../assests/avatarUploadIcon.svg";
 import axios from "axios";
 import SnackbarComponent from "./SnackbarComponent";
-import houseIcon from "../assests/house-damage.svg";
-import { BlogToBase64 } from "../utils";
-import { AiFillCloseCircle } from "react-icons/ai";
 
-export default function AddClientModal(props) {
-  const { modalIsOpen, setIsOpen } = props;
+export default function EditClientModal(props) {
+  const { modalIsOpen, setIsOpen, data } = props;
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
@@ -22,10 +19,6 @@ export default function AddClientModal(props) {
   const [message, setMessage] = useState();
   const [show, setshow] = useState(false);
   const [status, setStatus] = useState("success");
-  const [projectBlogImage, setProjectBlogImage] = React.useState();
-  const [propertyImage, setpropertyImage] =
-    useState();
-    // editProperty?.cover_image || []
 
   const [error, setError] = React.useState({
     name: false,
@@ -36,6 +29,7 @@ export default function AddClientModal(props) {
   });
 
   const handleOnChange = (e, inputeName) => {
+
     switch (inputeName) {
       case "email":
         // code to be executed when the expression matches value2
@@ -62,12 +56,14 @@ export default function AddClientModal(props) {
     }
   };
 
+
+
   const types = [
     { label: "Project Owner", value: 1 },
     { label: "Property Owner", value: 2 },
   ];
 
-  const addClient = async () => {
+  const editClient = async () => {
     let status = false;
     // setError({
     //   name: false,
@@ -99,12 +95,11 @@ export default function AddClientModal(props) {
     data.append("phone", phone);
     data.append("type", project);
     data.append("address_id", address);
-    data.append("image", propertyImage)
 
     var token = localStorage.getItem("token");
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/client/create`,
+        `${process.env.REACT_APP_API_URL}/client/update`,
         data,
         {
           headers: {
@@ -112,12 +107,13 @@ export default function AddClientModal(props) {
           },
         }
       );
+
       await props.fetchData();
       setStatus("success");
       setshow(true);
       setLoading(false);
       setIsOpen(false);
-      setMessage("Client was Created Successfully");
+      setMessage("Client was Updated Successfully");
       // setStatus("error")
     } catch (error) {
       // Handle the error
@@ -125,27 +121,7 @@ export default function AddClientModal(props) {
 
       setshow(true);
       setLoading(false);
-      console.error(error,'skksks');
-    }
-  };
-
-  const handleFileUploadChange = (e, type) => {
-    try {
-      const files = e.target.files || [];
-
-      console.log(files, "files__");
-
-      if (files.length == 0) {
-        return;
-      }
-      setpropertyImage(files[0]);
-
-      BlogToBase64(files[0], (err, res) => {
-        console.log(res, "image"); // Base64 `data:image/...` String result.
-        setProjectBlogImage(res);
-      });
-    } catch (err) {
-      console.log(err, "eoror");
+      console.error(error);
     }
   };
 
@@ -155,48 +131,17 @@ export default function AddClientModal(props) {
       <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
-        title={"Add New Client"}
+        title={"Edit Client Details"}
       >
         <div className="flex flex-col">
-          <div className="flex flex-row">
-            <div>
-              <UploadButton
-                leftIcon={houseIcon}
-                rightIcon={UploadIcon}
-                text="Upload Property Photo"
-                handleOnChange={handleFileUploadChange}
-              />
-            </div>
-            <div className="w-[100px] h-[130px] ml-4">
-              {projectBlogImage && (
-                <div className="relative w-30 bg-gray-200 p-3">
-                  <button
-                    className="absolute top-0 right-0 text-gray-600 hover:text-gray-800"
-                    onClick={() => {
-                      setProjectBlogImage();
-                      setpropertyImage("");
-                    }}
-                  >
-                    <AiFillCloseCircle className="text-[20px]" />
-                  </button>
-                  <p>
-                    <img
-                      className="w-[100%] h-[100%]"
-                      src={projectBlogImage}
-                      alt="project-image"
-                    />
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
+
           <TextInput
             className="h-[70px] mt-6"
             required
             id="outlined-required"
             label="Client Name"
             error={error["name"]}
-            defaultValue={name}
+            defaultValue={data.name}
             onChange={(e) => {
               handleOnChange(e, "name");
             }}
@@ -207,7 +152,7 @@ export default function AddClientModal(props) {
             id="outlined-required"
             label="Client Address"
             error={error["address"]}
-            defaultValue={address}
+            defaultValue={data.address}
             onChange={(e) => {
               handleOnChange(e, "address");
             }}
@@ -220,7 +165,7 @@ export default function AddClientModal(props) {
                 id="outlined-required"
                 label="Phone Number"
                 error={error["phone"]}
-                defaultValue={phone}
+                defaultValue={data.phone}
                 onChange={(e) => {
                   handleOnChange(e, "phone");
                 }}
@@ -233,7 +178,7 @@ export default function AddClientModal(props) {
                 id="outlined-required"
                 label="Email Address"
                 error={error["email"]}
-                defaultValue={email}
+                defaultValue={data.email}
                 onChange={(e) => {
                   handleOnChange(e, "email");
                 }}
@@ -248,7 +193,7 @@ export default function AddClientModal(props) {
                 required
                 id="outlined-required"
                 label="Project"
-                defaultValue={project}
+                defaultValue={data.project}
                 type="select"
                 error={error["project"]}
                 options={types}
@@ -263,9 +208,9 @@ export default function AddClientModal(props) {
             <Button
               variant="contained"
               color="success"
-              onClick={() => addClient()}
+              onClick={() => editClient()}
             >
-              {loading ? "saving..." : "Save"}
+              {loading ? "Updating..." : "Update"}
             </Button>
           </div>
         </div>

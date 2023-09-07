@@ -85,7 +85,7 @@ export default function Properties() {
       {/* <AddPropertyModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}/> */}
 
       <div className="flex justify-start mb-[2rem]">
-        <b>Properties List</b>{" "}
+        <b>Properties List</b>
       </div>
 
       <TableComponent

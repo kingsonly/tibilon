@@ -21,10 +21,10 @@ export const getPropertiesDetails = async (id) =>
     url: `${urls.getPropertyDetailsUrl}/${id}`,
   });
 
-  export const getProjectPropertiesLists = async (data,link) =>
+  export const getProjectPropertiesLists = async (data) =>
   axios({
     method: "post",
-    url: `${link}`,
+    url: `${urls.getPropertiesUrl}`,
     data,
   });
 
