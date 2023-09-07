@@ -93,10 +93,10 @@ export default function ClientLogin() {
                     <div className="flex justify-center h-[120px]"><img src={Logo} alt="logo" /></div>
                     <div className="flex justify-center text-[15px] font-medium mt-[15px]">CONSTRUCTION | REAL ESTATE | FACILITY MANAGEMENT</div>
                     <div className="w-[410px] flex justify-center text-[10px] mt-[17px] text-slate-400">
-                        Lorem Ipsum is simply dummy text of the printing
+                        {/* Lorem Ipsum is simply dummy text of the printing
                         and typesetting industry. Lorem Ipsum has been the
                         industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took
+                        when an unknown printer took */}
                     </div>
                 </div>
             </div>
