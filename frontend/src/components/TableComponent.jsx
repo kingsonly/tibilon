@@ -72,7 +72,11 @@ export default function TableComponent({
   loading,
   fetchMoreDataProps,
   hasMore,
+  hasCustom,
+  editAction,
+  viewAction,
 }) {
+  
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
@@ -105,7 +109,12 @@ export default function TableComponent({
   const fetchMoreData = () => {
     fetchMoreDataProps();
   };
+  const test = () => {
+    viewAction();
+  };
 
+
+  console.log(data, "gggggg");
   // const hasCustomRender = () => {
   //   if(hasCustom){
   //     if(hasCustomIcon !== undefined){
@@ -150,11 +159,11 @@ export default function TableComponent({
               <div className="flex gap-4">
                 <AiFillEdit
                   className="cursor-pointer"
-                  onClick={() => editAction && editAction()}
+                  onClick={() => editAction && editAction(row)}
                 />
                 <AiFillEye
                   className="cursor-pointer"
-                  onClick={() => viewAction && viewAction()}
+                  onClick={() =>  viewAction &&  viewAction()}
                 />
                 <AiFillDelete
                   className="cursor-pointer"
@@ -253,7 +262,7 @@ export default function TableComponent({
       )}
       <TableContainer component={Paper}>
         <InfiniteScroll
-          dataLength={data.length}
+          dataLength={data?.length}
           next={fetchMoreData}
           hasMore={hasMore}
           loader={<h4>Loading...</h4>}
