@@ -146,8 +146,6 @@ console.log(data, "yyyyyyyyyy");
 
   return (
     <div className="p-[47px] bg-white">
-
-
       <AppModal  
         setIsOpen={setView}
         title={"New Employee"}
