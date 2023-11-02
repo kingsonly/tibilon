@@ -30,7 +30,6 @@ export default function Affiliates() {
     SetOpenViewInfo(true);
 
 
-    console.log(data, "iiiiiiiii");
 
   };
 
