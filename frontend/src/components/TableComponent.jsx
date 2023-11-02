@@ -12,7 +12,7 @@ import {
   AiFillDelete,
   AiFillEdit,
   AiFillEye,
-  AiOutlineSearch,
+  AiOutlineSearch
 } from "react-icons/ai";
 import { v4 as uuidv4 } from "uuid";
 import moment from "moment";
@@ -38,27 +38,27 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: "#FAFAFA",
     color: "#000000",
     fontSize: "16px",
-    fontWeight: "700",
+    fontWeight: "700"
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&.MuiTableCell-root": {
     border: "blue",
-    marginBottom: 10,
+    marginBottom: 10
   },
   "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: theme.palette.action.hover
     // marginBottom: theme.spacing(10),
   },
   // hide last border
   "&:last-child td, &:last-child th": {
-    border: 0,
+    border: 0
     // marginBottom: theme.spacing(10),
-  },
+  }
 }));
 
 export default function TableComponent({
@@ -77,7 +77,7 @@ export default function TableComponent({
   hasCustomIcon,
   hasCustomAction,
   editAction,
-  viewAction,
+  viewAction
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -139,8 +139,8 @@ export default function TableComponent({
           height: "10px",
           "& th": {
             fontSize: "1.25rem",
-            color: "rgba(96, 96, 96)",
-          },
+            color: "rgba(96, 96, 96)"
+          }
         }}
         key={uuidv4()}
         style={{ border: "1px solid #CCCCCC", marginBottom: "10px" }}
@@ -156,15 +156,17 @@ export default function TableComponent({
               <div className="flex gap-4">
                 <AiFillEdit
                   className="cursor-pointer"
-                  onClick={() => editAction && editAction()}
+                  onClick={(e) => editAction && editAction(row, false)}
                 />
+      
                 <AiFillEye
                   className="cursor-pointer"
-                  onClick={() => viewAction && viewAction()}
+                  onClick={() => viewAction && viewAction(row, true)}
+
                 />
+
                 <AiFillDelete
                   className="cursor-pointer"
-                  // onClick={() => deleteAction && deleteAction(row)}
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -177,14 +179,18 @@ export default function TableComponent({
                   }}
                 />
                 {hasCustom && hasCustomIcon ? (
-                  <div onClick={() => {
-                    hasCustomAction(row.id)
-                  }}>{hasCustomIcon}</div>
+                  <div
+                    onClick={() => {
+                      hasCustomAction(row.id);
+                    }}
+                  >
+                    {hasCustomIcon}
+                  </div>
                 ) : null}
               </div>
             ) : null}
 
-            {(
+            {
               // moment(e).format("YYYY-MM-DD")
               //TO DO;>> ADD A BETTER WAY TO CHECK IS STRING DATE IS VALID
               <>
@@ -200,7 +206,7 @@ export default function TableComponent({
                   </>
                 }
               </>
-            )}
+            }
           </StyledTableCell>
         ))}
       </StyledTableRow>
@@ -250,7 +256,7 @@ export default function TableComponent({
           <CircularProgress />
         </div>
       )}
-      <TableContainer component={Paper} >
+      <TableContainer component={Paper}>
         <InfiniteScroll
           dataLength={data.length}
           next={fetchMoreData}
@@ -258,13 +264,12 @@ export default function TableComponent({
           loader={<h4>Loading...</h4>}
           initialScrollY={1}
           endMessage={
-            <p style={{ textAlign: 'center' }}>
+            <p style={{ textAlign: "center" }}>
               <b>Yay! You have seen it all</b>
             </p>
           }
-
         >
-          <Table sx={{ minWidth: 700 }} aria-label="customized table" >
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead style={{ border: "1px solid #CCCCCC" }}>
               <TableRow role="table-header">
                 {columns?.map((column) => (
@@ -280,14 +285,12 @@ export default function TableComponent({
                 // Render Dynamic Data Objects
                 <Fragment key={uuidv4()}>{renderRow(row)}</Fragment>
               ))}
-
             </TableBody>
-
           </Table>
         </InfiniteScroll>
       </TableContainer>
 
-      {/* <TablePagination
+      <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
         count={data?.length}
@@ -295,7 +298,7 @@ export default function TableComponent({
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
+      />
     </>
   );
 }
