@@ -9,7 +9,27 @@ export default function Employee() {
   const [data, setData] = React.useState([]);
   const [perpage, setPerpage] = React.useState(10);
   const [hasMore, setHasMore] = React.useState(false);
+  const [openEditModal, setOpenEditModal] = React.useState(false);
+  const [openViewInfo, SetOpenViewInfo] = React.useState(false);
+  const [employeeDetails, SetEmployeeDetails] = React.useState({});
+  const [readOnly, setReadOnly] = React.useState(false);
   const [link, setLink] = React.useState(`${process.env.REACT_APP_API_URL}/user`);
+
+  const handleEditClick = () => {
+    setOpenEditModal(true);
+  };
+
+  const handleViewClick = (data, isView) => {
+    if (isView) {
+      setReadOnly(true)
+    } 
+    SetEmployeeDetails(data)
+    SetOpenViewInfo(true);
+
+console.log(data, "yyyyyyyyyy");
+
+  };
+
 
   useEffect(() => {
     fetchData()
@@ -77,6 +97,14 @@ export default function Employee() {
     setIsOpen(true);
   }
 
+  function setEdit() {
+    setOpenEditModal(false);
+  }
+
+  function setView() {
+    SetOpenViewInfo(false);
+  }
+
   const searchFunction = (data) => {
     // Set a timeout to wait for the user to finish typing
     const delay = 5000; // Adjust this value as needed
@@ -93,6 +121,7 @@ export default function Employee() {
     alert(`Paginating....page ${page}`);
   };
 
+
   const dataKeyAccessors = [
     "SN",
     "name",
@@ -101,6 +130,7 @@ export default function Employee() {
     "amount",
     "amountRecieved",
     "amountRemaining",
+    "CTA"
   ];
 
   const columns = [
@@ -111,19 +141,24 @@ export default function Employee() {
     "Total Amount",
     "Amount Recieved",
     "Amount Pending",
+    "Action"
   ];
 
   return (
     <div className="p-[47px] bg-white">
 
 
-      <AppModal
-        modalIsOpen={modalIsOpen}
-        setIsOpen={setIsOpen}
+      <AppModal  
+        setIsOpen={setView}
         title={"New Employee"}
-      >
-        <AddEmployeeModalDetails />
+        modalIsOpen={openViewInfo}
+      >  
+        <AddEmployeeModalDetails 
+         data={employeeDetails}      
+         readOnly={readOnly}
+        />
       </AppModal>
+
       <div className="font-bold text-[30px] text-left"> Employees Details</div>
       <hr className="mb-8 mt-3" />
       <TableComponent
@@ -136,6 +171,8 @@ export default function Employee() {
         dataKeyAccessors={dataKeyAccessors}
         hasMore={hasMore}
         fetchMoreDataProps={fetchData}
+        viewAction={handleViewClick}
+        editAction={handleViewClick}
       />
     </div>
   );

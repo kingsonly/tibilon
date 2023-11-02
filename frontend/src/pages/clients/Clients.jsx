@@ -100,8 +100,7 @@ export default function Clients() {
     "email",
     "phone",
     "type",
-    "address",
-    
+    "address",   
     "CTA",
   ];
 
