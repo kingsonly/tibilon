@@ -86,7 +86,7 @@ export default function AddEmployeeModalDetails(props) {
 
     // send to save and use feedback to show toast message.
   };
-
+  
   const create = async (data) => {
     var token = localStorage.getItem("token");
     try {
