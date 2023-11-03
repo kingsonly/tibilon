@@ -41,7 +41,7 @@ export default function AddAmenitiesModal(props) {
 
       setamenityIcon(files[0]);
     } catch (err) {
-      console.log(err, "eoror");
+      console.log(err, "error");
     }
   };
 

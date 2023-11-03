@@ -2,6 +2,8 @@ import React, { useEffect,useRef } from "react";
 import TableComponent from "../../components/TableComponent";
 import AddProjectModal from "../../components/AddProjectModal";
 import AddClientModal from "../../components/AddClientModal";
+import EditClientModal from "../../components/EditClientModal";
+import ClientListView from "../../components/ClientListView";
 import axios from "axios";
 
 
@@ -11,6 +13,8 @@ export default function Clients() {
   const [editModalIsOpen, setEditModalIsOpen] = React.useState(false);
   const [perpage, setPerpage] = React.useState(10);
   const [hasMore, setHasMore] = React.useState(false);
+  const [selectedClientData, setSelectedClientData] = React.useState(null);
+  const [editClientData, setEditClientData] = React.useState(null);
   const [data, setData] = React.useState([]);
   const [link, setLink] = React.useState(`${process.env.REACT_APP_API_URL}/client`);
   
@@ -125,24 +129,47 @@ export default function Clients() {
     setIsOpen(true);
   };
 
-  const displayClientList = () => {
+  const displayClientList = (clientData) => {
     // setopenPaymentModal(true);
+    setSelectedClientData(clientData);
     setViewModalIsOpen(true);
   };
-  const editClientModal = () => {
-    // setopenPaymentModal(true);
+  const editClientModal = (clientData) => {
+    setSelectedClientData(clientData);
     setEditModalIsOpen(true);
   };
   const deleteAction = (id) => {
-    setData(data.filter((datas) => datas != id));
-    console.log(id)
+    // Filter out the data with the specified id
+    const updatedData = data.filter((item) => item.id !== id);
+  
+    // Update the data state with the filtered data
+    setData(updatedData);
+    console.log(id);
+    // Now, you can also make an API call to delete the item from the server here if needed.
+    // axios.delete(`your_api_endpoint/${id}`)
   };
 
 
   return (
-    <div className="bg-[white] p-[47px]">
+    <div className="bg-[white
+    ] p-[47px]">
       <hr className="my-6" />
       <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} fetchData={fetchData}  />
+      {/* <EditClientModal setIsOpen={setEditModalIsOpen} modalIsOpen={editModalIsOpen} editClientData={editClientData} /> */}
+      {editModalIsOpen && (
+        <EditClientModal
+          clientData={selectedClientData}
+          closeModal={() => setEditModalIsOpen(false)}
+          fetchData={fetchData} // Pass fetchData to update data after editing
+        />
+      )}
+      {/* <ClientListView setIsOpen={ setViewModalIsOpen} modalIsOpen={viewModalIsOpen}   /> */}
+      {viewModalIsOpen && (
+        <ClientListView
+          clientData={selectedClientData}
+          closeModal={() => setViewModalIsOpen(false)}
+        />
+      )}
       <TableComponent
         actionText="Add New Client"
         columns={columns}
@@ -153,6 +180,9 @@ export default function Clients() {
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
         fetchMoreDataProps={fetchData}
+        viewAction={displayClientList}
+        editAction={editClientModal}
+        deleteAction={deleteAction}
         
       />
     </div>

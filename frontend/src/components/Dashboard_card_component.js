@@ -9,7 +9,7 @@ import React from 'react';
  * projects and ongoing projects.
  * 
  * to use this component, take out the first <div> and dont forget the closing tag </div>
- * @returns {JSX}
+y * @returns {JSX}
  */
 
 export default function DashboardCard(props) {

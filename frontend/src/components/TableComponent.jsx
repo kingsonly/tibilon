@@ -33,7 +33,7 @@ import DialogModal from "./DialogModal";
  * @Description - this component displays the paginated table component with search functionality
  */
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: "#FAFAFA",
     color: "#000000",
@@ -45,7 +45,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&.MuiTableCell-root": {
     border: "blue",
     marginBottom: 10,
@@ -76,6 +76,8 @@ export default function TableComponent({
   hasCustom,
   hasCustomIcon,
   hasCustomAction,
+  viewAction,
+  editAction
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -154,23 +156,22 @@ export default function TableComponent({
               <div className="flex gap-4">
                 <AiFillEdit
                   className="cursor-pointer"
-                  onClick={() => editAction && editAction()}
+                  onClick={() => editAction && editAction(row)}
                 />
                 <AiFillEye
                   className="cursor-pointer"
-                  onClick={() => viewAction && viewAction()}
+                  onClick={() => viewAction && viewAction(row)}
                 />
                 <AiFillDelete
                   className="cursor-pointer"
                   // onClick={() => deleteAction && deleteAction(row)}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                  onClick={() => {
+                    
                     openDialogModal(
                       "Delete Client Details",
                       "Are you sure you want to delete Client Details?"
                     )
-                      ? deleteAction && deleteAction(row)
+                      ? deleteAction && deleteAction(row.id)
                       : null;
                   }}
                 />
