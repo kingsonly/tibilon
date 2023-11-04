@@ -1,14 +1,20 @@
 import React from "react";
 import AddBudgetModal from "../../../components/AddBudgetModal";
+import AddEmployeeModalDetails from "../../../components/AddEmployeeModalDetails";
+import AppModal from "../../../components/AppModal";
 import TableComponent from "../../../components/TableComponent";
 
 export default function GenerateBudget() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
-//   const [openBudgetModal, setOpenBudgetModal] = React.useState(false);
+  const [openViewInfo, SetOpenViewInfo] = React.useState(false);
 
   function openModal() {
     setIsOpen(true);
   }
+
+  const handleViewClick = () => {
+    SetOpenViewInfo(true);
+  };
 
   const searchFunction = () => {
     //Api call to search and update table data
@@ -19,7 +25,10 @@ export default function GenerateBudget() {
     //Api call to paginate and update table data
     alert(`Paginating....page ${page}`);
   };
-  
+
+  function setView() {
+    SetOpenViewInfo(false);
+  }
 
   const data = [
     {
@@ -38,7 +47,14 @@ export default function GenerateBudget() {
 
   return (
     <div>
-        <AddBudgetModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}   />
+      <AddBudgetModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} />
+      <AppModal
+        setIsOpen={setView}
+        title={"New Employee"}
+        modalIsOpen={openViewInfo}
+      >
+        <AddBudgetModal />
+      </AppModal>
       <TableComponent
         actionText="Create New Budget"
         columns={columns}
@@ -47,6 +63,7 @@ export default function GenerateBudget() {
         searchFunction={searchFunction}
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
+        viewAction={handleViewClick}
       />
     </div>
   );

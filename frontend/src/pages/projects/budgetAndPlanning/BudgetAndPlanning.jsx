@@ -40,7 +40,7 @@ export default function BudgetAndPlanning() {
     },
   ];
   return (
-    <div className="bg-[white] p-[47px]">
+    <div className="bg-[white] p-[47px] outline-none">
       <BreadCrumb breadCrumbs={breadCrumbs} />
       <hr />
       <TabComponent components={components} />
