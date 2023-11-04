@@ -1,12 +1,15 @@
 import React from "react";
+import AddBudgetModal from "../../../components/AddBudgetModal";
 import TableComponent from "../../../components/TableComponent";
 
-export default function WorkPlan() {
+export default function GenerateBudget() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
+//   const [openBudgetModal, setOpenBudgetModal] = React.useState(false);
 
   function openModal() {
     setIsOpen(true);
   }
+
   const searchFunction = () => {
     //Api call to search and update table data
     alert("Fetching search....");
@@ -16,38 +19,28 @@ export default function WorkPlan() {
     //Api call to paginate and update table data
     alert(`Paginating....page ${page}`);
   };
+  
 
   const data = [
     {
-      name: "A",
-      description: "Substructure",
-      amount: "14,057,750.00",
+      index: 1,
+      budgetName: "Budget 1 (Substructure)"
     },
     {
-      name: "C",
-      description: "Upper Floor",
-      amount: "14,057,750.00",
-    },
-    {
-      name: "D",
-      description: "Upper Floor",
-      amount: "14,057,750.00",
-    },
-    {
-      name: "E",
-      description: "Upper Floor",
-      amount: "14,057,750.00",
-    },
+      index: 2,
+      budgetName: "Budget 2 (Superstructure)"
+    }
   ];
 
-  const dataKeyAccessors = ["name", "description", "amount", "CTA"];
+  const dataKeyAccessors = ["index", "budgetName", "CTA"];
 
-  const columns = ["Item", "Description", "Amount(₦)", "Action"];
+  const columns = ["S/N", "Budget Name", "Action"];
 
   return (
     <div>
+        <AddBudgetModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen}   />
       <TableComponent
-        actionText="Upload Data"
+        actionText="Create New Budget"
         columns={columns}
         data={data}
         action={openModal}

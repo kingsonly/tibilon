@@ -225,7 +225,7 @@ export default function TableComponent({
       />
       <div className="flex items-center justify-between mb-[19px]">
         {searchFunction && (
-          <div className="border-2 rounded w-[292px] h-[45px] flex items-center">
+          <div className="border-2 rounded w-[292px] h-[55px] flex items-center">
             <div className="flex items-center justify-center border-r-2 h-[100%] w-[47px]">
               <AiOutlineSearch role="search-icon" />
             </div>
@@ -265,7 +265,7 @@ export default function TableComponent({
           initialScrollY={1}
           endMessage={
             <p style={{ textAlign: "center" }}>
-              <b>Yay! You have seen it all</b>
+              {/* <b>Yay! You have seen it all</b> */}
             </p>
           }
         >
