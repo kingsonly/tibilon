@@ -11,7 +11,33 @@ use Illuminate\Support\Facades\Validator;
 class ClientController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @group Clients
+     *
+     * Get a list of clients.
+     *
+     * @queryParam page integer The page number (default is 1).
+     * @queryParam perpage integer The number of results per page (default is 10).
+     * @queryParam total integer The total number of records.
+     *
+     * @response {
+     *    "status": "success",
+     *    "data": {
+     *        "clients": [
+     *            {
+     *                "id": 1,
+     *                "name": "Client Name 1",
+     *                "email": "client1@example.com",
+     *                "phone": "123-456-7890"
+     *            },
+     *            {
+     *                "id": 2,
+     *                "name": "Client Name 2",
+     *                "email": "client2@example.com",
+     *                "phone": "987-654-3210"
+     *            }
+     *        ]
+     *    }
+     * }
      */
     public function index(Request $request)
     {
@@ -30,7 +56,28 @@ class ClientController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @group Clients
+     *
+     * Create a new client.
+     *
+     * @bodyParam name string required The name of the client.
+     * @bodyParam email string required The email address of the client.
+     * @bodyParam phone string required The phone number of the client.
+     * @bodyParam address_id integer required The ID of the client's address.
+     * @bodyParam type string required The type of the client.
+     * @bodyParam image file required The client's image.
+     * @bodyParam longitude float The longitude of the client's location (optional).
+     * @bodyParam latitude float The latitude of the client's location (optional).
+     *
+     * @response {
+     *    "status": "success",
+     *    "message": "Client created successfully"
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "Ensure that all required fields are properly filled."
+     * }
      */
     public function store(Request $request)
     {
@@ -77,7 +124,32 @@ class ClientController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @group Clients
+     *
+     * Get client details by ID.
+     *
+     * @urlParam id required The ID of the client.
+     *
+     * @response {
+     *    "status": "success",
+     *    "message": "Client details retrieved successfully",
+     *    "data": {
+     *        "id": 1,
+     *        "name": "Client Name",
+     *        "email": "client@email.com",
+     *        "phone": "123-456-7890",
+     *        "address": "Client Address",
+     *        "type": "Client Type",
+     *        "image": "/images/client/client_image.jpg",
+     *        "created_at": "2023-10-30T12:00:00Z",
+     *        "updated_at": "2023-10-30T14:30:00Z"
+     *    }
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "Client with this ID does not exist"
+     * }
      */
 
     public function show(string $id)
@@ -90,7 +162,29 @@ class ClientController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @group Clients
+     *
+     * Update client information by ID.
+     *
+     * @urlParam id required The ID of the client to update.
+     *
+     * @bodyParam name string required The name of the client.
+     * @bodyParam email string required The email of the client.
+     * @bodyParam phone string required The phone number of the client.
+     * @bodyParam address_id integer required The address ID of the client.
+     * @bodyParam type string required The type of the client.
+     * @bodyParam longitude float The longitude of the client's address.
+     * @bodyParam latitude float The latitude of the client's address.
+     *
+     * @response {
+     *    "status": "success",
+     *    "message": "Client information updated successfully"
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "Client with this ID does not exist"
+     * }
      */
     public function update(Request $request, string $id)
     {
@@ -138,7 +232,26 @@ class ClientController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @group Clients
+     *
+     * Delete a client by ID.
+     *
+     * @urlParam id required The ID of the client to delete.
+     *
+     * @response {
+     *    "status": "success",
+     *    "message": "Client deleted successfully"
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "Client with this ID does not exist"
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "Could not delete this client record, please retry after some time"
+     * }
      */
     public function destroy(string $id)
     {
@@ -152,7 +265,34 @@ class ClientController extends Controller
         }
         return response()->json(["status" => "error", "message" => "The requested record does not exist"], 400);
     }
-
+    /**
+     * @group Clients
+     *
+     * Search for clients by name, phone, or email.
+     *
+     * @queryParam query required The search query.
+     * @queryParam page The page number (default: 1).
+     * @queryParam perpage The number of results per page (default: 10).
+     *
+     * @response {
+     *    "status": "success",
+     *    "data": [
+     *        {
+     *            "id": 1,
+     *            "name": "Client Name",
+     *            "phone": "1234567890",
+     *            "email": "client@example.com",
+     *            // ... other client properties
+     *        },
+     *        // ... other client objects
+     *    ]
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "No record matches your search."
+     * }
+     */
     public function search(Request $request)
     {
         $validator = Validator::make($request->all(), [

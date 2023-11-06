@@ -9,23 +9,48 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
+/**
+ * @group Affiliate Management
+ *
+ * APIs to manage affiliate
+ */
+
 class AffiliateController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Retrieves a paginated list of affiliates with their associated properties, payments, and commissions.
+     *
+     * @queryParam per_page int Size per page. Defaults to 10. Example:20
+     * @queryParam  page int Page to view. Example:1
+     *
+     * @apiResourceCollection App\Http\Resources\AffiliateIList
+     * @apiResourceModel App\Models\Affiliate
+     *
      */
     public function index(Request $request): AnonymousResourceCollection
     {
         $perPage = $request->input('per_page', 10);
         $page = $request->input('page', 1);
 
-        $model = Affiliate::with(["properties.property", "payment.payment","commission.payment"])->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
+        $model = Affiliate::with(["properties.property", "payment.payment", "commission.payment"])->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
         return AffiliateIList::collection($model);
     }
 
 
     /**
-     * Store a newly created resource in storage.
+     * This is the store method of the Affiliate class.
+     * It is responsible for validating and storing affiliate data.
+     * If the validation fails, it returns an error response.
+     * If the data is successfully saved, it returns a success response.
+     *
+     * @bodyParam email email required Email of the affiliate. Example: colin@example.com
+     * @bodyParam name string required Name of the affiliate. Example: Collins
+     * @bodyParam gender string required Gender of the affiliate. Example: male
+     * @bodyParam address string required Address of the affiliate. Example: house 69, fct
+     * @bodyParam phone_number string required Contact of the affiliate. Example: 07000000001
+     * @response 200{
+     * "status":"success"
+     * }
      */
     public function store(Request $request)
     {
@@ -55,13 +80,18 @@ class AffiliateController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified affiliate.
+     *
+     * @urlParam Affiliate int required Affiliate ID. Example:1
+     *
+     * @apiResource App\Http\Resources\AffiliateShow
+     * @apiResourceModel App\Models\Affiliate
      */
 
     public function show(string $id)
     {
 
-        $model = Affiliate::find($id)->with(["properties.property", "payment.payment","commission.payment"])->first();
+        $model = Affiliate::find($id)->with(["properties.property", "payment.payment", "commission.payment"])->first();
         if (!empty($model)) {
             return new AffiliateShow($model);
         } else {
@@ -71,7 +101,16 @@ class AffiliateController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified affiliate in storage.
+     * @bodyParam email email required Email of the affiliate. Example: colin@example.com
+     * @bodyParam name string required Name of the affiliate. Example: Collins
+     * @bodyParam gender string required Gender of the affiliate. Example: male
+     * @bodyParam address string required Address of the affiliate. Example: house 69, fct
+     * @bodyParam phone_number string required Contact of the affiliate. Example: 07000000001
+     *
+     * @response 200{
+     * "status":"success",
+     * }
      */
     public function update(Request $request, string $id)
     {
@@ -107,7 +146,11 @@ class AffiliateController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified affiliate from storage.
+     *
+     * @response 200{
+     * "status":"success"
+     * }
      */
     public function destroy(string $id)
     {
@@ -121,6 +164,19 @@ class AffiliateController extends Controller
         }
         return response()->json(["status" => "error", "message" => "The requested record does not exist"], 400);
     }
+
+
+    /**
+     * searches  amd returns paginated list of affiliates with their associated properties, payments, and commissions.
+     *
+     * @queryParam query  string keyword. Example:collins
+     * @queryParam per_page int Size per page. Defaults to 10. Example:20
+     * @queryParam  page int Page to view. Example:1
+     *
+     * @apiResourceCollection App\Http\Resources\AffiliateIList
+     * @apiResourceModel App\Models\Affiliate
+     *
+     */
 
     public function search(Request $request)
     {
@@ -147,15 +203,12 @@ class AffiliateController extends Controller
             ->orWhere('updated_at', 'LIKE', "%$query%")
             ->with(["properties", "payment.payment"])
             ->paginate($perPage, ["*"], "page", $page);
-        
-            if(!empty($affiliates)){
-                return AffiliateIList::collection($affiliates);
-            }else{
-                return response()->json(["status" => "error","message" => "No record matches your search."],400);
-            }
 
-
-        
+        if (!empty($affiliates)) {
+            return AffiliateIList::collection($affiliates);
+        } else {
+            return response()->json(["status" => "error", "message" => "No record matches your search."], 400);
+        }
     }
 
     private function properties(string $id)

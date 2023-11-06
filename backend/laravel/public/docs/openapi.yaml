@@ -1,0 +1,5843 @@
+openapi: 3.0.3
+info:
+  title: 'Tibulon Backend'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8050'
+paths:
+  /api/affiliate:
+    get:
+      summary: 'Retrieves a paginated list of affiliates with their associated properties, payments, and commissions.'
+      operationId: retrievesAPaginatedListOfAffiliatesWithTheirAssociatedPropertiesPaymentsAndCommissions
+      description: ''
+      parameters:
+        -
+          in: query
+          name: per_page
+          description: 'Size per page. Defaults to 10.'
+          example: 20
+          required: false
+          schema:
+            type: integer
+            description: 'Size per page. Defaults to 10.'
+            example: 20
+        -
+          in: query
+          name: page
+          description: 'Page to view.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Page to view.'
+            example: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 97
+                      name: 'Claudia Kirlin'
+                      gender: Mr.
+                      email: duane.christiansen@bartell.info
+                      address: "201 Rodrigo Vista Apt. 831\nRunolfssonport, WV 29176"
+                      phoneNumber: +1.952.318.7325
+                      totalpayment: 0
+                      totalproperties: 0
+                      amount: 0
+                      amountRecieved: 0
+                      amountRemaining: 0
+                    -
+                      id: 98
+                      name: 'Ethel Huels'
+                      gender: Mr.
+                      email: derek.stracke@goodwin.com
+                      address: "7132 Ruecker Burgs\nRosalindfurt, OR 50301"
+                      phoneNumber: 667.892.3021
+                      totalpayment: 0
+                      totalproperties: 0
+                      amount: 0
+                      amountRecieved: 0
+                      amountRemaining: 0
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 97
+                        name: 'Claudia Kirlin'
+                        gender: Mr.
+                        email: duane.christiansen@bartell.info
+                        address: "201 Rodrigo Vista Apt. 831\nRunolfssonport, WV 29176"
+                        phoneNumber: +1.952.318.7325
+                        totalpayment: 0
+                        totalproperties: 0
+                        amount: 0
+                        amountRecieved: 0
+                        amountRemaining: 0
+                      -
+                        id: 98
+                        name: 'Ethel Huels'
+                        gender: Mr.
+                        email: derek.stracke@goodwin.com
+                        address: "7132 Ruecker Burgs\nRosalindfurt, OR 50301"
+                        phoneNumber: 667.892.3021
+                        totalpayment: 0
+                        totalproperties: 0
+                        amount: 0
+                        amountRecieved: 0
+                        amountRemaining: 0
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 97
+                        name:
+                          type: string
+                          example: 'Claudia Kirlin'
+                        gender:
+                          type: string
+                          example: Mr.
+                        email:
+                          type: string
+                          example: duane.christiansen@bartell.info
+                        address:
+                          type: string
+                          example: "201 Rodrigo Vista Apt. 831\nRunolfssonport, WV 29176"
+                        phoneNumber:
+                          type: string
+                          example: +1.952.318.7325
+                        totalpayment:
+                          type: integer
+                          example: 0
+                        totalproperties:
+                          type: integer
+                          example: 0
+                        amount:
+                          type: integer
+                          example: 0
+                        amountRecieved:
+                          type: integer
+                          example: 0
+                        amountRemaining:
+                          type: integer
+                          example: 0
+      tags:
+        - 'Affiliate Management'
+  /api/affiliate/create:
+    post:
+      summary: 'This is the store method of the Affiliate class.'
+      operationId: thisIsTheStoreMethodOfTheAffiliateClass
+      description: "It is responsible for validating and storing affiliate data.\nIf the validation fails, it returns an error response.\nIf the data is successfully saved, it returns a success response."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                properties:
+                  status:
+                    type: string
+                    example: success
+      tags:
+        - 'Affiliate Management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: email
+                  description: 'Email of the affiliate.'
+                  example: colin@example.com
+                name:
+                  type: string
+                  description: 'Name of the affiliate.'
+                  example: Collins
+                gender:
+                  type: string
+                  description: 'Gender of the affiliate.'
+                  example: male
+                address:
+                  type: string
+                  description: 'Address of the affiliate.'
+                  example: 'house 69, fct'
+                phone_number:
+                  type: string
+                  description: 'Contact of the affiliate.'
+                  example: '07000000001'
+              required:
+                - email
+                - name
+                - gender
+                - address
+                - phone_number
+  '/api/affiliate/show/{id}':
+    get:
+      summary: 'Display the specified affiliate.'
+      operationId: displayTheSpecifiedAffiliate
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 99
+                    name: 'Bernard Trantow'
+                    gender: Prof.
+                    email: rebeca.ratke@wyman.com
+                    address: "36357 Raven Prairie\nAdriannahaven, AL 42797-1326"
+                    phoneNumber: '+19865661317'
+                    properties: []
+                    payment: []
+                    totalpayment: 0
+                    totalproperties: 0
+                    amount: 0
+                    amountRecieved: 0
+                    amountRemaining: 0
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 99
+                      name:
+                        type: string
+                        example: 'Bernard Trantow'
+                      gender:
+                        type: string
+                        example: Prof.
+                      email:
+                        type: string
+                        example: rebeca.ratke@wyman.com
+                      address:
+                        type: string
+                        example: "36357 Raven Prairie\nAdriannahaven, AL 42797-1326"
+                      phoneNumber:
+                        type: string
+                        example: '+19865661317'
+                      properties:
+                        type: array
+                        example: []
+                      payment:
+                        type: array
+                        example: []
+                      totalpayment:
+                        type: integer
+                        example: 0
+                      totalproperties:
+                        type: integer
+                        example: 0
+                      amount:
+                        type: integer
+                        example: 0
+                      amountRecieved:
+                        type: integer
+                        example: 0
+                      amountRemaining:
+                        type: integer
+                        example: 0
+      tags:
+        - 'Affiliate Management'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the show.'
+        example: corporis
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: Affiliate
+        description: 'Affiliate ID.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/affiliate/update/{id}':
+    post:
+      summary: 'Update the specified affiliate in storage.'
+      operationId: updateTheSpecifiedAffiliateInStorage
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n\"status\":\"success\",\n}"
+      tags:
+        - 'Affiliate Management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: email
+                  description: 'Email of the affiliate.'
+                  example: colin@example.com
+                name:
+                  type: string
+                  description: 'Name of the affiliate.'
+                  example: Collins
+                gender:
+                  type: string
+                  description: 'Gender of the affiliate.'
+                  example: male
+                address:
+                  type: string
+                  description: 'Address of the affiliate.'
+                  example: 'house 69, fct'
+                phone_number:
+                  type: string
+                  description: 'Contact of the affiliate.'
+                  example: '07000000001'
+              required:
+                - email
+                - name
+                - gender
+                - address
+                - phone_number
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the update.'
+        example: sit
+        required: true
+        schema:
+          type: string
+  '/api/affiliate/destroy/{id}':
+    delete:
+      summary: 'Remove the specified affiliate from storage.'
+      operationId: removeTheSpecifiedAffiliateFromStorage
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                properties:
+                  status:
+                    type: string
+                    example: success
+      tags:
+        - 'Affiliate Management'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the destroy.'
+        example: minima
+        required: true
+        schema:
+          type: string
+  /api/affiliate/search:
+    post:
+      summary: 'searches  amd returns paginated list of affiliates with their associated properties, payments, and commissions.'
+      operationId: searchesAmdReturnsPaginatedListOfAffiliatesWithTheirAssociatedPropertiesPaymentsAndCommissions
+      description: ''
+      parameters:
+        -
+          in: query
+          name: query
+          description: keyword.
+          example: collins
+          required: false
+          schema:
+            type: string
+            description: keyword.
+            example: collins
+        -
+          in: query
+          name: per_page
+          description: 'Size per page. Defaults to 10.'
+          example: 20
+          required: false
+          schema:
+            type: integer
+            description: 'Size per page. Defaults to 10.'
+            example: 20
+        -
+          in: query
+          name: page
+          description: 'Page to view.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'Page to view.'
+            example: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 100
+                      name: 'Lavern Kshlerin'
+                      gender: Mr.
+                      email: corkery.berniece@gmail.com
+                      address: "2118 Tanya View Apt. 885\nEast Bradenmouth, OK 89715"
+                      phoneNumber: +1-743-895-6658
+                      totalpayment: 0
+                      totalproperties: 0
+                      amount: 0
+                      amountRecieved: 0
+                      amountRemaining: 0
+                    -
+                      id: 101
+                      name: 'Dr. Milo Grant DDS'
+                      gender: Mr.
+                      email: mitchell.hand@cole.com
+                      address: "354 Luettgen Expressway\nEast Kaileeland, RI 47738"
+                      phoneNumber: '+19497538196'
+                      totalpayment: 0
+                      totalproperties: 0
+                      amount: 0
+                      amountRecieved: 0
+                      amountRemaining: 0
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 100
+                        name: 'Lavern Kshlerin'
+                        gender: Mr.
+                        email: corkery.berniece@gmail.com
+                        address: "2118 Tanya View Apt. 885\nEast Bradenmouth, OK 89715"
+                        phoneNumber: +1-743-895-6658
+                        totalpayment: 0
+                        totalproperties: 0
+                        amount: 0
+                        amountRecieved: 0
+                        amountRemaining: 0
+                      -
+                        id: 101
+                        name: 'Dr. Milo Grant DDS'
+                        gender: Mr.
+                        email: mitchell.hand@cole.com
+                        address: "354 Luettgen Expressway\nEast Kaileeland, RI 47738"
+                        phoneNumber: '+19497538196'
+                        totalpayment: 0
+                        totalproperties: 0
+                        amount: 0
+                        amountRecieved: 0
+                        amountRemaining: 0
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 100
+                        name:
+                          type: string
+                          example: 'Lavern Kshlerin'
+                        gender:
+                          type: string
+                          example: Mr.
+                        email:
+                          type: string
+                          example: corkery.berniece@gmail.com
+                        address:
+                          type: string
+                          example: "2118 Tanya View Apt. 885\nEast Bradenmouth, OK 89715"
+                        phoneNumber:
+                          type: string
+                          example: +1-743-895-6658
+                        totalpayment:
+                          type: integer
+                          example: 0
+                        totalproperties:
+                          type: integer
+                          example: 0
+                        amount:
+                          type: integer
+                          example: 0
+                        amountRecieved:
+                          type: integer
+                          example: 0
+                        amountRemaining:
+                          type: integer
+                          example: 0
+      tags:
+        - 'Affiliate Management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: ''
+                  example: placeat
+              required:
+                - query
+  /api/amenity:
+    post:
+      summary: 'Retrieve a paginated list of amenities.'
+      operationId: retrieveAPaginatedListOfAmenities
+      description: ''
+      parameters:
+        -
+          in: query
+          name: per_page
+          description: 'The number of amenities per page. (default: 10)'
+          example: 20
+          required: false
+          schema:
+            type: integer
+            description: 'The number of amenities per page. (default: 10)'
+            example: 20
+        -
+          in: query
+          name: page
+          description: 'The page number. (default: 1)'
+          example: 17
+          required: false
+          schema:
+            type: integer
+            description: 'The page number. (default: 1)'
+            example: 17
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Amenity 1\",\n            // Include other amenity fields here\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Amenity 2\",\n            // Include other amenity fields here\n        },\n        // Add more amenity entries as needed\n    ],\n    \"links\": {\n        \"first\": \"URL_TO_FIRST_PAGE\",\n        \"last\": \"URL_TO_LAST_PAGE\",\n        \"prev\": \"URL_TO_PREVIOUS_PAGE\",\n        \"next\": \"URL_TO_NEXT_PAGE\"\n    },\n    \"meta\": {\n        \"current_page\": 1,\n        \"from\": 1,\n        \"last_page\": 2,\n        \"path\": \"URL_TO_ENDPOINT\",\n        \"per_page\": 10,\n        \"to\": 10,\n        \"total\": 15\n    }\n}"
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Error message describing the issue.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Error message describing the issue.'
+      tags:
+        - Amenities
+  /api/amenity/create:
+    post:
+      summary: 'Create a new amenity.'
+      operationId: createANewAmenity
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                properties:
+                  status:
+                    type: string
+                    example: success
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Error message describing the issue.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Error message describing the issue.'
+      tags:
+        - Amenities
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: 'The image of the amenity.'
+                name:
+                  type: string
+                  description: 'The name of the amenity.'
+                  example: officiis
+              required:
+                - image
+                - name
+  '/api/amenity/show/{id}':
+    get:
+      summary: 'Display a specific amenity.'
+      operationId: displayASpecificAmenity
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    name: 'Amenity Name'
+                    image: /images/amenities/amenity_image.jpg
+                    created_at: '2023-10-30 12:34:56'
+                    updated_at: '2023-10-30 12:34:56'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Amenity Name'
+                      image:
+                        type: string
+                        example: /images/amenities/amenity_image.jpg
+                      created_at:
+                        type: string
+                        example: '2023-10-30 12:34:56'
+                      updated_at:
+                        type: string
+                        example: '2023-10-30 12:34:56'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Amenity not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Amenity not found.'
+      tags:
+        - Amenities
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the amenity to retrieve.'
+        example: voluptatem
+        required: true
+        schema:
+          type: string
+  '/api/amenity/update/{id}':
+    post:
+      summary: 'Update a specific amenity.'
+      operationId: updateASpecificAmenity
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Amenity updated successfully'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Amenity updated successfully'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Amenity not found or update failed'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Amenity not found or update failed'
+      tags:
+        - Amenities
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The email of the amenity.'
+                  example: anthony.cremin@example.com
+                name:
+                  type: string
+                  description: 'The name of the amenity.'
+                  example: labore
+                gender:
+                  type: string
+                  description: 'The gender of the amenity.'
+                  example: et
+                address:
+                  type: string
+                  description: 'The address of the amenity.'
+                  example: similique
+                phone_number:
+                  type: string
+                  description: 'The phone number of the amenity.'
+                  example: alias
+              required:
+                - email
+                - name
+                - gender
+                - address
+                - phone_number
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the amenity to update.'
+        example: reiciendis
+        required: true
+        schema:
+          type: string
+  '/api/amenity/destroy/{id}':
+    delete:
+      summary: 'Delete a specific amenity.'
+      operationId: deleteASpecificAmenity
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Amenity deleted successfully'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Amenity deleted successfully'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Amenity not found or deletion failed'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Amenity not found or deletion failed'
+      tags:
+        - Amenities
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the amenity to delete.'
+        example: inventore
+        required: true
+        schema:
+          type: string
+  /api/amenity/search:
+    post:
+      summary: 'Search amenities based on a query.'
+      operationId: searchAmenitiesBasedOnAQuery
+      description: ''
+      parameters:
+        -
+          in: query
+          name: query
+          description: 'The search query.'
+          example: nisi
+          required: true
+          schema:
+            type: string
+            description: 'The search query.'
+            example: nisi
+        -
+          in: query
+          name: page
+          description: 'The page number (default is 1).'
+          example: 2
+          required: false
+          schema:
+            type: integer
+            description: 'The page number (default is 1).'
+            example: 2
+        -
+          in: query
+          name: perpage
+          description: 'The number of items per page (default is 10).'
+          example: 14
+          required: false
+          schema:
+            type: integer
+            description: 'The number of items per page (default is 10).'
+            example: 14
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"status\": \"success\",\n    \"data\": {\n        \"current_page\": 1,\n        \"data\": [\n            {\n                \"id\": 1,\n                \"name\": \"Amenity 1\"\n            },\n            {\n                \"id\": 2,\n                \"name\": \"Amenity 2\"\n            }\n            // Other amenity objects\n        ],\n        \"first_page_url\": \"http://url.com/api/amenities?page=1\",\n        \"from\": 1,\n        \"last_page\": 2,\n        \"last_page_url\": \"http://url.com/api/amenities?page=2\",\n        \"next_page_url\": \"http://url.com/api/amenities?page=2\",\n        \"path\": \"http://url.com/api/amenities\",\n        \"per_page\": 10,\n        \"prev_page_url\": null,\n        \"to\": 10,\n        \"total\": 11\n    }\n}"
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'No records match the search.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'No records match the search.'
+      tags:
+        - Amenities
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: ''
+                  example: est
+              required:
+                - query
+  /api/clientadmin/login:
+    post:
+      summary: ''
+      operationId: postApiClientadminLogin
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"status\": \"success\",\n    \"message\": \"User logged in\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"John Doe\",\n        \"email\": \"johndoe@example.com\",\n        \"token\": \"your_access_token_here\"\n        // Other user properties\n    }\n}"
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Wrong Email or Password'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Wrong Email or Password'
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The email address of the client.'
+                  example: rick.friesen@example.org
+                password:
+                  type: string
+                  description: 'The password of the client.'
+                  example: 'inxe;]'
+              required:
+                - email
+                - password
+      security: []
+  /api/clientadmin:
+    get:
+      summary: 'Get a list of projects and associated properties for the authenticated client.'
+      operationId: getAListOfProjectsAndAssociatedPropertiesForTheAuthenticatedClient
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"status\": \"success\",\n    \"data\": {\n        \"project\": [\n            {\n                \"id\": 1,\n                \"name\": \"Project 1\"\n            },\n            {\n                \"id\": 2,\n                \"name\": \"Project 2\"\n            }\n            // Other project objects\n        ],\n        \"property\": [\n            {\n                \"id\": 1,\n                \"property_name\": \"Property 1\",\n                \"payments\": [\n                    {\n                        \"id\": 1,\n                        \"amount\": 1000\n                    },\n                    {\n                        \"id\": 2,\n                        \"amount\": 1500\n                    }\n                    // Other payment objects\n                ],\n                \"agent\": {\n                    \"id\": 1,\n                    \"name\": \"Agent 1\"\n                }\n            },\n            {\n                \"id\": 2,\n                \"property_name\": \"Property 2\",\n                \"payments\": [\n                    {\n                        \"id\": 3,\n                        \"amount\": 1200\n                    }\n                    // Other payment objects\n                ],\n                \"agent\": {\n                    \"id\": 2,\n                    \"name\": \"Agent 2\"\n                }\n            }\n            // Other property objects\n        ]\n    }\n}"
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Client
+  /api/clientadmin/allprojects:
+    get:
+      summary: 'Get a list of projects for the authenticated client.'
+      operationId: getAListOfProjectsForTheAuthenticatedClient
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Project 1\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Project 2\"\n        }\n        // Other project objects\n    ]\n}"
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Client
+  /api/clientadmin/allproperties:
+    get:
+      summary: 'Get a list of properties associated with the authenticated client.'
+      operationId: getAListOfPropertiesAssociatedWithTheAuthenticatedClient
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Property 1\",\n            \"payments\": [\n                {\n                    \"id\": 1,\n                    \"amount\": 1000,\n                    // Other payment properties\n                }\n                // Other payment objects\n            ],\n            \"agent\": {\n                \"id\": 1,\n                \"name\": \"Agent Name\",\n                // Other agent properties\n            }\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Property 2\",\n            // Other property properties\n        }\n        // Other property objects\n    ]\n}"
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Client
+  /api/clientadmin/propertydocument:
+    get:
+      summary: 'Get a list of properties associated with the authenticated client.'
+      operationId: getAListOfPropertiesAssociatedWithTheAuthenticatedClient
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Property 1\",\n            \"payments\": [\n                {\n                    \"id\": 1,\n                    \"amount\": 1000,\n                    // Other payment properties\n                }\n                // Other payment objects\n            ],\n            \"agent\": {\n                \"id\": 1,\n                \"name\": \"Agent Name\",\n                // Other agent properties\n            }\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Property 2\",\n            // Other property properties\n        }\n        // Other property objects\n    ]\n}"
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Client
+  /api/client:
+    post:
+      summary: 'Get a list of clients.'
+      operationId: getAListOfClients
+      description: ''
+      parameters:
+        -
+          in: query
+          name: page
+          description: 'The page number (default is 1).'
+          example: 18
+          required: false
+          schema:
+            type: integer
+            description: 'The page number (default is 1).'
+            example: 18
+        -
+          in: query
+          name: perpage
+          description: 'The number of results per page (default is 10).'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'The number of results per page (default is 10).'
+            example: 1
+        -
+          in: query
+          name: total
+          description: 'The total number of records.'
+          example: 7
+          required: false
+          schema:
+            type: integer
+            description: 'The total number of records.'
+            example: 7
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    clients:
+                      -
+                        id: 1
+                        name: 'Client Name 1'
+                        email: client1@example.com
+                        phone: 123-456-7890
+                      -
+                        id: 2
+                        name: 'Client Name 2'
+                        email: client2@example.com
+                        phone: 987-654-3210
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      clients:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            name: 'Client Name 1'
+                            email: client1@example.com
+                            phone: 123-456-7890
+                          -
+                            id: 2
+                            name: 'Client Name 2'
+                            email: client2@example.com
+                            phone: 987-654-3210
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Client Name 1'
+                            email:
+                              type: string
+                              example: client1@example.com
+                            phone:
+                              type: string
+                              example: 123-456-7890
+      tags:
+        - Clients
+  /api/client/create:
+    post:
+      summary: 'Create a new client.'
+      operationId: createANewClient
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Client created successfully'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Client created successfully'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Ensure that all required fields are properly filled.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Ensure that all required fields are properly filled.'
+      tags:
+        - Clients
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the client.'
+                  example: ullam
+                email:
+                  type: string
+                  description: 'The email address of the client.'
+                  example: zboncak.carlos@example.org
+                phone:
+                  type: string
+                  description: 'The phone number of the client.'
+                  example: eaque
+                address_id:
+                  type: integer
+                  description: "The ID of the client's address."
+                  example: 5
+                type:
+                  type: string
+                  description: 'The type of the client.'
+                  example: quod
+                image:
+                  type: string
+                  format: binary
+                  description: "The client's image."
+                longitude:
+                  type: number
+                  description: "The longitude of the client's location (optional)."
+                  example: 7050.368
+                latitude:
+                  type: number
+                  description: "The latitude of the client's location (optional)."
+                  example: 71844905.4
+              required:
+                - name
+                - email
+                - phone
+                - address_id
+                - type
+                - image
+  '/api/client/show/{id}':
+    get:
+      summary: 'Get client details by ID.'
+      operationId: getClientDetailsByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Client details retrieved successfully'
+                  data:
+                    id: 1
+                    name: 'Client Name'
+                    email: client@email.com
+                    phone: 123-456-7890
+                    address: 'Client Address'
+                    type: 'Client Type'
+                    image: /images/client/client_image.jpg
+                    created_at: '2023-10-30T12:00:00Z'
+                    updated_at: '2023-10-30T14:30:00Z'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Client details retrieved successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Client Name'
+                      email:
+                        type: string
+                        example: client@email.com
+                      phone:
+                        type: string
+                        example: 123-456-7890
+                      address:
+                        type: string
+                        example: 'Client Address'
+                      type:
+                        type: string
+                        example: 'Client Type'
+                      image:
+                        type: string
+                        example: /images/client/client_image.jpg
+                      created_at:
+                        type: string
+                        example: '2023-10-30T12:00:00Z'
+                      updated_at:
+                        type: string
+                        example: '2023-10-30T14:30:00Z'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Client with this ID does not exist'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Client with this ID does not exist'
+      tags:
+        - Clients
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the client.'
+        example: enim
+        required: true
+        schema:
+          type: string
+  '/api/client/update/{id}':
+    post:
+      summary: 'Update client information by ID.'
+      operationId: updateClientInformationByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Client information updated successfully'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Client information updated successfully'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Client with this ID does not exist'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Client with this ID does not exist'
+      tags:
+        - Clients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the client.'
+                  example: est
+                email:
+                  type: string
+                  description: 'The email of the client.'
+                  example: gutmann.destiny@example.net
+                phone:
+                  type: string
+                  description: 'The phone number of the client.'
+                  example: fugiat
+                address_id:
+                  type: integer
+                  description: 'The address ID of the client.'
+                  example: 8
+                type:
+                  type: string
+                  description: 'The type of the client.'
+                  example: eligendi
+                longitude:
+                  type: number
+                  description: "The longitude of the client's address."
+                  example: 18040.87352354
+                latitude:
+                  type: number
+                  description: "The latitude of the client's address."
+                  example: 123.9
+              required:
+                - name
+                - email
+                - phone
+                - address_id
+                - type
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the client to update.'
+        example: consectetur
+        required: true
+        schema:
+          type: string
+  '/api/client/destroy/{id}':
+    delete:
+      summary: 'Delete a client by ID.'
+      operationId: deleteAClientByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Client deleted successfully'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Client deleted successfully'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Could not delete this client record, please retry after some time'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Could not delete this client record, please retry after some time'
+      tags:
+        - Clients
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the client to delete.'
+        example: nemo
+        required: true
+        schema:
+          type: string
+  /api/client/search:
+    post:
+      summary: 'Search for clients by name, phone, or email.'
+      operationId: searchForClientsByNamePhoneOrEmail
+      description: ''
+      parameters:
+        -
+          in: query
+          name: query
+          description: 'The search query.'
+          example: voluptas
+          required: true
+          schema:
+            type: string
+            description: 'The search query.'
+            example: voluptas
+        -
+          in: query
+          name: page
+          description: 'The page number (default: 1).'
+          example: 18
+          required: false
+          schema:
+            type: integer
+            description: 'The page number (default: 1).'
+            example: 18
+        -
+          in: query
+          name: perpage
+          description: 'The number of results per page (default: 10).'
+          example: 13
+          required: false
+          schema:
+            type: integer
+            description: 'The number of results per page (default: 10).'
+            example: 13
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n   \"status\": \"success\",\n   \"data\": [\n       {\n           \"id\": 1,\n           \"name\": \"Client Name\",\n           \"phone\": \"1234567890\",\n           \"email\": \"client@example.com\",\n           // ... other client properties\n       },\n       // ... other client objects\n   ]\n}"
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'No record matches your search.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'No record matches your search.'
+      tags:
+        - Clients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: ''
+                  example: sapiente
+              required:
+                - query
+  /api/document:
+    post:
+      summary: "List documents for a specific project.\n\nThis endpoint allows you to retrieve a paginated list of documents for a specific project."
+      operationId: listDocumentsForASpecificProjectThisEndpointAllowsYouToRetrieveAPaginatedListOfDocumentsForASpecificProject
+      description: ''
+      parameters:
+        -
+          in: query
+          name: project
+          description: 'The ID of the project.'
+          example: '1'
+          required: true
+          schema:
+            type: string
+            description: 'The ID of the project.'
+            example: '1'
+        -
+          in: query
+          name: fileType
+          description: 'The type of the document.'
+          example: "'pdf'"
+          required: false
+          schema:
+            type: string
+            description: 'The type of the document.'
+            example: "'pdf'"
+        -
+          in: query
+          name: perpage
+          description: 'The number of documents to show per page.'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 'The number of documents to show per page.'
+            example: 10
+        -
+          in: query
+          name: page
+          description: 'The current page of documents to retrieve.'
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 'The current page of documents to retrieve.'
+            example: 1
+        -
+          in: query
+          name: total
+          description: 'The total number of pages available.'
+          example: 5
+          required: false
+          schema:
+            type: integer
+            description: 'The total number of pages available.'
+            example: 5
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"file_name\": \"document.pdf\",\n            \"file_type\": \"pdf\",\n            \"project_id\": 1,\n            \"created_at\": \"2023-10-30T12:00:00Z\"\n        },\n        {\n            \"id\": 2,\n            \"file_name\": \"document2.pdf\",\n            \"file_type\": \"pdf\",\n            \"project_id\": 1,\n            \"created_at\": \"2023-10-31T12:00:00Z\"\n        }\n        // More document objects\n    ]\n}"
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Ensure that all required fields are properly filled.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Ensure that all required fields are properly filled.'
+      tags:
+        - Documents
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project:
+                  type: string
+                  description: ''
+                  example: voluptatibus
+              required:
+                - project
+  /api/document/create:
+    post:
+      summary: "Upload a document for a specific project.\n\nThis endpoint allows you to upload a document for a specific project."
+      operationId: uploadADocumentForASpecificProjectThisEndpointAllowsYouToUploadADocumentForASpecificProject
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Document uploaded successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Document uploaded successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Ensure that all required fields are properly filled.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Ensure that all required fields are properly filled.'
+      tags:
+        - Documents
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project:
+                  type: required
+                  description: 'The ID of the project.'
+                  example: '1'
+                title:
+                  type: required
+                  description: 'The title of the document.'
+                  example: "'Project Report'"
+                file:
+                  type: required
+                  description: 'The document file to upload.'
+                  example: (binary)
+                fileType:
+                  type: required
+                  description: 'The type of the document.'
+                  example: "'pdf'"
+  '/api/document/show/{id}':
+    post:
+      summary: "Get details of a specific document.\n\nThis endpoint allows you to retrieve details of a specific document by providing its ID."
+      operationId: getDetailsOfASpecificDocumentThisEndpointAllowsYouToRetrieveDetailsOfASpecificDocumentByProvidingItsID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 1
+                    project_id: 2
+                    document_title: 'Project Report'
+                    file_type: pdf
+                    file_path: images/projects_document/2/document.pdf
+                    log_user_id: 3
+                    status: 1
+                    created_at: '2023-10-30T12:00:00Z'
+                    updated_at: '2023-10-30T14:30:00Z'
+                  status: success
+                  message: 'Document details retrieved successfully.'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      project_id:
+                        type: integer
+                        example: 2
+                      document_title:
+                        type: string
+                        example: 'Project Report'
+                      file_type:
+                        type: string
+                        example: pdf
+                      file_path:
+                        type: string
+                        example: images/projects_document/2/document.pdf
+                      log_user_id:
+                        type: integer
+                        example: 3
+                      status:
+                        type: integer
+                        example: 1
+                      created_at:
+                        type: string
+                        example: '2023-10-30T12:00:00Z'
+                      updated_at:
+                        type: string
+                        example: '2023-10-30T14:30:00Z'
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Document details retrieved successfully.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Document not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Document not found.'
+      tags:
+        - Documents
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the document.'
+        example: '1'
+        required: true
+        schema:
+          type: string
+  '/api/document/delete/{id}':
+    delete:
+      summary: "Delete a document.\n\nThis endpoint allows you to delete a specific document by providing its ID."
+      operationId: deleteADocumentThisEndpointAllowsYouToDeleteASpecificDocumentByProvidingItsID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Document deleted successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Document deleted successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'We could not delete this record. Please try again.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'We could not delete this record. Please try again.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Document not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Document not found.'
+      tags:
+        - Documents
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the document.'
+        example: '1'
+        required: true
+        schema:
+          type: string
+  /api/site/activities:
+    post:
+      summary: ''
+      operationId: postApiSiteActivities
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+  /api/material/search:
+    post:
+      summary: 'Search for materials.'
+      operationId: searchForMaterials
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    -
+                      id: 1
+                      name: 'Material Name'
+                      materialType:
+                        id: 1
+                        name: 'Material Type'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Material Name'
+                        materialType:
+                          id: 1
+                          name: 'Material Type'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Material Name'
+                        materialType:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Material Type'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Ensure that all required fields are properly filled or no record matches your search.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Ensure that all required fields are properly filled or no record matches your search.'
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: 'The search query.'
+                  example: est
+              required:
+                - query
+    parameters:
+      -
+        in: path
+        name: page
+        description: 'Optional parameter. Page number (optional, default is 1).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 12
+      -
+        in: path
+        name: perpage
+        description: 'Optional parameter. Items per page (optional, default is 10).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 17
+  /api/material/all:
+    get:
+      summary: 'Get all materials with their associated material types.'
+      operationId: getAllMaterialsWithTheirAssociatedMaterialTypes
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    -
+                      id: 1
+                      name: 'Material Name'
+                      materialType:
+                        id: 1
+                        name: 'Material Type Name'
+                        material_id: 1
+                        unit_id: 1
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Material Name'
+                        materialType:
+                          id: 1
+                          name: 'Material Type Name'
+                          material_id: 1
+                          unit_id: 1
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Material Name'
+                        materialType:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Material Type Name'
+                            material_id:
+                              type: integer
+                              example: 1
+                            unit_id:
+                              type: integer
+                              example: 1
+      tags:
+        - Material
+  /api/material:
+    post:
+      summary: 'Get a paginated list of materials.'
+      operationId: getAPaginatedListOfMaterials
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    -
+                      id: 1
+                      name: 'Material Name'
+                      materialType:
+                        id: 1
+                        name: 'Material Type Name'
+                        material_id: 1
+                        unit_id: 1
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Material Name'
+                        materialType:
+                          id: 1
+                          name: 'Material Type Name'
+                          material_id: 1
+                          unit_id: 1
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Material Name'
+                        materialType:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Material Type Name'
+                            material_id:
+                              type: integer
+                              example: 1
+                            unit_id:
+                              type: integer
+                              example: 1
+      tags:
+        - Material
+    parameters:
+      -
+        in: path
+        name: page
+        description: 'Optional parameter. optional The page number (default is 1).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 5
+      -
+        in: path
+        name: perpage
+        description: 'Optional parameter. optional Items per page (default is 10).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 11
+      -
+        in: path
+        name: total
+        description: 'Optional parameter. optional The total number of items.'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 6
+  /api/material/create:
+    post:
+      summary: 'Create a new material.'
+      operationId: createANewMaterial
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Material created successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Material created successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Failed to create the material.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Failed to create the material.'
+      tags:
+        - Material
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the material.'
+                  example: aut
+              required:
+                - name
+  '/api/material/show/{id}':
+    get:
+      summary: 'Update a material by ID.'
+      operationId: updateAMaterialByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Material updated successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Material updated successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Material with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Material with ID {id} not found.'
+      tags:
+        - Material
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The new name of the material.'
+                  example: quia
+              required:
+                - name
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the material to update.'
+        example: illo
+        required: true
+        schema:
+          type: string
+  '/api/material/update/{id}':
+    post:
+      summary: 'Update a material by ID.'
+      operationId: updateAMaterialByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Material updated successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Material updated successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Material with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Material with ID {id} not found.'
+      tags:
+        - Material
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The new name of the material.'
+                  example: ut
+              required:
+                - name
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the material to update.'
+        example: laborum
+        required: true
+        schema:
+          type: string
+  '/api/material/destroy/{id}':
+    delete:
+      summary: 'Delete a material by ID.'
+      operationId: deleteAMaterialByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Material deleted successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Material deleted successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Material with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Material with ID {id} not found.'
+      tags:
+        - Material
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the material to delete.'
+        example: explicabo
+        required: true
+        schema:
+          type: string
+  /api/materialtype:
+    post:
+      summary: 'List material types.'
+      operationId: listMaterialTypes
+      description: ''
+      parameters:
+        -
+          in: query
+          name: total
+          description: 'Total number of pages (optional).'
+          example: 2
+          required: false
+          schema:
+            type: integer
+            description: 'Total number of pages (optional).'
+            example: 2
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    -
+                      id: 1
+                      name: 'Material Type Name'
+                      unit:
+                        id: 1
+                        name: 'Unit Name'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Material Type Name'
+                        unit:
+                          id: 1
+                          name: 'Unit Name'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Material Type Name'
+                        unit:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Unit Name'
+      tags:
+        - MaterialType
+    parameters:
+      -
+        in: path
+        name: page
+        description: 'Optional parameter. Page number (optional, default is 1).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 14
+      -
+        in: path
+        name: perpage
+        description: 'Optional parameter. Items per page (optional, default is 10).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 15
+      -
+        in: path
+        name: total
+        description: 'Optional parameter. Total number of pages (optional).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 6
+  /api/materialtype/create:
+    post:
+      summary: 'Create a new material type.'
+      operationId: createANewMaterialType
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Material type created successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Material type created successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Failed to create the material type.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Failed to create the material type.'
+      tags:
+        - MaterialType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the material type.'
+                  example: sunt
+                unit:
+                  type: integer
+                  description: 'The ID of the associated unit.'
+                  example: 4
+                material:
+                  type: integer
+                  description: 'The ID of the associated material.'
+                  example: 17
+              required:
+                - name
+                - unit
+                - material
+    parameters:
+      -
+        in: path
+        name: name
+        description: 'Name of the material type.'
+        example: officia
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: unit
+        description: 'ID of the associated unit.'
+        example: 18
+        required: true
+        schema:
+          type: integer
+      -
+        in: path
+        name: material
+        description: 'ID of the associated material.'
+        example: 6
+        required: true
+        schema:
+          type: integer
+  '/api/materialtype/show/{id}':
+    get:
+      summary: 'Get details of a material type by ID.'
+      operationId: getDetailsOfAMaterialTypeByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    id: 1
+                    name: 'Material Type Name'
+                    unit:
+                      id: 1
+                      name: 'Unit Name'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Material Type Name'
+                      unit:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'Unit Name'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Material type with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Material type with ID {id} not found.'
+      tags:
+        - MaterialType
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the material type.'
+        example: totam
+        required: true
+        schema:
+          type: string
+  '/api/materialtype/showmaterialtypewithmaterialid/{id}':
+    get:
+      summary: 'Get material types based on material ID.'
+      operationId: getMaterialTypesBasedOnMaterialID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    -
+                      id: 1
+                      name: 'Material Type Name'
+                      unit:
+                        id: 1
+                        name: 'Unit Name'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Material Type Name'
+                        unit:
+                          id: 1
+                          name: 'Unit Name'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Material Type Name'
+                        unit:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Unit Name'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'No material types found for material with ID {id}.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'No material types found for material with ID {id}.'
+      tags:
+        - MaterialType
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the material.'
+        example: quia
+        required: true
+        schema:
+          type: string
+  '/api/materialtype/update/{id}':
+    post:
+      summary: 'Update a material type by ID.'
+      operationId: updateAMaterialTypeByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Material type updated successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Material type updated successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Material type with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Material type with ID {id} not found.'
+      tags:
+        - MaterialType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The new name of the material type.'
+                  example: ut
+                material:
+                  type: integer
+                  description: 'The new material ID.'
+                  example: 9
+                unit:
+                  type: integer
+                  description: 'The new unit ID.'
+                  example: 7
+              required:
+                - name
+                - material
+                - unit
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the material type to update.'
+        example: reiciendis
+        required: true
+        schema:
+          type: string
+  '/api/materialtype/destroy/{id}':
+    delete:
+      summary: 'Delete a material type by ID.'
+      operationId: deleteAMaterialTypeByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Material type deleted successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Material type deleted successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Material type with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Material type with ID {id} not found.'
+      tags:
+        - MaterialType
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the material type to delete.'
+        example: velit
+        required: true
+        schema:
+          type: string
+  /api/materialtype/search:
+    post:
+      summary: 'Search for material types by name.'
+      operationId: searchForMaterialTypesByName
+      description: ''
+      parameters:
+        -
+          in: query
+          name: query
+          description: 'The search query.'
+          example: rem
+          required: true
+          schema:
+            type: string
+            description: 'The search query.'
+            example: rem
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    -
+                      id: 1
+                      name: 'Material Type Name'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Material Type Name'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Material Type Name'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Ensure that all required fields are properly filled or no record matches your search.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Ensure that all required fields are properly filled or no record matches your search.'
+      tags:
+        - MaterialType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: ''
+                  example: occaecati
+              required:
+                - query
+    parameters:
+      -
+        in: path
+        name: page
+        description: 'Optional parameter. Page number (optional, default is 1).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 5
+      -
+        in: path
+        name: perpage
+        description: 'Optional parameter. Items per page (optional, default is 10).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 13
+  /api/property/addpayment:
+    post:
+      summary: 'Add a payment for a property.'
+      operationId: addAPaymentForAProperty
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    payment_id: 101
+                    property_payment_id: 201
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      payment_id:
+                        type: integer
+                        example: 101
+                      property_payment_id:
+                        type: integer
+                        example: 201
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Please ensure that there are no empty required fields.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Please ensure that there are no empty required fields.'
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                property:
+                  type: integer
+                  description: 'The ID of the property.'
+                  example: 13
+                proofOfPayment:
+                  type: string
+                  format: binary
+                  description: 'Proof of payment image.'
+                amount:
+                  type: number
+                  description: 'The payment amount.'
+                  example: 1495.18313659
+                modeOfPayment:
+                  type: string
+                  description: 'The mode of payment.'
+                  example: saepe
+              required:
+                - property
+                - proofOfPayment
+                - amount
+                - modeOfPayment
+  /api/project:
+    post:
+      summary: 'Get a paginated list of projects.'
+      operationId: getAPaginatedListOfProjects
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    -
+                      id: 1
+                      name: 'Project Name'
+                      address:
+                        id: 1
+                        street: 'Street Name'
+                        city: 'City Name'
+                        state: 'State Name'
+                        country: 'Country Name'
+                      manager:
+                        id: 1
+                        name: 'Manager Name'
+                      client:
+                        id: 1
+                        name: 'Client Name'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Project Name'
+                        address:
+                          id: 1
+                          street: 'Street Name'
+                          city: 'City Name'
+                          state: 'State Name'
+                          country: 'Country Name'
+                        manager:
+                          id: 1
+                          name: 'Manager Name'
+                        client:
+                          id: 1
+                          name: 'Client Name'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Project Name'
+                        address:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            street:
+                              type: string
+                              example: 'Street Name'
+                            city:
+                              type: string
+                              example: 'City Name'
+                            state:
+                              type: string
+                              example: 'State Name'
+                            country:
+                              type: string
+                              example: 'Country Name'
+                        manager:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Manager Name'
+                        client:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Client Name'
+      tags:
+        - Projects
+    parameters:
+      -
+        in: path
+        name: page
+        description: 'Optional parameter. optional The page number (default is 1).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 2
+      -
+        in: path
+        name: perpage
+        description: 'Optional parameter. optional Items per page (default is 10).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 8
+      -
+        in: path
+        name: total
+        description: 'Optional parameter. optional The total number of items.'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 1
+  /api/project/create:
+    post:
+      summary: 'Create a new project.'
+      operationId: createANewProject
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Project created successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Project created successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Failed to create the project.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Failed to create the project.'
+      tags:
+        - Projects
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the project.'
+                  example: voluptas
+                manager:
+                  type: integer
+                  description: 'The ID of the project manager.'
+                  example: 5
+                address:
+                  type: string
+                  description: 'The full address of the project.'
+                  example: voluptatem
+                description:
+                  type: string
+                  description: 'The project description.'
+                  example: 'Sed eum aut aliquid harum aut quia.'
+                number_of_properties:
+                  type: integer
+                  description: 'The number of properties in the project.'
+                  example: 8
+                client:
+                  type: integer
+                  description: 'The ID of the client.'
+                  example: 10
+                start_date:
+                  type: date
+                  description: 'The project start date (YYYY-MM-DD).'
+                  example: culpa
+                end_date:
+                  type: date
+                  description: 'The project end date (YYYY-MM-DD).'
+                  example: voluptatem
+                image:
+                  type: string
+                  format: binary
+                  description: 'An image file for the project.'
+              required:
+                - name
+                - manager
+                - address
+                - description
+                - number_of_properties
+                - client
+                - start_date
+                - end_date
+                - image
+  '/api/project/show/{id}':
+    get:
+      summary: 'Get details of a project by ID.'
+      operationId: getDetailsOfAProjectByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    id: 1
+                    name: 'Project Name'
+                    address:
+                      id: 1
+                      street: 'Street Name'
+                      city: 'City Name'
+                      state: 'State Name'
+                      country: 'Country Name'
+                    manager:
+                      id: 1
+                      name: 'Manager Name'
+                    client:
+                      id: 1
+                      name: 'Client Name'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Project Name'
+                      address:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          street:
+                            type: string
+                            example: 'Street Name'
+                          city:
+                            type: string
+                            example: 'City Name'
+                          state:
+                            type: string
+                            example: 'State Name'
+                          country:
+                            type: string
+                            example: 'Country Name'
+                      manager:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'Manager Name'
+                      client:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'Client Name'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Project with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Project with ID {id} not found.'
+      tags:
+        - Projects
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the project.'
+        example: magnam
+        required: true
+        schema:
+          type: string
+  '/api/project/update/{id}':
+    post:
+      summary: 'Update a project by ID.'
+      operationId: updateAProjectByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Project updated successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Project updated successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Failed to update the project.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Failed to update the project.'
+      tags:
+        - Projects
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the project.'
+                  example: deserunt
+                manager:
+                  type: integer
+                  description: 'The ID of the project manager.'
+                  example: 17
+                address:
+                  type: string
+                  description: 'The full address of the project.'
+                  example: facilis
+                description:
+                  type: string
+                  description: 'The project description.'
+                  example: 'Suscipit quos quaerat harum autem odit qui debitis id.'
+                number_of_properties:
+                  type: integer
+                  description: 'The number of properties in the project.'
+                  example: 13
+                client:
+                  type: integer
+                  description: 'The ID of the client.'
+                  example: 18
+                start_date:
+                  type: date
+                  description: 'The project start date (YYYY-MM-DD).'
+                  example: aut
+                end_date:
+                  type: date
+                  description: 'The project end date (YYYY-MM-DD).'
+                  example: magnam
+                image:
+                  type: string
+                  description: 'The image URL for the project.'
+                  example: quo
+              required:
+                - name
+                - manager
+                - address
+                - description
+                - number_of_properties
+                - client
+                - start_date
+                - end_date
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the project to update.'
+        example: voluptatem
+        required: true
+        schema:
+          type: string
+  '/api/project/destroy/{id}':
+    delete:
+      summary: 'Delete a project by ID.'
+      operationId: deleteAProjectByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Project deleted successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Project deleted successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Failed to delete the project.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Failed to delete the project.'
+      tags:
+        - Projects
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the project to delete.'
+        example: fugit
+        required: true
+        schema:
+          type: string
+  /api/project/search:
+    post:
+      summary: 'Search for projects by name, description, number of properties, start date, or end date.'
+      operationId: searchForProjectsByNameDescriptionNumberOfPropertiesStartDateOrEndDate
+      description: ''
+      parameters:
+        -
+          in: query
+          name: query
+          description: 'The search query.'
+          example: minima
+          required: true
+          schema:
+            type: string
+            description: 'The search query.'
+            example: minima
+        -
+          in: query
+          name: page
+          description: 'The page number (default is 1).'
+          example: 4
+          required: false
+          schema:
+            type: integer
+            description: 'The page number (default is 1).'
+            example: 4
+        -
+          in: query
+          name: perpage
+          description: 'The number of results per page (default is 10).'
+          example: 3
+          required: false
+          schema:
+            type: integer
+            description: 'The number of results per page (default is 10).'
+            example: 3
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    projects:
+                      -
+                        id: 1
+                        name: 'Project Name'
+                        description: 'Project Description'
+                        number_of_properties: 10
+                        start_date: '2023-01-01'
+                        end_date: '2023-12-31'
+                      -
+                        id: 2
+                        name: 'Another Project'
+                        description: 'Another Description'
+                        number_of_properties: 5
+                        start_date: '2023-02-15'
+                        end_date: '2023-11-30'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      projects:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            name: 'Project Name'
+                            description: 'Project Description'
+                            number_of_properties: 10
+                            start_date: '2023-01-01'
+                            end_date: '2023-12-31'
+                          -
+                            id: 2
+                            name: 'Another Project'
+                            description: 'Another Description'
+                            number_of_properties: 5
+                            start_date: '2023-02-15'
+                            end_date: '2023-11-30'
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Project Name'
+                            description:
+                              type: string
+                              example: 'Project Description'
+                            number_of_properties:
+                              type: integer
+                              example: 10
+                            start_date:
+                              type: string
+                              example: '2023-01-01'
+                            end_date:
+                              type: string
+                              example: '2023-12-31'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'No records match your search.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'No records match your search.'
+      tags:
+        - Projects
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: ''
+                  example: quia
+              required:
+                - query
+  '/api/user/paymentreceipt/{id}':
+    get:
+      summary: 'Generate a payment receipt for a specific property.'
+      operationId: generateAPaymentReceiptForASpecificProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  pdf_url: URL_TO_GENERATED_PDF
+                properties:
+                  pdf_url:
+                    type: string
+                    example: URL_TO_GENERATED_PDF
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                properties:
+                  status:
+                    type: string
+                    example: error
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the payment receipt.'
+        example: 3
+        required: true
+        schema:
+          type: integer
+  '/api/user/addcommission/{id}':
+    post:
+      summary: 'Record agent commission payment for a specific property.'
+      operationId: recordAgentCommissionPaymentForASpecificProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                properties:
+                  status:
+                    type: string
+                    example: success
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Something went wrong, please retry.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Something went wrong, please retry.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Property not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Property not found.'
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  description: 'The commission amount.'
+                  example: 3.898137243
+                modeOfPayment:
+                  type: string
+                  description: 'The payment mode (e.g., "Bank Transfer").'
+                  example: sapiente
+              required:
+                - amount
+                - modeOfPayment
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property.'
+        example: 16
+        required: true
+        schema:
+          type: integer
+  '/api/affiliate/addcommission/{id}':
+    post:
+      summary: 'Record agent commission payment for a specific property.'
+      operationId: recordAgentCommissionPaymentForASpecificProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                properties:
+                  status:
+                    type: string
+                    example: success
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Something went wrong, please retry.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Something went wrong, please retry.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Property not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Property not found.'
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  description: 'The commission amount.'
+                  example: 1794.79217356
+                modeOfPayment:
+                  type: string
+                  description: 'The payment mode (e.g., "Bank Transfer").'
+                  example: excepturi
+              required:
+                - amount
+                - modeOfPayment
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  /api/property:
+    post:
+      summary: 'Get a list of properties for a specific project.'
+      operationId: getAListOfPropertiesForASpecificProject
+      description: ''
+      parameters:
+        -
+          in: query
+          name: id
+          description: 'The ID of the project.'
+          example: facere
+          required: true
+          schema:
+            type: string
+            description: 'The ID of the project.'
+            example: facere
+        -
+          in: query
+          name: page
+          description: 'The page number (default: 1).'
+          example: 9
+          required: false
+          schema:
+            type: integer
+            description: 'The page number (default: 1).'
+            example: 9
+        -
+          in: query
+          name: per_page
+          description: 'The number of results per page (default: 10).'
+          example: 7
+          required: false
+          schema:
+            type: integer
+            description: 'The number of results per page (default: 10).'
+            example: 7
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n   \"status\": \"success\",\n   \"data\": [\n       {\n           \"id\": 1,\n           \"name\": \"Property Name\",\n           // ... other property properties\n           \"amenity\": [\n               {\n                   \"amenity_id\": 1,\n                   \"amenity_name\": \"Amenity 1\",\n                   // ... other amenity properties\n               },\n               // ... other amenity objects\n           ],\n           \"project\": {\n               \"id\": 1,\n               \"name\": \"Project Name\",\n               // ... other project properties\n           }\n       },\n       // ... other property objects\n   ]\n}"
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Ensure that all required fields are properly filled.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Ensure that all required fields are properly filled.'
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: ''
+                  example: et
+              required:
+                - id
+  /api/property/create:
+    post:
+      summary: 'Create a new property with amenities.'
+      operationId: createANewPropertyWithAmenities
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Property created successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Property created successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Ensure that all required fields are properly filled.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Ensure that all required fields are properly filled.'
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                project:
+                  type: integer
+                  description: 'The ID of the project.'
+                  example: 19
+                name:
+                  type: string
+                  description: 'The name of the property.'
+                  example: et
+                image:
+                  type: string
+                  format: binary
+                  description: 'The cover image of the property.'
+                description:
+                  type: string
+                  description: 'The description of the property.'
+                  example: 'Incidunt voluptatem rerum excepturi voluptate quisquam amet rerum aliquid.'
+                amenities:
+                  type: json
+                  description: 'An array of amenities with their quantities.'
+                  example: enim
+                amount:
+                  type: decimal
+                  description: 'The amount of the property.'
+                  example: qui
+              required:
+                - project
+                - name
+                - image
+                - description
+                - amenities
+                - amount
+  '/api/property/show/{id}':
+    get:
+      summary: 'Get the details of a property.'
+      operationId: getTheDetailsOfAProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 1
+                  project:
+                    id: 1
+                    name: 'Project Name'
+                  name: 'Property Name'
+                  image: property-image.jpg
+                  description: 'Property description.'
+                  amenities:
+                    -
+                      id: 1
+                      amenity:
+                        id: 1
+                        name: 'Amenity Name'
+                      quantity: 2
+                  payments: []
+                  client:
+                    id: 1
+                    client:
+                      id: 1
+                      name: 'Client Name'
+                      email: client@example.com
+                      phone: '1234567890'
+                      client_type: Type
+                  agent:
+                    id: 1
+                    affiliates: []
+                    users: []
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  project:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Project Name'
+                  name:
+                    type: string
+                    example: 'Property Name'
+                  image:
+                    type: string
+                    example: property-image.jpg
+                  description:
+                    type: string
+                    example: 'Property description.'
+                  amenities:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        amenity:
+                          id: 1
+                          name: 'Amenity Name'
+                        quantity: 2
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        amenity:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: 'Amenity Name'
+                        quantity:
+                          type: integer
+                          example: 2
+                  payments:
+                    type: array
+                    example: []
+                  client:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      client:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1
+                          name:
+                            type: string
+                            example: 'Client Name'
+                          email:
+                            type: string
+                            example: client@example.com
+                          phone:
+                            type: string
+                            example: '1234567890'
+                          client_type:
+                            type: string
+                            example: Type
+                  agent:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      affiliates:
+                        type: array
+                        example: []
+                      users:
+                        type: array
+                        example: []
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Could not find the specific property'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Could not find the specific property'
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property.'
+        example: molestias
+        required: true
+        schema:
+          type: string
+  '/api/property/update/{id}':
+    post:
+      summary: 'Update a property.'
+      operationId: updateAProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'You have successfully updated the record'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'You have successfully updated the record'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Something went wrong, please try again'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Something went wrong, please try again'
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the property.'
+                  example: possimus
+                image:
+                  type: string
+                  format: binary
+                  description: 'The image of the property.'
+                description:
+                  type: string
+                  description: 'The description of the property.'
+                  example: 'Ut omnis voluptas sunt sint.'
+              required:
+                - name
+                - image
+                - description
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property.'
+        example: sequi
+        required: true
+        schema:
+          type: string
+  /api/property/search:
+    post:
+      summary: 'Search for properties.'
+      operationId: searchForProperties
+      description: ''
+      parameters:
+        -
+          in: query
+          name: query
+          description: 'The search query to filter properties by name or description.'
+          example: porro
+          required: true
+          schema:
+            type: string
+            description: 'The search query to filter properties by name or description.'
+            example: porro
+        -
+          in: query
+          name: page
+          description: 'The page number (default is 1).'
+          example: 11
+          required: false
+          schema:
+            type: integer
+            description: 'The page number (default is 1).'
+            example: 11
+        -
+          in: query
+          name: perpage
+          description: 'The number of properties to show per page (default is 10).'
+          example: 15
+          required: false
+          schema:
+            type: integer
+            description: 'The number of properties to show per page (default is 10).'
+            example: 15
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Property Name 1\",\n            \"description\": \"Description 1\",\n            \"project\": {\n                \"id\": 1,\n                \"name\": \"Project 1\"\n            },\n            \"amenity\": [\n                {\n                    \"id\": 1,\n                    \"name\": \"Amenity 1\"\n                }\n            ]\n        },\n        // Additional property objects...\n    ]\n}"
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'No records match your search.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'No records match your search.'
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: ''
+                  example: esse
+              required:
+                - query
+  '/api/property/destroy/{id}':
+    delete:
+      summary: 'Delete a property.'
+      operationId: deleteAProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Property has been deleted successfully'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Property has been deleted successfully'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'The requested record does not exist'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'The requested record does not exist'
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property to delete.'
+        example: iusto
+        required: true
+        schema:
+          type: string
+  '/api/property/stats/{id}':
+    get:
+      summary: 'Get statistics for a specific property.'
+      operationId: getStatisticsForASpecificProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    project:
+                      property:
+                        total_properties: 10
+                        total_payments: 5
+                        total_sold: 3
+                        total_partially_sold: 2
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      project:
+                        type: object
+                        properties:
+                          property:
+                            type: object
+                            properties:
+                              total_properties:
+                                type: integer
+                                example: 10
+                              total_payments:
+                                type: integer
+                                example: 5
+                              total_sold:
+                                type: integer
+                                example: 3
+                              total_partially_sold:
+                                type: integer
+                                example: 2
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    message: 'Statistics not available for the property.'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: 'Statistics not available for the property.'
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  '/api/property/client/{id}':
+    get:
+      summary: 'Get the client associated with a property.'
+      operationId: getTheClientAssociatedWithAProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 101
+                    name: 'Client Name'
+                    email: client@example.com
+                    phone: 123-456-7890
+                    address:
+                      full_address: '123 Main St, City'
+                      longitude: '123.456'
+                      latitude: '45.678'
+                    type: 'Client Type'
+                    image: /images/client/client_image.jpg
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 101
+                      name:
+                        type: string
+                        example: 'Client Name'
+                      email:
+                        type: string
+                        example: client@example.com
+                      phone:
+                        type: string
+                        example: 123-456-7890
+                      address:
+                        type: object
+                        properties:
+                          full_address:
+                            type: string
+                            example: '123 Main St, City'
+                          longitude:
+                            type: string
+                            example: '123.456'
+                          latitude:
+                            type: string
+                            example: '45.678'
+                      type:
+                        type: string
+                        example: 'Client Type'
+                      image:
+                        type: string
+                        example: /images/client/client_image.jpg
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'There is presently no property with the above property ID.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'There is presently no property with the above property ID.'
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property.'
+        example: 2
+        required: true
+        schema:
+          type: integer
+  /api/property/addamenity:
+    post:
+      summary: 'Add a new amenity to a property.'
+      operationId: addANewAmenityToAProperty
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                properties:
+                  status:
+                    type: string
+                    example: success
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Something went wrong, please try again.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Something went wrong, please try again.'
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                property:
+                  type: integer
+                  description: 'The ID of the property.'
+                  example: 16
+                amenity:
+                  type: integer
+                  description: 'The ID of the amenity.'
+                  example: 11
+                quantity:
+                  type: integer
+                  description: 'The quantity of the amenity.'
+                  example: 9
+              required:
+                - property
+                - amenity
+                - quantity
+  '/api/property/updateamenity/{id}':
+    patch:
+      summary: "Update a property's amenity."
+      operationId: updateAPropertysAmenity
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                properties:
+                  status:
+                    type: string
+                    example: success
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Ensure that all required fields are properly filled.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Ensure that all required fields are properly filled.'
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amenity:
+                  type: integer
+                  description: 'The ID of the amenity.'
+                  example: 19
+                quantity:
+                  type: integer
+                  description: 'The quantity of the amenity.'
+                  example: 12
+              required:
+                - amenity
+                - quantity
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property amenity.'
+        example: 15
+        required: true
+        schema:
+          type: integer
+  '/api/property/deleteamenity/{id}':
+    delete:
+      summary: 'Delete a property amenity.'
+      operationId: deleteAPropertyAmenity
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                properties:
+                  status:
+                    type: string
+                    example: success
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Sorry, we could not delete this resource at this moment.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Sorry, we could not delete this resource at this moment.'
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property amenity.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/property/viewpayment/{id}':
+    post:
+      summary: 'View a property payment by ID.'
+      operationId: viewAPropertyPaymentByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    id: 1
+                    payment:
+                      id: 101
+                      amount: 100.0
+                      date: '2023-10-30'
+                    property:
+                      id: 1001
+                      name: 'Property Name 1'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      payment:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 101
+                          amount:
+                            type: number
+                            example: 100.0
+                          date:
+                            type: string
+                            example: '2023-10-30'
+                      property:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            example: 1001
+                          name:
+                            type: string
+                            example: 'Property Name 1'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'There is no payment with the provided ID.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'There is no payment with the provided ID.'
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property payment.'
+        example: 18
+        required: true
+        schema:
+          type: integer
+  '/api/property/allpayment/{id}':
+    post:
+      summary: 'Retrieve all payments for a specific property.'
+      operationId: retrieveAllPaymentsForASpecificProperty
+      description: ''
+      parameters:
+        -
+          in: query
+          name: per_page
+          description: 'The number of payments per page.'
+          example: 8
+          required: false
+          schema:
+            type: integer
+            description: 'The number of payments per page.'
+            example: 8
+        -
+          in: query
+          name: page
+          description: 'The page number for paginated results.'
+          example: 9
+          required: false
+          schema:
+            type: integer
+            description: 'The page number for paginated results.'
+            example: 9
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"status\": \"success\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"payment\": {\n                \"id\": 101,\n                \"amount\": 100.0,\n                \"date\": \"2023-10-30\"\n            }\n        },\n        {\n            \"id\": 2,\n            \"payment\": {\n                \"id\": 102,\n                \"amount\": 150.0,\n                \"date\": \"2023-10-31\"\n            }\n        }\n        // Additional payment records\n    ],\n    \"meta\": {\n        \"current_page\": 1,\n        \"per_page\": 10,\n        \"total\": 5\n    }\n}"
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'This property currently has no payment.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'This property currently has no payment.'
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property.'
+        example: 6
+        required: true
+        schema:
+          type: integer
+  '/api/property/agent/{id}':
+    get:
+      summary: 'Get the agent associated with a specific property.'
+      operationId: getTheAgentAssociatedWithASpecificProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n    \"data\": {\n        \"agent\": {\n            \"type\": \"Employee\",\n            \"details\": {\n                // Employee-specific details\n            }\n        }\n    }\n}"
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    message: 'Property not found.'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: 'Property not found.'
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property.'
+        example: 8
+        required: true
+        schema:
+          type: integer
+  '/api/property/addcommission/{id}':
+    post:
+      summary: 'Record agent commission payment for a specific property.'
+      operationId: recordAgentCommissionPaymentForASpecificProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                properties:
+                  status:
+                    type: string
+                    example: success
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Something went wrong, please retry.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Something went wrong, please retry.'
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Property not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Property not found.'
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount:
+                  type: number
+                  description: 'The commission amount.'
+                  example: 15.0
+                modeOfPayment:
+                  type: string
+                  description: 'The payment mode (e.g., "Bank Transfer").'
+                  example: sed
+              required:
+                - amount
+                - modeOfPayment
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the property.'
+        example: 3
+        required: true
+        schema:
+          type: integer
+  '/api/property/paymentreceipt/{id}':
+    get:
+      summary: 'Generate a payment receipt for a specific property.'
+      operationId: generateAPaymentReceiptForASpecificProperty
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  pdf_url: URL_TO_GENERATED_PDF
+                properties:
+                  pdf_url:
+                    type: string
+                    example: URL_TO_GENERATED_PDF
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                properties:
+                  status:
+                    type: string
+                    example: error
+      tags:
+        - Properties
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the payment receipt.'
+        example: 7
+        required: true
+        schema:
+          type: integer
+  /api/site:
+    get:
+      summary: "Get project and property statistics.\n\nThis endpoint provides statistics related to projects, property payments, properties, contractors, and sales reports."
+      operationId: getProjectAndPropertyStatisticsThisEndpointProvidesStatisticsRelatedToProjectsPropertyPaymentsPropertiesContractorsAndSalesReports
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n   \"status\": \"success\",\n   \"data\": {\n       \"totalProjects\": 10,\n       \"totalCompletedProject\": 5,\n       \"totalInprogressProject\": 5,\n       \"totalPropertyPayment\": 20,\n       \"totalCompletedPropertyPayment\": 15,\n       \"totalIncompletedPropertyPayment\": 5,\n       \"totalProperty\": 20,\n       \"totalContractors\": 8,\n       \"totalInhouseContractor\": 4,\n       \"totalExternalContractor\": 4,\n       \"totalSoldProperty\": 15,\n       \"totalAvailableProperty\": 5,\n       \"affiliate\": {\n           \"January\": 5,\n           \"February\": 8,\n           ...\n       },\n       \"SalesTeam\": {\n           \"January\": 10,\n           \"February\": 12,\n           ...\n       },\n       \"task\": [\n           {\n               \"id\": 1,\n               \"title\": \"Task 1\",\n               \"description\": \"Lorem ipsum dolor sit amet.\",\n               ...\n           },\n           ...\n       ]\n   }\n}"
+      tags:
+        - Statistics
+  /api/unit:
+    post:
+      summary: 'Get a paginated list of units.'
+      operationId: getAPaginatedListOfUnits
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    -
+                      id: 1
+                      name: 'Unit Name'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Unit Name'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Unit Name'
+      tags:
+        - Unit
+    parameters:
+      -
+        in: path
+        name: page
+        description: 'Optional parameter. optional The page number (default is 1).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 13
+      -
+        in: path
+        name: perpage
+        description: 'Optional parameter. optional Items per page (default is 10).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 15
+      -
+        in: path
+        name: total
+        description: 'Optional parameter. optional The total number of items.'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 7
+  /api/unit/create:
+    post:
+      summary: 'Create a new unit.'
+      operationId: createANewUnit
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Unit created successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Unit created successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Failed to create the unit.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Failed to create the unit.'
+      tags:
+        - Unit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the unit.'
+                  example: et
+              required:
+                - name
+  '/api/unit/show/{id}':
+    get:
+      summary: 'Get details of a unit by ID.'
+      operationId: getDetailsOfAUnitByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    id: 1
+                    name: 'Unit Name'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Unit Name'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Unit with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Unit with ID {id} not found.'
+      tags:
+        - Unit
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the unit.'
+        example: ducimus
+        required: true
+        schema:
+          type: string
+  '/api/unit/update/{id}':
+    post:
+      summary: 'Update a unit by ID.'
+      operationId: updateAUnitByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Unit updated successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Unit updated successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Unit with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Unit with ID {id} not found.'
+      tags:
+        - Unit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The new name of the unit.'
+                  example: quia
+              required:
+                - name
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the unit to update.'
+        example: id
+        required: true
+        schema:
+          type: string
+  '/api/unit/destroy/{id}':
+    delete:
+      summary: 'Delete a unit by ID.'
+      operationId: deleteAUnitByID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Unit deleted successfully.'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Unit deleted successfully.'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'Unit with ID {id} not found.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'Unit with ID {id} not found.'
+      tags:
+        - Unit
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the unit to delete.'
+        example: sunt
+        required: true
+        schema:
+          type: string
+  /api/unit/search:
+    post:
+      summary: 'Search for units by name.'
+      operationId: searchForUnitsByName
+      description: ''
+      parameters:
+        -
+          in: query
+          name: query
+          description: 'The search query.'
+          example: omnis
+          required: true
+          schema:
+            type: string
+            description: 'The search query.'
+            example: omnis
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  data:
+                    -
+                      id: 1
+                      name: 'Unit Name'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        name: 'Unit Name'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          example: 'Unit Name'
+        400:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: error
+                  message: 'No units match your search.'
+                properties:
+                  status:
+                    type: string
+                    example: error
+                  message:
+                    type: string
+                    example: 'No units match your search.'
+      tags:
+        - Unit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: ''
+                  example: ea
+              required:
+                - query
+    parameters:
+      -
+        in: path
+        name: page
+        description: 'Optional parameter. optional The page number (default is 1).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 19
+      -
+        in: path
+        name: perpage
+        description: 'Optional parameter. optional Items per page (default is 10).'
+        required: true
+        schema:
+          type: integer
+        examples:
+          omitted:
+            summary: 'When the value is omitted'
+            value: ''
+          present:
+            summary: 'When the value is present'
+            value: 14
+  /api/user/login:
+    post:
+      summary: ''
+      operationId: postApiUserLogin
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    name: 'Prof. Morris Boehm'
+                    token: 3|XyZ0nQXDCq4ZN8Z81ILGSvJMTRDDtGDMAXeWGip4
+                    email: damion.mante@example.com
+                    status: success
+                    message: 'user logged in'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: 'Prof. Morris Boehm'
+                      token:
+                        type: string
+                        example: 3|XyZ0nQXDCq4ZN8Z81ILGSvJMTRDDtGDMAXeWGip4
+                      email:
+                        type: string
+                        example: damion.mante@example.com
+                      status:
+                        type: string
+                        example: success
+                      message:
+                        type: string
+                        example: 'user logged in'
+      tags:
+        - 'User management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The email of the user.'
+                  example: kingsonly13c@gmail.com
+                password:
+                  type: string
+                  description: 'The password of the user.'
+                  example: "firstoctober\nThis route is responsible for enabling a user to login into the system"
+              required:
+                - email
+                - password
+      security: []
+  '/api/user/recoverpassword/{id}':
+    post:
+      summary: ''
+      operationId: postApiUserRecoverpasswordId
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'password changed successfully'
+                  data:
+                    id: 1
+                    name: 'Gavin Abbott'
+                    email: noe.wisozk@example.org
+                    email_verified_at: '2023-05-06T04:05:23.000000Z'
+                    passwordresetcode: 1683386423
+                    created_at: '2023-04-12T14:05:43.000000Z'
+                    updated_at: '2023-05-06T15:20:23.000000Z'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'password changed successfully'
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      name:
+                        type: string
+                        example: 'Gavin Abbott'
+                      email:
+                        type: string
+                        example: noe.wisozk@example.org
+                      email_verified_at:
+                        type: string
+                        example: '2023-05-06T04:05:23.000000Z'
+                      passwordresetcode:
+                        type: integer
+                        example: 1683386423
+                      created_at:
+                        type: string
+                        example: '2023-04-12T14:05:43.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2023-05-06T15:20:23.000000Z'
+      tags:
+        - 'User management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: 'The password which would be saved as the new users password .'
+                  example: firstoctober
+              required:
+                - password
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'This id is used to fetch the user from the database which password needs to be changed.'
+        example: accusamus
+        required: true
+        schema:
+          type: string
+  /api/user/sendpasswordresetlink:
+    post:
+      summary: ''
+      operationId: postApiUserSendpasswordresetlink
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Please check your email for further instruction'
+                  data:
+                    firstname: 'Gavin Abbott'
+                    link: /recoverpassword/1683386125VJZ3625741
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Please check your email for further instruction'
+                  data:
+                    type: object
+                    properties:
+                      firstname:
+                        type: string
+                        example: 'Gavin Abbott'
+                      link:
+                        type: string
+                        example: /recoverpassword/1683386125VJZ3625741
+      tags:
+        - 'User management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The email used to send password reset link to a user .'
+                  example: "kings@gmail.com\nThis route is responsible for sending password reset link to a user when the user wants to reset their password"
+              required:
+                - email
+  /api/user:
+    post:
+      summary: ''
+      operationId: postApiUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n     \"status\": \"success\",\n     \"message\": \"subitems fetched with pagination\",\n     \"data\": {\n         \"current_page\": 10,\n         \"data\": [\n                     {\n                         \"id\": 10,\n                         \"name\": \"Darius Labadie\",\n                         \"email\": \"ckerluke@example.com\",\n                         \"email_verified_at\": \"2023-05-26T14:23:44.000000Z\",\n                         \"log_user_id\": 1,\n                         \"created_at\": \"2023-05-26T14:23:44.000000Z\",\n                         \"updated_at\": \"2023-05-26T14:23:44.000000Z\"\n                      },\n                   {\n                         \"id\": 9,\n                         \"name\": \"Ciara Schuppe\",\n                         \"email\": \"nhirthe@example.org\",\n                         \"email_verified_at\": \"2023-05-26T14:23:44.000000Z\",\n                         \"log_user_id\": 1,\n                         \"created_at\": \"2023-05-26T14:23:44.000000Z\",\n                         \"updated_at\": \"2023-05-26T14:23:44.000000Z\"\n                         },\n                    {\n                         \"id\": 8,\n                         \"name\": \"Miss Adele Waelchi\",\n                         \"email\": \"valerie59@example.net\",\n                         \"email_verified_at\": \"2023-05-26T14:23:44.000000Z\",\n                         \"log_user_id\": 1,\n                         \"created_at\": \"2023-05-26T14:23:44.000000Z\",\n                         \"updated_at\": \"2023-05-26T14:23:44.000000Z\"\n                     },\n                     {\n                         \"id\": 7,\n                         \"name\": \"Miss Jailyn Hessel IV\",\n                         \"email\": \"lisa73@example.org\",\n                         \"email_verified_at\": \"2023-05-26T14:23:44.000000Z\",\n                         \"log_user_id\": 1,\n                         \"created_at\": \"2023-05-26T14:23:44.000000Z\",\n                         \"updated_at\": \"2023-05-26T14:23:44.000000Z\"\n                      }\n                 ],\n                 \"first_page_url\": \"http://localhost:8080/api/user?page=1\",\n                 \"from\": 91,\n                 \"last_page\": 10,\n                 \"last_page_url\": \"http://localhost:8080/api/user?page=10\",\n                 \"links\": [\n                             {\n                                 \"url\": \"http://localhost:8080/api/user?page=9\",\n                                 \"label\": \"&laquo; Previous\",\n                                 \"active\": false\n                             },\n                             {\n                                 \"url\": \"http://localhost:8080/api/user?page=1\",\n                                 \"label\": \"1\",\n                                 \"active\": false\n                                 },\n                            {\n                                 \"url\": \"http://localhost:8080/api/user?page=2\",\n                                 \"label\": \"2\",\n                                 \"active\": false\n                             },\n                             {\n                                 \"url\": \"http://localhost:8080/api/user?page=3\",\n                                      \"label\": \"3\",\n                                 \"active\": false\n                             },\n                             {\n                                 \"url\": \"http://localhost:8080/api/user?page=4\",\n                                 \"label\": \"4\",\n                                 \"active\": false\n                             },\n                         ],\n                         \"next_page_url\": null,\n                         \"path\": \"http://localhost:8080/api/user\",\n                         \"per_page\": 10,\n                         \"prev_page_url\": \"http://localhost:8080/api/user?page=9\",\n                         \"to\": 100,\n                         \"total\": 100\n                       },\n                       \"totalpages\": 10,\n                       \"perpage\": 10\n         }"
+      tags:
+        - 'User management'
+  '/api/user/deleteuser/{id}':
+    get:
+      summary: 'This route is used by a user to destroy their account'
+      operationId: thisRouteIsUsedByAUserToDestroyTheirAccount
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n \"status\": \"success\",\n \"message\": \"The user with 2 ID was deleted successfully\"\ns}"
+      tags:
+        - 'User management'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the deleteuser.'
+        example: hic
+        required: true
+        schema:
+          type: string
+  /api/user/adduser:
+    post:
+      summary: ''
+      operationId: postApiUserAdduser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'user created successfully'
+                  data:
+                    email: kingsonly13c@gmail.com
+                    name: 'Kings Kings'
+                    updated_at: '2023-04-14T15:28:27.000000Z'
+                    created_at: '2023-04-14T15:28:27.000000Z'
+                    id: 16
+                    reverse: 1681486107
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'user created successfully'
+                  data:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        example: kingsonly13c@gmail.com
+                      name:
+                        type: string
+                        example: 'Kings Kings'
+                      updated_at:
+                        type: string
+                        example: '2023-04-14T15:28:27.000000Z'
+                      created_at:
+                        type: string
+                        example: '2023-04-14T15:28:27.000000Z'
+                      id:
+                        type: integer
+                        example: 16
+                      reverse:
+                        type: integer
+                        example: 1681486107
+      tags:
+        - 'User management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'The email of the user.'
+                  example: kingsonly13c@gmail.com
+                password:
+                  type: string
+                  description: 'The password of the user.'
+                  example: firstoctober
+                firstname:
+                  type: string
+                  description: 'The firstname of the user.'
+                  example: kingsley
+                lastname:
+                  type: string
+                  description: 'The lastname of the user.'
+                  example: "Achumie\nThis route is responsible for enabling a user to register and create an account on the system"
+              required:
+                - email
+                - password
+                - firstname
+                - lastname
+  /api/user/search:
+    post:
+      summary: ''
+      operationId: postApiUserSearch
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'User management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: ''
+                  example: eligendi
+              required:
+                - query
+  /api/user/logout:
+    get:
+      summary: ''
+      operationId: getApiUserLogout
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - 'User management'
+tags:
+  -
+    name: 'Affiliate Management'
+    description: "\nAPIs to manage affiliate"
+  -
+    name: Amenities
+    description: ''
+  -
+    name: Authentication
+    description: ''
+  -
+    name: Client
+    description: ''
+  -
+    name: Clients
+    description: ''
+  -
+    name: Documents
+    description: ''
+  -
+    name: Endpoints
+    description: ''
+  -
+    name: Material
+    description: ''
+  -
+    name: MaterialType
+    description: ''
+  -
+    name: Payments
+    description: ''
+  -
+    name: Projects
+    description: ''
+  -
+    name: Properties
+    description: ''
+  -
+    name: Statistics
+    description: ''
+  -
+    name: Unit
+    description: ''
+  -
+    name: 'User management'
+    description: "\nAPIs for managing basic site requirments such as login, logout, registration etc"
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []

@@ -1,0 +1,124 @@
+name: Endpoints
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/site/activities
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6P4aZV1ev3kbaDch6g5fd8E'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/material/search
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Search for materials.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+    urlParameters:
+      page:
+        name: page
+        description: 'Page number (optional, default is 1).'
+        required: false
+        example: 12
+        type: integer
+        enumValues: []
+        custom: []
+      perpage:
+        name: perpage
+        description: 'Items per page (optional, default is 10).'
+        required: false
+        example: 17
+        type: integer
+        enumValues: []
+        custom: []
+    cleanUrlParameters:
+      page: 12
+      perpage: 17
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      query:
+        name: query
+        description: 'The search query.'
+        required: true
+        example: est
+        type: string
+        enumValues: []
+        custom: []
+    cleanBodyParameters:
+      query: est
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+             "status": "success",
+             "data": [
+                 {
+                     "id": 1,
+                     "name": "Material Name",
+                     "materialType": {
+                         "id": 1,
+                         "name": "Material Type"
+                     }
+                 }
+             ]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+             "status": "error",
+             "message": "Ensure that all required fields are properly filled or no record matches your search."
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer bfakP1Edc6vZae5V86Dh34g'
+    controller: null
+    method: null
+    route: null
+    custom: []

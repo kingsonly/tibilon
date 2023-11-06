@@ -1,0 +1,515 @@
+name: Amenities
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/amenity
+    metadata:
+      groupName: Amenities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Retrieve a paginated list of amenities.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      per_page:
+        name: per_page
+        description: 'The number of amenities per page. (default: 10)'
+        required: false
+        example: 20
+        type: integer
+        enumValues: []
+        custom: []
+      page:
+        name: page
+        description: 'The page number. (default: 1)'
+        required: false
+        example: 17
+        type: integer
+        enumValues: []
+        custom: []
+    cleanQueryParameters:
+      per_page: 20
+      page: 17
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "data": [
+                  {
+                      "id": 1,
+                      "name": "Amenity 1",
+                      // Include other amenity fields here
+                  },
+                  {
+                      "id": 2,
+                      "name": "Amenity 2",
+                      // Include other amenity fields here
+                  },
+                  // Add more amenity entries as needed
+              ],
+              "links": {
+                  "first": "URL_TO_FIRST_PAGE",
+                  "last": "URL_TO_LAST_PAGE",
+                  "prev": "URL_TO_PREVIOUS_PAGE",
+                  "next": "URL_TO_NEXT_PAGE"
+              },
+              "meta": {
+                  "current_page": 1,
+                  "from": 1,
+                  "last_page": 2,
+                  "path": "URL_TO_ENDPOINT",
+                  "per_page": 10,
+                  "to": 10,
+                  "total": 15
+              }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+              "status": "error",
+              "message": "Error message describing the issue."
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer kZacfe5dg18DhVaE6364Pvb'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/amenity/create
+    metadata:
+      groupName: Amenities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a new amenity.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: multipart/form-data
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      image:
+        name: image
+        description: 'The image of the amenity.'
+        required: true
+        example: null
+        type: file
+        enumValues: []
+        custom: []
+      name:
+        name: name
+        description: 'The name of the amenity.'
+        required: true
+        example: officiis
+        type: string
+        enumValues: []
+        custom: []
+    cleanBodyParameters:
+      name: officiis
+    fileParameters:
+      image: null
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "status": "success"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+              "status": "error",
+              "message": "Error message describing the issue."
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 5ZDhV8P6kvaba16d3efcgE4'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/amenity/show/{id}'
+    metadata:
+      groupName: Amenities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Display a specific amenity.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the amenity to retrieve.'
+        required: true
+        example: voluptatem
+        type: string
+        enumValues: []
+        custom: []
+    cleanUrlParameters:
+      id: voluptatem
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "data": {
+                  "id": 1,
+                  "name": "Amenity Name",
+                  "image": "/images/amenities/amenity_image.jpg",
+                  "created_at": "2023-10-30 12:34:56",
+                  "updated_at": "2023-10-30 12:34:56"
+              }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+              "status": "error",
+              "message": "Amenity not found."
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer Z8Df66hEg1VkbPa54dec3va'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/amenity/update/{id}'
+    metadata:
+      groupName: Amenities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update a specific amenity.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the amenity to update.'
+        required: true
+        example: reiciendis
+        type: string
+        enumValues: []
+        custom: []
+    cleanUrlParameters:
+      id: reiciendis
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        name: email
+        description: 'The email of the amenity.'
+        required: true
+        example: anthony.cremin@example.com
+        type: string
+        enumValues: []
+        custom: []
+      name:
+        name: name
+        description: 'The name of the amenity.'
+        required: true
+        example: labore
+        type: string
+        enumValues: []
+        custom: []
+      gender:
+        name: gender
+        description: 'The gender of the amenity.'
+        required: true
+        example: et
+        type: string
+        enumValues: []
+        custom: []
+      address:
+        name: address
+        description: 'The address of the amenity.'
+        required: true
+        example: similique
+        type: string
+        enumValues: []
+        custom: []
+      phone_number:
+        name: phone_number
+        description: 'The phone number of the amenity.'
+        required: true
+        example: alias
+        type: string
+        enumValues: []
+        custom: []
+    cleanBodyParameters:
+      email: anthony.cremin@example.com
+      name: labore
+      gender: et
+      address: similique
+      phone_number: alias
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "status": "success",
+              "message": "Amenity updated successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+              "status": "error",
+              "message": "Amenity not found or update failed"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer DfPe8vdaVE61hZbk6acg354'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/amenity/destroy/{id}'
+    metadata:
+      groupName: Amenities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete a specific amenity.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the amenity to delete.'
+        required: true
+        example: inventore
+        type: string
+        enumValues: []
+        custom: []
+    cleanUrlParameters:
+      id: inventore
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "status": "success",
+              "message": "Amenity deleted successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+              "status": "error",
+              "message": "Amenity not found or deletion failed"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer adDZkcVaEvP6h1b3654fg8e'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/amenity/search
+    metadata:
+      groupName: Amenities
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Search amenities based on a query.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      query:
+        name: query
+        description: 'The search query.'
+        required: true
+        example: nisi
+        type: string
+        enumValues: []
+        custom: []
+      page:
+        name: page
+        description: 'The page number (default is 1).'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        custom: []
+      perpage:
+        name: perpage
+        description: 'The number of items per page (default is 10).'
+        required: false
+        example: 14
+        type: integer
+        enumValues: []
+        custom: []
+    cleanQueryParameters:
+      query: nisi
+      page: 2
+      perpage: 14
+    bodyParameters:
+      query:
+        name: query
+        description: ''
+        required: true
+        example: est
+        type: string
+        enumValues: []
+        custom: []
+    cleanBodyParameters:
+      query: est
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "status": "success",
+              "data": {
+                  "current_page": 1,
+                  "data": [
+                      {
+                          "id": 1,
+                          "name": "Amenity 1"
+                      },
+                      {
+                          "id": 2,
+                          "name": "Amenity 2"
+                      }
+                      // Other amenity objects
+                  ],
+                  "first_page_url": "http://url.com/api/amenities?page=1",
+                  "from": 1,
+                  "last_page": 2,
+                  "last_page_url": "http://url.com/api/amenities?page=2",
+                  "next_page_url": "http://url.com/api/amenities?page=2",
+                  "path": "http://url.com/api/amenities",
+                  "per_page": 10,
+                  "prev_page_url": null,
+                  "to": 10,
+                  "total": 11
+              }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+              "status": "error",
+              "message": "No records match the search."
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer P6hec3fbdg4vZ1D6Eaka8V5'
+    controller: null
+    method: null
+    route: null
+    custom: []

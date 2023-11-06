@@ -1,0 +1,80 @@
+name: Statistics
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/site
+    metadata:
+      groupName: Statistics
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: |-
+        Get project and property statistics.
+
+        This endpoint provides statistics related to projects, property payments, properties, contractors, and sales reports.
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+             "status": "success",
+             "data": {
+                 "totalProjects": 10,
+                 "totalCompletedProject": 5,
+                 "totalInprogressProject": 5,
+                 "totalPropertyPayment": 20,
+                 "totalCompletedPropertyPayment": 15,
+                 "totalIncompletedPropertyPayment": 5,
+                 "totalProperty": 20,
+                 "totalContractors": 8,
+                 "totalInhouseContractor": 4,
+                 "totalExternalContractor": 4,
+                 "totalSoldProperty": 15,
+                 "totalAvailableProperty": 5,
+                 "affiliate": {
+                     "January": 5,
+                     "February": 8,
+                     ...
+                 },
+                 "SalesTeam": {
+                     "January": 10,
+                     "February": 12,
+                     ...
+                 },
+                 "task": [
+                     {
+                         "id": 1,
+                         "title": "Task 1",
+                         "description": "Lorem ipsum dolor sit amet.",
+                         ...
+                     },
+                     ...
+                 ]
+             }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer Eavgbhf8c43Z1Dd665VPkae'
+    controller: null
+    method: null
+    route: null
+    custom: []

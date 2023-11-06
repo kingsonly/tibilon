@@ -11,7 +11,38 @@ use Illuminate\Support\Facades\Validator;
 class ProjectController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @group Projects
+     *
+     * Get a paginated list of projects.
+     *
+     * @urlParam page integer optional The page number (default is 1).
+     * @urlParam perpage integer optional Items per page (default is 10).
+     * @urlParam total integer optional The total number of items.
+     *
+     * @response {
+     *    "status": "success",
+     *    "data": [
+     *        {
+     *            "id": 1,
+     *            "name": "Project Name",
+     *            "address": {
+     *                "id": 1,
+     *                "street": "Street Name",
+     *                "city": "City Name",
+     *                "state": "State Name",
+     *                "country": "Country Name"
+     *            },
+     *            "manager": {
+     *                "id": 1,
+     *                "name": "Manager Name"
+     *            },
+     *            "client": {
+     *                "id": 1,
+     *                "name": "Client Name"
+     *            }
+     *        }
+     *    ]
+     * }
      */
     public function index(Request $request)
     {
@@ -28,6 +59,32 @@ class ProjectController extends Controller
         $model = Project::with(["address", "manager", "client"])->orderBy('id', 'desc')->paginate($perPage, ["*"], "page", $page);
         return ProjectResource::collection($model);
     }
+
+    /**
+     * @group Projects
+     *
+     * Create a new project.
+     *
+     * @bodyParam name string required The name of the project.
+     * @bodyParam manager integer required The ID of the project manager.
+     * @bodyParam address string required The full address of the project.
+     * @bodyParam description string required The project description.
+     * @bodyParam number_of_properties integer required The number of properties in the project.
+     * @bodyParam client integer required The ID of the client.
+     * @bodyParam start_date date required The project start date (YYYY-MM-DD).
+     * @bodyParam end_date date required The project end date (YYYY-MM-DD).
+     * @bodyParam image file required An image file for the project.
+     *
+     * @response {
+     *    "status": "success",
+     *    "message": "Project created successfully."
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "Failed to create the project."
+     * }
+     */
 
     public function store(Request $request)
     {
@@ -50,14 +107,14 @@ class ProjectController extends Controller
             return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
         }
 
-        // create a new address for project 
+        // create a new address for project
         $projectAddress = new Address();
         $projectAddress->full_address = $request->input("address");
         $projectAddress->log_user_id = $userAuth->id;
         $projectAddress->status = Address::DefaultStatus;
         $projectAddress->save();
 
-        // upload image to the server 
+        // upload image to the server
         $image = $request->file('image');
         $model = new Project();
         $imageName = time() . '.' . $image->getClientOriginalExtension();
@@ -81,7 +138,39 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @group Projects
+     *
+     * Get details of a project by ID.
+     *
+     * @urlParam id string required The ID of the project.
+     *
+     * @response {
+     *    "status": "success",
+     *    "data": {
+     *        "id": 1,
+     *        "name": "Project Name",
+     *        "address": {
+     *            "id": 1,
+     *            "street": "Street Name",
+     *            "city": "City Name",
+     *            "state": "State Name",
+     *            "country": "Country Name"
+     *        },
+     *        "manager": {
+     *            "id": 1,
+     *            "name": "Manager Name"
+     *        },
+     *        "client": {
+     *            "id": 1,
+     *            "name": "Client Name"
+     *        }
+     *    }
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "Project with ID {id} not found."
+     * }
      */
     public function show(string $id)
     {
@@ -93,7 +182,31 @@ class ProjectController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @group Projects
+     *
+     * Update a project by ID.
+     *
+     * @urlParam id string required The ID of the project to update.
+     *
+     * @bodyParam name string required The name of the project.
+     * @bodyParam manager integer required The ID of the project manager.
+     * @bodyParam address string required The full address of the project.
+     * @bodyParam description string required The project description.
+     * @bodyParam number_of_properties integer required The number of properties in the project.
+     * @bodyParam client integer required The ID of the client.
+     * @bodyParam start_date date required The project start date (YYYY-MM-DD).
+     * @bodyParam end_date date required The project end date (YYYY-MM-DD).
+     * @bodyParam image string The image URL for the project.
+     *
+     * @response {
+     *    "status": "success",
+     *    "message": "Project updated successfully."
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "Failed to update the project."
+     * }
      */
     public function update(Request $request, string $id)
     {
@@ -148,7 +261,21 @@ class ProjectController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @group Projects
+     *
+     * Delete a project by ID.
+     *
+     * @urlParam id string required The ID of the project to delete.
+     *
+     * @response {
+     *    "status": "success",
+     *    "message": "Project deleted successfully."
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "Failed to delete the project."
+     * }
      */
     public function destroy(string $id)
     {
@@ -164,7 +291,42 @@ class ProjectController extends Controller
     }
 
     /**
-     * search.
+     * @group Projects
+     *
+     * Search for projects by name, description, number of properties, start date, or end date.
+     *
+     * @queryParam query string required The search query.
+     * @queryParam page integer The page number (default is 1).
+     * @queryParam perpage integer The number of results per page (default is 10).
+     *
+     * @response {
+     *    "status": "success",
+     *    "data": {
+     *        "projects": [
+     *            {
+     *                "id": 1,
+     *                "name": "Project Name",
+     *                "description": "Project Description",
+     *                "number_of_properties": 10,
+     *                "start_date": "2023-01-01",
+     *                "end_date": "2023-12-31"
+     *            },
+     *            {
+     *                "id": 2,
+     *                "name": "Another Project",
+     *                "description": "Another Description",
+     *                "number_of_properties": 5,
+     *                "start_date": "2023-02-15",
+     *                "end_date": "2023-11-30"
+     *            }
+     *        ]
+     *    }
+     * }
+     *
+     * @response 400 {
+     *    "status": "error",
+     *    "message": "No records match your search."
+     * }
      */
     public function search(Request $request)
     {
@@ -197,7 +359,8 @@ class ProjectController extends Controller
     /**
      * add a member .
      */
-    private function addTeamMember(){
+    private function addTeamMember()
+    {
     }
 
     private function projectAddress($address, $longitude = 0, $latitude = 0)
@@ -214,5 +377,4 @@ class ProjectController extends Controller
         }
         return response()->json(["status" => "error", "message" => "something went wrong when creating address"], 400);
     }
-
 }

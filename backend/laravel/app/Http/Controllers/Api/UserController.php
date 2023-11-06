@@ -50,14 +50,14 @@ class UserController extends Controller
      *                          "log_user_id": 1,
      *                          "created_at": "2023-05-26T14:23:44.000000Z",
      *                          "updated_at": "2023-05-26T14:23:44.000000Z"
-     *                          },   
+     *                          },
      *                     {
      *                          "id": 8,
      *                          "name": "Miss Adele Waelchi",
      *                          "email": "valerie59@example.net",
      *                          "email_verified_at": "2023-05-26T14:23:44.000000Z",
      *                          "log_user_id": 1,
-     *                          "created_at": "2023-05-26T14:23:44.000000Z",    
+     *                          "created_at": "2023-05-26T14:23:44.000000Z",
      *                          "updated_at": "2023-05-26T14:23:44.000000Z"
      *                      },
      *                      {
@@ -99,7 +99,7 @@ class UserController extends Controller
      *                                  "url": "http://localhost:8080/api/user?page=4",
      *                                  "label": "4",
      *                                  "active": false
-     *                              },        
+     *                              },
      *                          ],
      *                          "next_page_url": null,
      *                          "path": "http://localhost:8080/api/user",
@@ -119,6 +119,8 @@ class UserController extends Controller
         // if (!isset($loggedinuser)) {
         //     return response()->json(['status' => 'error', 'message' => 'you dont have write and edit access',  'data' => ''], 400);
         // }
+
+        //! kingsonly working previous
         $query = $request->all();
 
         if (array_key_exists('perpage', $query)) { //check if perpage is in query string
@@ -133,12 +135,25 @@ class UserController extends Controller
         } else {
             $page = 1;
         }
-        $users = User::orderBy('id', 'desc')->with(["properties.property", "payment.payment","commission.payment"])->paginate($perpage);
+        $users = User::orderBy('id', 'desc')->with(["properties.property", "payment.payment", "commission.payment"])->paginate($perpage);
         $data = $users;
 
         return UsersResource::collection($data);
         $totalpages = ceil($users["total"] / $perpage);
         return response()->json(['status' => 'success', 'message' => 'subitems fetched with pagination', 'data' => $data,  'totalpages' => $totalpages, 'perpage' => $perpage], 200);
+
+        //!end kingsonly working previous
+        //?collins
+        /**
+         * This code retrieves a paginated list of users with their associated properties, payments, and commissions.
+         * The number of users per page can be specified through the 'perpage' parameter in the request.
+         * The list is ordered by the latest user ID.
+         * The result is returned as a collection of UsersResource.
+         */
+
+        // $perpage = $request->input('perpage', 10);
+        // $users = User::latest('id')->with(["properties.property", "payment.payment", "commission.payment"])->paginate($perpage);
+        // return UsersResource::collection($users);
     }
 
     /**
@@ -163,31 +178,31 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $userAuth = auth()->guard('sanctum')->user();
-        if($userAuth){
+        if ($userAuth) {
             $validator = Validator::make($request->all(), [
                 'email' => 'required|unique:users',
                 'firstname' => 'required',
                 'lastname' => 'required',
             ]);
-    
+
             if ($validator->fails()) {
                 return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
             }
-    
+
             $user = new User();
             $time = new \DateTime("Africa/Lagos");
             $user->email = $request->input('email');
             $user->password = "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi";
             //$user->isactive = 1;
             $password = $request->input('password');
-            $user->firstname = ucwords($request->input('firstname')) ;
+            $user->firstname = ucwords($request->input('firstname'));
             $user->lastname = ucwords($request->input('lastname'));
             $user->log_user_id = $userAuth->id;
             $codex = substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), -3);
             $user->passwordresetcode = $codex . str_shuffle('1234567');
-    
+
             if ($user->save()) {
-    
+
                 // note change the sending of email to become a queue
                 try {
                     //$user->link = time().str_shuffle("01234567893ABCDEFGHIJKLMN01234567893ABCDEFGHIJKLMN").$user->emailresetcode;
@@ -197,18 +212,19 @@ class UserController extends Controller
                     //$error = $e->getMessage();
                     return response()->json(['status' => 'success', 'message' => "user created successfully", 'data' => $user], 201);
                 }
-    
+
                 return response()->json(['status' => 'success', 'message' => "user created successfully", 'data' => $user], 201);
             } else {
                 return response()->json(['status' => 'error', 'message' => 'cannot create user', 'data' => $user], 400);
             }
         }
         return response()->json(['status' => 'error', 'message' => 'You must be An Admin Member to use this route'], 400);
-
-        
     }
 
+
+
     /**
+     *@unauthenticated
      * @bodyParam email string required The email of the user. Example: kingsonly13c@gmail.com
      * @bodyParam password string required The password of the user. Example: firstoctober
      * This route is responsible for enabling a user to login into the system
@@ -231,7 +247,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return  response()->json(["status" => "error", "data" => $validator->errors()],400) ;
+            return  response()->json(["status" => "error", "data" => $validator->errors()], 400);
         }
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
@@ -241,12 +257,13 @@ class UserController extends Controller
             //return response()->json(['status' => 'success', 'message' => 'user logged in', 'data' => $authUser], 200);
             return new LoginResources($authUser);
         } else {
-            return  response()->json(["status" => "error", "message" => "Wrong Email or Password"],400) ;
+            return  response()->json(["status" => "error", "message" => "Wrong Email or Password"], 400);
         }
     }
 
 
-     /**
+    /**
+     *
      * @bodyParam email string required The email used to send password reset link to a user . Example:kings@gmail.com
      * This route is responsible for sending password reset link to a user when the user wants to reset their password
      * @response {
@@ -260,14 +277,14 @@ class UserController extends Controller
      */
     public function sendpasswordresetlink(Request $request)
     {
-        
+
         $time = new \DateTime("Africa/Lagos");
         $validator = Validator::make($request->all(), [
             'email' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return  response()->json(["status" => "error", "data" => $validator->errors()],400) ;
+            return  response()->json(["status" => "error", "data" => $validator->errors()], 400);
         }
 
         $email = $request->input('email');
@@ -292,7 +309,7 @@ class UserController extends Controller
                 Mail::to($email)->send(new Forgotpassword($data));
             } catch (\Exception $e) {
                 //throw $e("Email not sent");
-                
+
                 return response()->json(['status' => 'error', 'email was not sent', 'data' => $e], 400);
             }
             return response()->json(['status' => 'success', 'message' => 'Please check your email for further instruction'], 200);
@@ -302,6 +319,7 @@ class UserController extends Controller
     /**
      * @urlParam id string required This id is used to fetch the user from the database which password needs to be changed.
      * @bodyParam password string required The password which would be saved as the new users password . Example:firstoctober
+     *
      * @response {
      *  "status": "success",
      *  "message": "password changed successfully",
@@ -353,11 +371,10 @@ class UserController extends Controller
     public function destroy($id)
     {
         $loggedinuser = $userAuth = auth()->guard('sanctum')->user();;
-        if( empty($loggedinuser))
-        {
-          return response()->json(['status'=>'error', 'message'=>'you dont have write and edit access',  'data' =>''],400);
+        if (empty($loggedinuser)) {
+            return response()->json(['status' => 'error', 'message' => 'you dont have write and edit access',  'data' => ''], 400);
         }
-    
+
         $user = User::find($id);
         if (empty($user)) {
             return response()->json(["status" => "error", "message" => "No user was found with the above id ${id}"], 400);
@@ -388,27 +405,20 @@ class UserController extends Controller
             ->orWhere('updated_at', 'LIKE', "%$query%")
             ->with(["properties", "payment.payment"])
             ->paginate($perPage, ["*"], "page", $page);
-        
-            if(!empty($users)){
-                return UsersResource::collection($users);
-            }else{
-                return response()->json(["status" => "error","message" => "No record matches your search."],400);
-            }
 
-
-        
+        if (!empty($users)) {
+            return UsersResource::collection($users);
+        } else {
+            return response()->json(["status" => "error", "message" => "No record matches your search."], 400);
+        }
     }
 
     public function logout()
     {
         $auth = Auth::user();
-        if($auth->tokens()->delete()){
-            return response()->json(["status" => "success"],200);
+        if ($auth->tokens()->delete()) {
+            return response()->json(["status" => "success"], 200);
         }
-        return response()->json(["status" => "error"],400);
-        
+        return response()->json(["status" => "error"], 400);
     }
-
-
-    
 }

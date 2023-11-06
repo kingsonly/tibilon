@@ -1,0 +1,578 @@
+name: Clients
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/client
+    metadata:
+      groupName: Clients
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get a list of clients.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page:
+        name: page
+        description: 'The page number (default is 1).'
+        required: false
+        example: 18
+        type: integer
+        enumValues: []
+        custom: []
+      perpage:
+        name: perpage
+        description: 'The number of results per page (default is 10).'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        custom: []
+      total:
+        name: total
+        description: 'The total number of records.'
+        required: false
+        example: 7
+        type: integer
+        enumValues: []
+        custom: []
+    cleanQueryParameters:
+      page: 18
+      perpage: 1
+      total: 7
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+             "status": "success",
+             "data": {
+                 "clients": [
+                     {
+                         "id": 1,
+                         "name": "Client Name 1",
+                         "email": "client1@example.com",
+                         "phone": "123-456-7890"
+                     },
+                     {
+                         "id": 2,
+                         "name": "Client Name 2",
+                         "email": "client2@example.com",
+                         "phone": "987-654-3210"
+                     }
+                 ]
+             }
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer a6P58ach3dbveVgD6ZfE1k4'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/client/create
+    metadata:
+      groupName: Clients
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a new client.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: multipart/form-data
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The name of the client.'
+        required: true
+        example: ullam
+        type: string
+        enumValues: []
+        custom: []
+      email:
+        name: email
+        description: 'The email address of the client.'
+        required: true
+        example: zboncak.carlos@example.org
+        type: string
+        enumValues: []
+        custom: []
+      phone:
+        name: phone
+        description: 'The phone number of the client.'
+        required: true
+        example: eaque
+        type: string
+        enumValues: []
+        custom: []
+      address_id:
+        name: address_id
+        description: "The ID of the client's address."
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        custom: []
+      type:
+        name: type
+        description: 'The type of the client.'
+        required: true
+        example: quod
+        type: string
+        enumValues: []
+        custom: []
+      image:
+        name: image
+        description: "The client's image."
+        required: true
+        example: null
+        type: file
+        enumValues: []
+        custom: []
+      longitude:
+        name: longitude
+        description: "The longitude of the client's location (optional)."
+        required: false
+        example: 7050.368
+        type: number
+        enumValues: []
+        custom: []
+      latitude:
+        name: latitude
+        description: "The latitude of the client's location (optional)."
+        required: false
+        example: 71844905.4
+        type: number
+        enumValues: []
+        custom: []
+    cleanBodyParameters:
+      name: ullam
+      email: zboncak.carlos@example.org
+      phone: eaque
+      address_id: 5
+      type: quod
+      longitude: 7050.368
+      latitude: 71844905.4
+    fileParameters:
+      image: null
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+             "status": "success",
+             "message": "Client created successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+             "status": "error",
+             "message": "Ensure that all required fields are properly filled."
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer da4hfc8P6Ek3a1VZ6Devg5b'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/client/show/{id}'
+    metadata:
+      groupName: Clients
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get client details by ID.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the client.'
+        required: true
+        example: enim
+        type: string
+        enumValues: []
+        custom: []
+    cleanUrlParameters:
+      id: enim
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+             "status": "success",
+             "message": "Client details retrieved successfully",
+             "data": {
+                 "id": 1,
+                 "name": "Client Name",
+                 "email": "client@email.com",
+                 "phone": "123-456-7890",
+                 "address": "Client Address",
+                 "type": "Client Type",
+                 "image": "/images/client/client_image.jpg",
+                 "created_at": "2023-10-30T12:00:00Z",
+                 "updated_at": "2023-10-30T14:30:00Z"
+             }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+             "status": "error",
+             "message": "Client with this ID does not exist"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer EdfZ4h56k1bD36cvgaPVa8e'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/client/update/{id}'
+    metadata:
+      groupName: Clients
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update client information by ID.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the client to update.'
+        required: true
+        example: consectetur
+        type: string
+        enumValues: []
+        custom: []
+    cleanUrlParameters:
+      id: consectetur
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The name of the client.'
+        required: true
+        example: est
+        type: string
+        enumValues: []
+        custom: []
+      email:
+        name: email
+        description: 'The email of the client.'
+        required: true
+        example: gutmann.destiny@example.net
+        type: string
+        enumValues: []
+        custom: []
+      phone:
+        name: phone
+        description: 'The phone number of the client.'
+        required: true
+        example: fugiat
+        type: string
+        enumValues: []
+        custom: []
+      address_id:
+        name: address_id
+        description: 'The address ID of the client.'
+        required: true
+        example: 8
+        type: integer
+        enumValues: []
+        custom: []
+      type:
+        name: type
+        description: 'The type of the client.'
+        required: true
+        example: eligendi
+        type: string
+        enumValues: []
+        custom: []
+      longitude:
+        name: longitude
+        description: "The longitude of the client's address."
+        required: false
+        example: 18040.87352354
+        type: number
+        enumValues: []
+        custom: []
+      latitude:
+        name: latitude
+        description: "The latitude of the client's address."
+        required: false
+        example: 123.9
+        type: number
+        enumValues: []
+        custom: []
+    cleanBodyParameters:
+      name: est
+      email: gutmann.destiny@example.net
+      phone: fugiat
+      address_id: 8
+      type: eligendi
+      longitude: 18040.87352354
+      latitude: 123.9
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+             "status": "success",
+             "message": "Client information updated successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+             "status": "error",
+             "message": "Client with this ID does not exist"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 8e3aP4hDfkbvg1c6Ed65ZaV'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/client/destroy/{id}'
+    metadata:
+      groupName: Clients
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete a client by ID.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the client to delete.'
+        required: true
+        example: nemo
+        type: string
+        enumValues: []
+        custom: []
+    cleanUrlParameters:
+      id: nemo
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+             "status": "success",
+             "message": "Client deleted successfully"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+             "status": "error",
+             "message": "Client with this ID does not exist"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+             "status": "error",
+             "message": "Could not delete this client record, please retry after some time"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer aPf6v8E46hZVe3cDk5ba1dg'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/client/search
+    metadata:
+      groupName: Clients
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Search for clients by name, phone, or email.'
+      description: ''
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {ACCESS_TOKEN}'
+      Content-Type: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      query:
+        name: query
+        description: 'The search query.'
+        required: true
+        example: voluptas
+        type: string
+        enumValues: []
+        custom: []
+      page:
+        name: page
+        description: 'The page number (default: 1).'
+        required: false
+        example: 18
+        type: integer
+        enumValues: []
+        custom: []
+      perpage:
+        name: perpage
+        description: 'The number of results per page (default: 10).'
+        required: false
+        example: 13
+        type: integer
+        enumValues: []
+        custom: []
+    cleanQueryParameters:
+      query: voluptas
+      page: 18
+      perpage: 13
+    bodyParameters:
+      query:
+        name: query
+        description: ''
+        required: true
+        example: sapiente
+        type: string
+        enumValues: []
+        custom: []
+    cleanBodyParameters:
+      query: sapiente
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+             "status": "success",
+             "data": [
+                 {
+                     "id": 1,
+                     "name": "Client Name",
+                     "phone": "1234567890",
+                     "email": "client@example.com",
+                     // ... other client properties
+                 },
+                 // ... other client objects
+             ]
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+             "status": "error",
+             "message": "No record matches your search."
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer vga8V4P516khbacfDE63Zde'
+    controller: null
+    method: null
+    route: null
+    custom: []
