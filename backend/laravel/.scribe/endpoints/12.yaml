@@ -1,0 +1,91 @@
+name: Authentication
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/clientadmin/login
+    metadata:
+      groupName: Authentication
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        name: email
+        description: 'The email address of the client.'
+        required: true
+        example: rick.friesen@example.org
+        type: string
+        enumValues: []
+        custom: []
+      password:
+        name: password
+        description: 'The password of the client.'
+        required: true
+        example: 'inxe;]'
+        type: string
+        enumValues: []
+        custom: []
+    cleanBodyParameters:
+      email: rick.friesen@example.org
+      password: 'inxe;]'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: |-
+          {
+              "status": "success",
+              "message": "User logged in",
+              "data": {
+                  "id": 1,
+                  "name": "John Doe",
+                  "email": "johndoe@example.com",
+                  "token": "your_access_token_here"
+                  // Other user properties
+              }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+              "status": "error",
+              "data": {
+                  "email": [
+                      "The email field is required."
+                  ]
+              }
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 400
+        content: |-
+          {
+              "status": "error",
+              "message": "Wrong Email or Password"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
