@@ -7,12 +7,18 @@ import TableComponent from "../../../components/TableComponent";
 export default function GenerateBudget() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [openViewInfo, SetOpenViewInfo] = React.useState(false);
+  const [budgetDetails, SetBudgetDetails] = React.useState({});
+  const [readOnly, setReadOnly] = React.useState(false);
 
   function openModal() {
     setIsOpen(true);
   }
 
-  const handleViewClick = () => {
+  const handleViewClick = (data, isView) => {
+    if (isView) {
+      setReadOnly(true)
+    } 
+    SetBudgetDetails(data)
     SetOpenViewInfo(true);
   };
 
@@ -47,14 +53,16 @@ export default function GenerateBudget() {
 
   return (
     <div>
-      <AddBudgetModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} />
       <AppModal
         setIsOpen={setView}
-        title={"New Employee"}
         modalIsOpen={openViewInfo}
       >
-        <AddBudgetModal />
+        <AddBudgetModal 
+        data={budgetDetails}      
+        readOnly={readOnly}
+        />
       </AppModal>
+
       <TableComponent
         actionText="Create New Budget"
         columns={columns}
@@ -64,6 +72,7 @@ export default function GenerateBudget() {
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
         viewAction={handleViewClick}
+        editAction={handleViewClick}
       />
     </div>
   );

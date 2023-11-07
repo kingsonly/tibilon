@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import AppModal from "./AppModal";
 import SnackbarComponent from "./SnackbarComponent";
 import TextInput from "./TextInput";
-// const [status, setStatus] = React.useState("success");
-// const [show, setShow] = React.useState(false);
-// const [message, setMessage] = React.useState("");
 
 export default function AddBudgetModal(props) {
-  const { modalIsOpen, setIsOpen } = props;
+  const { modalIsOpen, setIsOpen, data, readOnly } = props;
+  const [loading, setLoading] = React.useState(false);
+
 
   const [inputValue, setInputValue] = useState("");
 
@@ -21,11 +20,11 @@ export default function AddBudgetModal(props) {
       <SnackbarComponent
       //  status={status} show={show} message={message}
       />
-      <AppModal
+      {/* <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         // title={"Add New Client"}
-      >
+      > */}
         <div>
           <div className="flex justify-center items-center ">
             <div className="text-2xl font-semibold">Create New Budget</div>
@@ -39,6 +38,7 @@ export default function AddBudgetModal(props) {
                   w-96 h-20 text-lg text-black outline-none p-6"
                 id="inputfield"
                 placeholder="Budget Title"
+                disabled={readOnly}
               />
             </div>
             <div className=" mt-10">
@@ -47,6 +47,8 @@ export default function AddBudgetModal(props) {
                 className="border border-gray-300 rounded-md p-2 w-96 h-20 text-lg text-black outline-none p-6	"
                 id="inputfield"
                 placeholder="Number Of Units"
+                disabled={readOnly}
+                
               />
             </div>
             <div className=" mt-10">
@@ -54,9 +56,11 @@ export default function AddBudgetModal(props) {
                 className="border border-gray-300 rounded-md p-2 w-96 h-40 text-lg text-black	outline-none p-6"
                 id="inputfield"
                 placeholder="Enter description..."
+                disabled={readOnly}
               />
             </div>
             <div className=" mt-6">
+            {!readOnly && (
               <Button
                 sx={{
                   textTransform: "none",
@@ -66,15 +70,16 @@ export default function AddBudgetModal(props) {
                 }}
                 variant="contained"
                 color="success"
-                // onClick={() => submit(false)}
+                onClick={() => submit(false)}
               >
-                Create
-                {/* {!loading ? "Save" : "Loading......"} */}
+               
+                {!loading ? "Create" : "Loading......"}
               </Button>
+               )}
             </div>
           </div>
         </div>
-      </AppModal>
+      {/* </AppModal> */}
     </div>
   );
 }
