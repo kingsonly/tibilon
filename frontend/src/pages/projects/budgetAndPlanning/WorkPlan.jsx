@@ -40,9 +40,9 @@ export default function WorkPlan() {
     },
   ];
 
-  const dataKeyAccessors = ["name", "description", "amount"];
+  const dataKeyAccessors = ["name", "description", "amount", "CTA"];
 
-  const columns = ["Name", "Description", "Amount(₦)"];
+  const columns = ["Item", "Description", "Amount(₦)", "Action"];
 
   return (
     <div>
