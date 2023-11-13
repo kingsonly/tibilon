@@ -139,14 +139,35 @@ export default function Clients() {
     setEditModalIsOpen(true);
   };
   const deleteAction = (id) => {
-    // Filter out the data with the specified id
-    const updatedData = data.filter((item) => item.id !== id);
+    // Make an API call to delete the client data from the server
+    const token = localStorage.getItem("token");
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/client/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 204) {
+          // Deletion on the server was successful, now update the client-side state
   
-    // Update the data state with the filtered data
-    setData(updatedData);
-    console.log(id);
-    // Now, you can also make an API call to delete the item from the server here if needed.
-    // axios.delete(`your_api_endpoint/${id}`)
+          // Filter out the deleted client data from the data array
+          const updatedData = data.filter((item) => item.id !== id);
+          setData(updatedData);
+  
+          // Close the confirmation dialog/modal if needed
+          setOpen(false);
+  
+          // You can also show a success message to the user
+          // or perform any other necessary actions.
+        }
+      })
+      .catch((error) => {
+        // Handle API call errors and show an error message to the user
+        console.error("Error deleting client data: ", error);
+  
+        // You can set an error state in your component and display an error message to the user
+      });
   };
 
 

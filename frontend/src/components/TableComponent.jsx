@@ -171,7 +171,7 @@ export default function TableComponent({
                       "Delete Client Details",
                       "Are you sure you want to delete Client Details?"
                     )
-                      ? deleteAction && deleteAction(row.id)
+                      ? deleteAction && deleteAction(row == id)
                       : null;
                   }}
                 />
