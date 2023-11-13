@@ -3,6 +3,7 @@ import WorkPlan from "./WorkPlan";
 import BillOfQuantity from "./BillOfQuantity";
 import TabComponent from "../../../components/TabComponent";
 import BreadCrumb from "../../../components/BreadCrumb";
+import ViewWorkStage from "./ViewWorkStage";
 
 export default function BudgetAndPlanning() {
   const components = [
@@ -15,6 +16,11 @@ export default function BudgetAndPlanning() {
       id: 2,
       component: BillOfQuantity,
       header: "Work Plan/Schedule",
+    },
+    {
+      id: 3,
+      component: ViewWorkStage,
+      header: "Work Stage",
     },
   ];
 

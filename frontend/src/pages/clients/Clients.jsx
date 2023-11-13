@@ -2,6 +2,8 @@ import React, { useEffect,useRef } from "react";
 import TableComponent from "../../components/TableComponent";
 import AddProjectModal from "../../components/AddProjectModal";
 import AddClientModal from "../../components/AddClientModal";
+import EditClientModal from "../../components/EditClientModal";
+import ClientListView from "../../components/ClientListView";
 import axios from "axios";
 
 
@@ -11,6 +13,8 @@ export default function Clients() {
   const [editModalIsOpen, setEditModalIsOpen] = React.useState(false);
   const [perpage, setPerpage] = React.useState(10);
   const [hasMore, setHasMore] = React.useState(false);
+  const [selectedClientData, setSelectedClientData] = React.useState(null);
+  const [editClientData, setEditClientData] = React.useState(null);
   const [data, setData] = React.useState([]);
   const [link, setLink] = React.useState(`${process.env.REACT_APP_API_URL}/client`);
   
@@ -125,24 +129,68 @@ export default function Clients() {
     setIsOpen(true);
   };
 
-  const displayClientList = () => {
+  const displayClientList = (clientData) => {
     // setopenPaymentModal(true);
+    setSelectedClientData(clientData);
     setViewModalIsOpen(true);
   };
-  const editClientModal = () => {
-    // setopenPaymentModal(true);
+  const editClientModal = (clientData) => {
+    setSelectedClientData(clientData);
     setEditModalIsOpen(true);
   };
   const deleteAction = (id) => {
-    setData(data.filter((datas) => datas != id));
-    console.log(id)
+    // Make an API call to delete the client data from the server
+    const token = localStorage.getItem("token");
+    axios
+      .delete(`${process.env.REACT_APP_API_URL}/client/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 204) {
+          // Deletion on the server was successful, now update the client-side state
+  
+          // Filter out the deleted client data from the data array
+          const updatedData = data.filter((item) => item.id !== id);
+          setData(updatedData);
+  
+          // Close the confirmation dialog/modal if needed
+          setOpen(false);
+  
+          // You can also show a success message to the user
+          // or perform any other necessary actions.
+        }
+      })
+      .catch((error) => {
+        // Handle API call errors and show an error message to the user
+        console.error("Error deleting client data: ", error);
+  
+        // You can set an error state in your component and display an error message to the user
+      });
   };
 
 
   return (
-    <div className="bg-[white] p-[47px]">
+    <div className="bg-[white
+    ] p-[47px]">
       <hr className="my-6" />
       <AddClientModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} fetchData={fetchData}  />
+      {/* <EditClientModal setIsOpen={setEditModalIsOpen} modalIsOpen={editModalIsOpen} editClientData={editClientData} /> */}
+      {editModalIsOpen && (
+        <EditClientModal
+          clientData={selectedClientData}
+          closeModal={() => setEditModalIsOpen(false)}
+          fetchData={fetchData} // Pass fetchData to update data after editing
+        />
+      )}
+      {/* <ClientListView setIsOpen={ setViewModalIsOpen} modalIsOpen={viewModalIsOpen}   /> */}
+      {viewModalIsOpen && (
+        <ClientListView
+          clientData={selectedClientData}
+          closeModal={() => setViewModalIsOpen(false)}
+        />
+      )}
       <TableComponent
         actionText="Add New Client"
         columns={columns}
@@ -153,6 +201,9 @@ export default function Clients() {
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
         fetchMoreDataProps={fetchData}
+        viewAction={displayClientList}
+        editAction={editClientModal}
+        deleteAction={deleteAction}
         
       />
     </div>
