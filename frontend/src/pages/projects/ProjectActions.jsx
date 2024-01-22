@@ -1,6 +1,6 @@
 import React from "react";
 import ProjectActionCards from "../../components/ProjectActionCards";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import budgetIcon from "../../assests/finance.svg";
 import paymentIcon from "../../assests/payment.svg";
 import propertiesIcon from "../../assests/house.svg";
@@ -9,8 +9,8 @@ import materialIcon from "../../assests/materials.svg";
 import BreadCrumb from "../../components/BreadCrumb";
 
 export default function ProjectActions() {
-
   const { id, name } = useParams();
+  const navigate = useNavigate()
 
   const breadCrumbs = [
     {
@@ -30,39 +30,73 @@ export default function ProjectActions() {
         className="flex flex-wrap items-between p-6 gap-6"
       >
         <div>
-          <Link to={"/projects/actions/budget-planning"}>
+          <div
+            onClick={() =>
+              navigate("/projects/actions/budget-planning", { state: {name, id} })
+            }
+          >
             <ProjectActionCards name={"Budget & Planning"} image={budgetIcon} />
-          </Link>
+          </div>
         </div>
         <div>
-          <Link to={"/projects/actions/payment-schedule"}>
+          <div
+            onClick={() =>
+              navigate("/projects/actions/payment-schedule", { state: {name, id} })
+            }
+          >
+            {" "}
             <ProjectActionCards name={"Payment Schedule"} image={paymentIcon} />
-          </Link>
+          </div>
         </div>
         <div>
-          <Link to={`/projects/actions/project-properties/${id}`}>
+          <div
+            onClick={() =>
+              navigate(`/projects/actions/project-properties/${id}`, {
+                state: {name, id},
+              })
+            }
+          >
+            {" "}
             <ProjectActionCards name={"Properties"} image={propertiesIcon} />
-          </Link>
+          </div>
         </div>
         <div>
-          <Link to={"/projects/project-tasks"}>
+          <div
+            onClick={() => navigate("/projects/project-tasks", { state: {name, id} })}
+          >
+            {" "}
             <ProjectActionCards name={"Tasks"} image={taskIcon} />
-          </Link>
+          </div>
         </div>
         <div>
-          <Link to={"/projects/project-materials"}>
+          <div
+            onClick={() =>
+              navigate("/projects/project-materials", { state: {name, id} })
+            }
+          >
+            {" "}
             <ProjectActionCards name={"Materials"} image={materialIcon} />
-          </Link>
+          </div>
         </div>
         <div>
-          <Link to={"/projects/actions/budget-planning"}>
+          <div
+            onClick={() =>
+              navigate("/projects/actions/budget-planning", { state: {name, id} })
+            }
+          >
+            {" "}
             <ProjectActionCards name={"Project Team"} image={propertiesIcon} />
-          </Link>
+          </div>
         </div>
         <div>
-          <Link to={`/projects/actions/documents/${id}`}>
+          <div
+            onClick={() =>
+              navigate(`/projects/actions/documents/${id}`, { state: {name, id} })
+            }
+          >
+            {" "}
             <ProjectActionCards name={"Documents"} image={propertiesIcon} />
-          </Link>
+          </div>
         </div>
       </div>
     </div>

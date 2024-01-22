@@ -3,8 +3,12 @@ import WorkPlan from "./WorkPlan";
 import BillOfQuantity from "./BillOfQuantity";
 import TabComponent from "../../../components/TabComponent";
 import BreadCrumb from "../../../components/BreadCrumb";
+import { useLocation } from "react-router-dom";
 
 export default function BudgetAndPlanning() {
+
+  const { state } = useLocation();
+
   const components = [
     {
       id: 1,
@@ -20,12 +24,8 @@ export default function BudgetAndPlanning() {
 
   const breadCrumbs = [
     {
-      name: "Project",
-      link: "/projects",
-    },
-    {
-      name: "Mabuchi Project",
-      link: "#",
+      name: "Project Actions",
+      link: `/projects/actions/${state?.id}/${state?.name}`,
     },
     {
       name: "Budget Planning",

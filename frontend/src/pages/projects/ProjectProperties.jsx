@@ -4,7 +4,7 @@ import DetailedPropertyCard from "../../components/DetailedPropertyCard";
 import { AiOutlineSearch } from "react-icons/ai";
 import { projectData } from "../../data";
 import BreadCrumb from "../../components/BreadCrumb";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import AddPropertyModal from "../../components/AddPropertyModal";
 import {
@@ -17,6 +17,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 export default function ProjectProperties() {
   const [properties, setProperties] = useState([]);
   const { id } = useParams();
+  const { state } = useLocation();
   var token = localStorage.getItem("token");
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [amenities, setAmenities] = useState();
@@ -113,8 +114,8 @@ export default function ProjectProperties() {
 
   const breadCrumbs = [
     {
-      name: "Projects Action",
-      link: "/projects/actions/1",
+      name: "Project Actions",
+      link: `/projects/actions/${state?.id}/${state?.name}`,
     },
     {
       name: "Project Property",
