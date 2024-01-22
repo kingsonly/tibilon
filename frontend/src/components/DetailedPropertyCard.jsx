@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { imageBaseUrl } from "../services/apiservices/urls";
 import DialogModal from "./DialogModal";
 import { ToastContainer, toast } from "react-toastify";
@@ -12,6 +12,8 @@ export default function DetailedPropertyCard(props) {
   const [open, setOpen] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [DialogTitle, setDialogTitle] = useState("");
+  const navigate = useNavigate()
+  const { id } = useParams()
 
   const openDialogModal = (title, message) => {
     setDialogMessage(message);
@@ -55,7 +57,14 @@ export default function DetailedPropertyCard(props) {
         action={deleteProperty}
         buttonText={"Delete"}
       />
-      <Link to={`/projects/actions/project-properties/details/${project?.id}`}>
+      <div
+        onClick={() =>
+          navigate(
+            `/projects/actions/project-properties/details/${project?.id}`,
+            { state: { id } }
+          )
+        }
+      >
         <div className="w-[449px] bg-white border-2 mb-[37px]">
           {project?.status == "Paid" && (
             <div className="output-container">
@@ -170,7 +179,7 @@ export default function DetailedPropertyCard(props) {
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </Fragment>
   );
 }
