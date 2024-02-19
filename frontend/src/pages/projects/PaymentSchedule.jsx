@@ -1,9 +1,11 @@
 import React from "react";
 import TableComponent from "../../components/TableComponent";
 import BreadCrumb from "../../components/BreadCrumb";
+import { useLocation } from "react-router-dom";
 
 export default function PaymentSchedule() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const { state } = useLocation();
 
   function openModal() {
     setIsOpen(true);
@@ -75,8 +77,8 @@ export default function PaymentSchedule() {
 
   const breadCrumbs = [
     {
-      name: "projects Action",
-      link: "/projects/actions/1",
+      name: "Project Actions",
+      link: `/projects/actions/${state?.id}/${state?.name}`,
     },
     {
       name: "Payment Schedule",

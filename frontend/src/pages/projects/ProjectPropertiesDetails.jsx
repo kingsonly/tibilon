@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Button, CircularProgress } from "@mui/material";
 import TableComponent from "../../components/TableComponent";
 import {
@@ -20,6 +20,8 @@ import { getAllPropertyPayments } from "../../services/apiservices/paymentsServi
 
 export default function ProjectPropertiesDetails() {
   const { id } = useParams();
+  const { state } = useLocation();
+
   const [property, setProperty] = useState();
   const [loading, setLoading] = useState(false);
   const [amenities, setAmenities] = useState([]);
@@ -97,7 +99,7 @@ export default function ProjectPropertiesDetails() {
   const breadCrumbs = [
     {
       name: "Projects Properties",
-      link: "/projects/actions/1",
+      link: `/projects/actions/project-properties/${state?.id}`,
     },
     {
       name: "Project Details",
