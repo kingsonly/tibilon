@@ -15,54 +15,58 @@ use Illuminate\Support\Facades\DB;
 /**
  * @group dashboard management
  *
- * APIs for managing basic dashboard requirments 
+ * APIs for managing basic dashboard requirments
  */
 
 class DashboardController extends Controller
 {
     /**
- * Retrieve various statistics and data for the dashboard.
- *
- * @response {
- *    "status": "success",
- *    "data": {
- *        "totalProjects": 10,
- *        "totalCompletedProject": 5,
- *        "totalInprogressProject": 5,
- *        "totalPropertyPayment": 20,
- *        "totalCompletedPropertyPayment": 15,
- *        "totalIncompletedPropertyPayment": 5,
- *        "totalProperty": 20,
- *        "totalContractors": 8,
- *        "totalInhouseContractor": 4,
- *        "totalExternalContractor": 4,
- *        "totalSoldProperty": 15,
- *        "totalAvailableProperty": 5,
- *        "affiliate": {
- *            "January": 5,
- *            "February": 8,
- *            ...
- *        },
- *        "SalesTeam": {
- *            "January": 10,
- *            "February": 12,
- *            ...
- *        },
- *        "task": [
- *            {
- *                "id": 1,
- *                "title": "Task 1",
- *                "description": "Lorem ipsum dolor sit amet.",
- *                ...
- *            },
- *            ...
- *        ]
- *    }
- * }
- */
+     * @group Statistics
+     *
+     * Get project and property statistics.
+     *
+     * This endpoint provides statistics related to projects, property payments, properties, contractors, and sales reports.
+     *
+     * @response {
+     *    "status": "success",
+     *    "data": {
+     *        "totalProjects": 10,
+     *        "totalCompletedProject": 5,
+     *        "totalInprogressProject": 5,
+     *        "totalPropertyPayment": 20,
+     *        "totalCompletedPropertyPayment": 15,
+     *        "totalIncompletedPropertyPayment": 5,
+     *        "totalProperty": 20,
+     *        "totalContractors": 8,
+     *        "totalInhouseContractor": 4,
+     *        "totalExternalContractor": 4,
+     *        "totalSoldProperty": 15,
+     *        "totalAvailableProperty": 5,
+     *        "affiliate": {
+     *            "January": 5,
+     *            "February": 8,
+     *            ...
+     *        },
+     *        "SalesTeam": {
+     *            "January": 10,
+     *            "February": 12,
+     *            ...
+     *        },
+     *        "task": [
+     *            {
+     *                "id": 1,
+     *                "title": "Task 1",
+     *                "description": "Lorem ipsum dolor sit amet.",
+     *                ...
+     *            },
+     *            ...
+     *        ]
+     *    }
+     * }
+     */
     public function index()
     {
-        // Project Statistics 
+        // Project Statistics
         $getProject = Project::all()->count();
         $getCompletedProject = Project::where(["status" => Project::Completed])->count();
         $getInprogressProject = Project::where(["status" => Project::Inprogress])->count();
@@ -77,7 +81,7 @@ class DashboardController extends Controller
         $getSoldPropertyBasedOnPayment = PropertyPayment::distinct('property_id')->count();
         $totalAvailableProperty = $getProperty -  $getSoldPropertyBasedOnPayment;
 
-        // contractors 
+        // contractors
         $getTotalContractors = Contractor::all()->count();
         $getTotalInhouseContractor = Contractor::where(["type" => Contractor::InHouse])->count();
         $getTotalExternalContractor = Contractor::where(["type" => Contractor::External])->count();
@@ -127,7 +131,7 @@ class DashboardController extends Controller
             ->where('work_stage_id', WorkOrder::Pending)
             ->orderBy('id', 'DESC')
             ->get();
-        
+
 
         $data = [
             "totalProjects" =>  $getProject,
