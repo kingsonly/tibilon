@@ -134,7 +134,7 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            cd backend/laravel && rsync --delete -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'   app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json public/ skillz@185.160.67.60:tibilon/laravel
+            cd backend/laravel && rsync --delete --exclude=public -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'   app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json public/ skillz@185.160.67.60:tibilon/laravel
             
             
       # - run:
@@ -178,7 +178,7 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            cd backend/laravel && rsync --delete -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'   public/ app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json skillz@185.160.67.60:tibilonproduction
+            cd backend/laravel && rsync --delete --exclude=public -va -e 'ssh -p 7822 -o StrictHostKeyChecking=no'   public/ app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json skillz@185.160.67.60:tibilonproduction
             
       # - run:
       #     name: ssh and run migration on live server  
@@ -252,7 +252,8 @@ jobs:
       - run:
           name: ssh login  
           command: |
-            cd backend/laravel && rsync -v -va -e 'ssh -p 21098 -o StrictHostKeyChecking=no' --delete app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json tibicons23@162.213.255.3:tibilon/laravel
+            cd backend/laravel && rsync -v -va -e 'ssh -p 21098 -o StrictHostKeyChecking=no' --delete --exclude=public app database phpunit.xml storage vendor artisan .env tests bootstrap composer.json resources composer.lock routes config package.json tibicons23@162.213.255.3:tibilon/laravel
+
           #timeout: 20m
             
       # - run:
