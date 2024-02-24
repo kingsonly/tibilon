@@ -1,7 +1,7 @@
 import React from "react";
 import TableComponent from "../../components/TableComponent";
 import TextInput from "../../components/TextInput";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import AppModal from "../../components/AppModal";
 
 export default function ProjectTasks() {
@@ -76,7 +76,7 @@ export default function ProjectTasks() {
   ];
   return (
     <div className="bg-white p-4">
-      <AppModal
+      {/* <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         title={"Enter New Property"}
@@ -165,10 +165,11 @@ export default function ProjectTasks() {
             </Button>
           </div>
         </div>
-      </AppModal>
+      </AppModal> */}
+
       <div className="font-bold text-[20px]">Project Tasks</div>
 
-      <TableComponent
+      {/* <TableComponent
         actionText="Add New Task"
         columns={columns}
         data={data}
@@ -176,7 +177,9 @@ export default function ProjectTasks() {
         searchFunction={searchFunction}
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
-      />
+      /> */}
+
+      <Typography variant="h3">Coming Soon </Typography>
     </div>
   );
 }

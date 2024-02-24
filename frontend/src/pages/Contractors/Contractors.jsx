@@ -3,6 +3,7 @@ import TabComponent from "../../components/TabComponent";
 import AllContractors from "./AllContractors";
 import Vendors from "./Vendors";
 import SubPageName from "../../components/SubPageName";
+import { Typography } from "@mui/material";
 
 const components = [
   {
@@ -20,11 +21,12 @@ const components = [
 export default function Contractors() {
   return (
     <div className="bg-white p-[47px]">
-      <SubPageName name="Contractors Details"/>
+      <Typography variant="h3">Coming Soon </Typography>
+      {/* {<SubPageName name="Contractors Details"/>
       <hr />
       <div className="m-0" >
         <TabComponent components={components} />
-      </div>
+      </div>} */}
     </div>
   );
 }
