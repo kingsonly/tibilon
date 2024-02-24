@@ -4,9 +4,9 @@ import BillOfQuantity from "./BillOfQuantity";
 import TabComponent from "../../../components/TabComponent";
 import BreadCrumb from "../../../components/BreadCrumb";
 import { useLocation } from "react-router-dom";
+import { Typography } from "@mui/material";
 
 export default function BudgetAndPlanning() {
-
   const { state } = useLocation();
 
   const components = [
@@ -36,7 +36,8 @@ export default function BudgetAndPlanning() {
     <div className="bg-[white] p-[47px]">
       <BreadCrumb breadCrumbs={breadCrumbs} />
       <hr />
-      <TabComponent components={components} />
+      <Typography variant="h3">Coming Soon </Typography>
+      {/* <TabComponent components={components} /> */}
     </div>
   );
 }
