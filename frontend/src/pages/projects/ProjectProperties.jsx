@@ -78,6 +78,23 @@ export default function ProjectProperties() {
     }
   };
 
+  const searchFunction = async (e) => {
+    if (e.target.value.length >= 3) {
+      let query = e.target.value;
+      let data = {
+        query: query,
+      };
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/property/search`, data)
+        .then((response) => {
+          setProperties(response.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   const getProperties = async () => {
     try {
       setLoading(true);
@@ -102,7 +119,7 @@ export default function ProjectProperties() {
 
   useEffect(() => {
     getProjectDashboard();
-    fetchData();
+    //fetchData();
     getProperties();
     // getPropertyLists();
   }, [token]);
@@ -123,8 +140,7 @@ export default function ProjectProperties() {
     },
   ];
 
-
-  console.log(properties,'propertiesproperties');
+  console.log(properties, "propertiesproperties");
   return (
     <div className="bg-white h-screen p-8">
       <BreadCrumb breadCrumbs={breadCrumbs} />
@@ -202,7 +218,7 @@ export default function ProjectProperties() {
               <input
                 className="w-[100%] ml-[20px] border-none focus:outline-0 placeholder-red-300::placeholder"
                 placeholder="Quick Search"
-                // onChange={searchFunction}
+                onChange={searchFunction}
                 role="search-input"
               />
             </div>
