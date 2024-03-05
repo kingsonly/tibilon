@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import TableComponent from "../../components/TableComponent";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +11,7 @@ export default function AllContractors() {
       address: "1 Masarki Close Wuse 2",
       mobile: "080312345678",
       description: "Building",
-      source:"External",
+      source: "External",
       // price: "80,000,000",
       action: "view",
     },
@@ -33,7 +31,7 @@ export default function AllContractors() {
       address: "1 Masarki Close Wuse 2",
       mobile: "080312345678",
       description: "Construction",
-      source:"External",
+      source: "External",
       // price: "80,000,000",
       action: "view",
     },
@@ -43,7 +41,7 @@ export default function AllContractors() {
       address: "1 Masarki Close Wuse 2",
       mobile: "080312345678",
       description: "Construction",
-      source:"External",
+      source: "External",
       // price: "80,000,000",
       action: "view",
     },
@@ -53,7 +51,7 @@ export default function AllContractors() {
       address: "1 Masarki Close Wuse 2",
       mobile: "080312345678",
       description: "Construction",
-      source:"External",
+      source: "External",
       // price: "80,000,000",
       action: "view",
     },
