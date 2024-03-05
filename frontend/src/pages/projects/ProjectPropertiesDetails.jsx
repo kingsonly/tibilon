@@ -31,9 +31,10 @@ export default function ProjectPropertiesDetails() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [hasMore, setHasMore] = React.useState(false);
-  const [link, setLink] = React.useState(`${process.env.REACT_APP_API_URL}/property`);
+  const [link, setLink] = React.useState(
+    `${process.env.REACT_APP_API_URL}/property`
+  );
   const [perpage, setPerpage] = React.useState(10);
-
 
   function openModal() {
     setIsOpen(true);
@@ -107,7 +108,6 @@ export default function ProjectPropertiesDetails() {
     },
   ];
 
-
   const openDialogModal = (title, message) => {
     setDialogMessage(message);
     setDialogTitle(title);
@@ -115,7 +115,6 @@ export default function ProjectPropertiesDetails() {
   };
 
   const deleteAction = async (amenity) => {
-
     try {
       const res = await deleteAmenityFromProperty({ id: amenity.id });
       toast.success(`${res?.data?.status || res.message}`, {
@@ -127,9 +126,7 @@ export default function ProjectPropertiesDetails() {
       });
       getPropertyDetails();
       console.log(res);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const deleteProperty = async () => {
@@ -179,7 +176,7 @@ export default function ProjectPropertiesDetails() {
           projectId={property?.project?.id}
           // payments={""}
           property={property}
-        // fetchData= {fetchData} setIsOpen={setIsOpen}
+          // fetchData= {fetchData} setIsOpen={setIsOpen}
         />
       </AppModal>
 
@@ -202,7 +199,7 @@ export default function ProjectPropertiesDetails() {
       )}
       <div className="flex justify-between">
         <div className="text-[24px] font-medium">View Property</div>
-        <div className="text-[#40A74E] text-[16px] font-bold">Amenities</div>
+        <div className="text-[#40A74E] text-[16px] font-bold"></div>
       </div>
       <hr className="my-8" />
 
