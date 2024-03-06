@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Button, CircularProgress } from "@mui/material";
 import TableComponent from "../../components/TableComponent";
 import {
@@ -20,6 +20,8 @@ import { getAllPropertyPayments } from "../../services/apiservices/paymentsServi
 
 export default function ProjectPropertiesDetails() {
   const { id } = useParams();
+  const { state } = useLocation();
+
   const [property, setProperty] = useState();
   const [loading, setLoading] = useState(false);
   const [amenities, setAmenities] = useState([]);
@@ -29,9 +31,10 @@ export default function ProjectPropertiesDetails() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [hasMore, setHasMore] = React.useState(false);
-  const [link, setLink] = React.useState(`${process.env.REACT_APP_API_URL}/property`);
+  const [link, setLink] = React.useState(
+    `${process.env.REACT_APP_API_URL}/property`
+  );
   const [perpage, setPerpage] = React.useState(10);
-
 
   function openModal() {
     setIsOpen(true);
@@ -97,14 +100,13 @@ export default function ProjectPropertiesDetails() {
   const breadCrumbs = [
     {
       name: "Projects Properties",
-      link: "/projects/actions/1",
+      link: `/projects/actions/project-properties/${state?.id}`,
     },
     {
       name: "Project Details",
       link: "#",
     },
   ];
-
 
   const openDialogModal = (title, message) => {
     setDialogMessage(message);
@@ -113,7 +115,6 @@ export default function ProjectPropertiesDetails() {
   };
 
   const deleteAction = async (amenity) => {
-
     try {
       const res = await deleteAmenityFromProperty({ id: amenity.id });
       toast.success(`${res?.data?.status || res.message}`, {
@@ -125,9 +126,7 @@ export default function ProjectPropertiesDetails() {
       });
       getPropertyDetails();
       console.log(res);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const deleteProperty = async () => {
@@ -177,7 +176,7 @@ export default function ProjectPropertiesDetails() {
           projectId={property?.project?.id}
           // payments={""}
           property={property}
-        // fetchData= {fetchData} setIsOpen={setIsOpen}
+          // fetchData= {fetchData} setIsOpen={setIsOpen}
         />
       </AppModal>
 
@@ -200,7 +199,7 @@ export default function ProjectPropertiesDetails() {
       )}
       <div className="flex justify-between">
         <div className="text-[24px] font-medium">View Property</div>
-        <div className="text-[#40A74E] text-[16px] font-bold">Amenities</div>
+        <div className="text-[#40A74E] text-[16px] font-bold"></div>
       </div>
       <hr className="my-8" />
 

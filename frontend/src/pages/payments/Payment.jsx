@@ -3,7 +3,7 @@ import TabComponent from "../../components/TabComponent";
 import AllPayments from "./AllPayments";
 import OneOffPayments from "./OneOffPayments";
 import InstallmentalPayments from "./InstallmentalPayments";
-
+import { Typography } from "@mui/material";
 
 const components = [
   {
@@ -26,7 +26,8 @@ const components = [
 export default function Payment() {
   return (
     <div className="bg-white p-[47px]">
-      <TabComponent components={components} />
+      <Typography variant="h3">Coming Soon </Typography>
+      {/* <TabComponent components={components} /> */}
     </div>
   );
 }

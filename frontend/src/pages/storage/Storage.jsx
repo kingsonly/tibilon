@@ -3,7 +3,7 @@ import TabComponent from "../../components/TabComponent";
 import Inventory from "./Inventory";
 import MaterialRequests from "./MaterialRequests";
 import PurchasedAndReceived from "./PurchasedAndReceived";
-
+import { Typography } from "@mui/material";
 
 const components = [
   {
@@ -26,7 +26,8 @@ const components = [
 export default function Storage() {
   return (
     <div className="bg-white p-[47px]">
-      <TabComponent components={components} />
+      <Typography variant="h3">Coming Soon </Typography>
+      {/* {<TabComponent components={components} />} */}
     </div>
   );
 }
