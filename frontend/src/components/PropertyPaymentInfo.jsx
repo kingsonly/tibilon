@@ -4,16 +4,9 @@ import { useNavigate } from "react-router-dom";
 import TableComponent from "./TableComponent";
 import { imageBaseUrl } from "../services/apiservices/urls";
 
-
-import {
-  AiFillDelete,
-  AiFillEdit,
-  AiFillEye,
-  AiOutlineSearch,
-} from "react-icons/ai";
+import { BsReceipt } from "react-icons/bs";
 import axios from "axios";
-export default function PropertyPaymentInfo({ payments, projectId, property, }) {
-
+export default function PropertyPaymentInfo({ payments, projectId, property }) {
   const navigate = useNavigate();
   const [firstTimePayment, setfirstTimePayment] = React.useState(true);
 
@@ -47,29 +40,34 @@ export default function PropertyPaymentInfo({ payments, projectId, property, }) 
   ];
 
   const getReciept = async (id) => {
+    console.log(id);
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'receipt.pdf');
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data.pdf_url]));
+      const link = document.createElement("a");
+      link.target = "_blank";
+      link.href =
+        "https://api.tibilon.skillzserver.com/" + response.data.pdf_url;
+      link.setAttribute("download", "receipt.pdf");
       document.body.appendChild(link);
       link.click();
+      console.log(response.data);
     } catch (error) {
-      console.error('Error downloading PDF:', error);
+      console.error("Error downloading PDF:", error);
     }
     // var token = localStorage.getItem("token");
     // try {
-      
+
     //   const response = await axios.get(
     //     `${process.env.REACT_APP_API_URL}/user/paymentreceipt/${id}`
     //   );
-      
+
     // } catch (error) {
     //   console.error(error);
     // }
-
-  }
+  };
 
   return (
     <Fragment>
@@ -141,7 +139,6 @@ export default function PropertyPaymentInfo({ payments, projectId, property, }) 
             </>
           ) : (
             <>
-           
               <div className="flex flex-col gap-4">
                 <div className="flex gap-5 items-center">
                   <div className="font-bold text-[18px]">Name:</div>
@@ -214,7 +211,7 @@ export default function PropertyPaymentInfo({ payments, projectId, property, }) 
             // paginationChange={paginationChange}
             dataKeyAccessors={dataKeyAccessors}
             hasCustom={true}
-            hasCustomIcon={<AiFillDelete />}
+            hasCustomIcon={<BsReceipt className="cursor-pointer" />}
             hasCustomAction={getReciept}
           />
         )}

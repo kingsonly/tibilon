@@ -74,8 +74,8 @@ class DashboardController extends Controller
 
         // property statistics
         $getProperty = Property::all()->count();
-        $getSoldPropertyBasedOnPayment = PropertyPayment::distinct('property_id')->count();
-        $totalAvailableProperty = $getProperty -  $getSoldPropertyBasedOnPayment;
+        $getSoldPropertyBasedOnPayment = $getCompletedPropertyPayment;//PropertyPayment::distinct('property_id')->count();
+        $totalAvailableProperty = Property::where(["status" => Property::Available])->count();//$getProperty -  $getSoldPropertyBasedOnPayment;
 
         // contractors 
         $getTotalContractors = Contractor::all()->count();
