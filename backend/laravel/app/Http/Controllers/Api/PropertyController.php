@@ -226,6 +226,14 @@ class PropertyController extends Controller
     // check if a property has an agent and client
     //first fetch property with agent and client
     $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
+    $totalPayment = $getProperty->payments->sum(function ($payment) {
+      return $payment->amount ?? 0;
+    }) + $request->amount;
+
+    if ($getProperty->status == 1 ||  $totalPayment > $getProperty->amount) {
+      return response()->json(["status" => "error", "message" => "You payment is complete or this amount is greater than the remaining balance"], 400);
+    }
+
     if (empty($getProperty->agent) or empty($getProperty->client)) {
       // check if post value exist to create
       $agentClientValidator = Validator::make($request->all(), [
@@ -580,10 +588,10 @@ class PropertyController extends Controller
             <div class='body'>
               <div class='parent-div'>
                 <div class='heading'>
-                <h1>Tibilon Construction Ltd</h1>
+                <h1 style='color:#DAB870'>Tibilon Construction Ltd</h1>
                 </div>
                 <div class='heading'>
-                  <h2>Payment Receipt</h2>
+                  <h2 style='text-decoration:underline'>Payment Receipt</h2>
                 </div>
 
                 <div style='display:flex ' class='receipt-information'>
@@ -625,7 +633,8 @@ class PropertyController extends Controller
                     <tr style='height: 220px'>
                       <td style='height: 220px'>1</td>
                       <td style='height: 220px'>
-                        {$propertyDescription}
+                      
+                      {$model->property->project->name} ( {$propertyDescription} )
                       </td>
                       <td style='height: 220px'>N{$amount}</td>
                     </tr>
