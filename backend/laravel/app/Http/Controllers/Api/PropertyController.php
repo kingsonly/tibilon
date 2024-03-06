@@ -1109,7 +1109,11 @@ class PropertyController extends Controller
         //return $dompdf->stream($filename);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     $pdfFilePath = 'pdfs/' . $filename;
+=======
+    $pdfFilePath = public_path('pdfs/' . $filename);
+>>>>>>> 3dca13b (wip)
     file_put_contents($pdfFilePath, $dompdf->output());
 =======
         $pdfFilePath = public_path('pdfs/' . $filename);
