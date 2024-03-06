@@ -645,21 +645,29 @@ class PropertyController extends Controller
 
         $loggedinuser = auth()->guard('sanctum')->user();
 
-        // check if a property has an agent and client
-        //first fetch property with agent and client
-        $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
-        if (empty($getProperty->agent) or empty($getProperty->client)) {
-            // check if post value exist to create
-            $agentClientValidator = Validator::make($request->all(), [
-                'client' => 'required', //client_id
-                'agent' => 'required', //agent_id
-                'agentType' => 'required', //select of affiliate and employee
-                'paymentFrequency' => 'required', //select of affiliate and employee
-                'commision' => 'required', //commission for agent in percentage
-            ]);
-            if ($agentClientValidator->fails()) {
-                return response()->json(["status" => "error", "message" => "please ensure client and agent values are available", "data" => $getProperty], 400);
-            }
+    // check if a property has an agent and client
+    //first fetch property with agent and client
+    $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
+    $totalPayment = $getProperty->payments->sum(function ($payment) {
+      return $payment->amount ?? 0;
+    }) + $request->amount;
+
+    if ($getProperty->status == 1 ||  $totalPayment > $getProperty->amount) {
+      return response()->json(["status" => "error", "message" => "You payment is complete or this amount is greater than the remaining balance"], 400);
+    }
+
+    if (empty($getProperty->agent) or empty($getProperty->client)) {
+      // check if post value exist to create
+      $agentClientValidator = Validator::make($request->all(), [
+        'client' => 'required', //client_id
+        'agent' => 'required', //agent_id
+        'agentType' => 'required', //select of affiliate and employee
+        'paymentFrequency' => 'required', //select of affiliate and employee
+        'commision' => 'required', //commission for agent in percentage
+      ]);
+      if ($agentClientValidator->fails()) {
+        return response()->json(["status" => "error", "message" => "please ensure client and agent values are available", "data" => $agentClientValidator], 400);
+      }
 
             $client = $request->input("client");
             $agent = $request->input("agent");
