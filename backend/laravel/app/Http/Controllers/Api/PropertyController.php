@@ -27,442 +27,442 @@ use NumberToWords\NumberToWords;
 
 class PropertyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request): AnonymousResourceCollection
-    {
-        $validator = Validator::make($request->all(), [
-            'id' => 'required',
-        ]);
+  /**
+   * Display a listing of the resource.
+   */
+  public function index(Request $request): AnonymousResourceCollection
+  {
+    $validator = Validator::make($request->all(), [
+      'id' => 'required',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
-        }
-
-        $id = $request->input("id");
-        $perPage = $request->input('per_page', 10);
-        $page = $request->input('page', 1);
-        $model = Property::with(["amenity.amenity", "project"])->where("project_id", $id)->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
-        return PropertyList::collection($model);
+    if ($validator->fails()) {
+      return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        // things to do
-        //1. do validation
-        //2. fetch and create all amenities
-        //3. create property
+    $id = $request->input("id");
+    $perPage = $request->input('per_page', 10);
+    $page = $request->input('page', 1);
+    $model = Property::with(["amenity.amenity", "project"])->where("project_id", $id)->orderBy('id', 'desc')->paginate($perPage, ['*'], 'page', $page);
+    return PropertyList::collection($model);
+  }
 
-        $loggedinuser = auth()->guard('sanctum')->user();
-        $validator = Validator::make($request->all(), [
-            'project' => 'required',
-            'name' => 'required',
-            "image" => 'required',
-            "description" => 'required',
-            "amenities" => 'required',
-            "amount" => 'required',
-        ]);
-        $amenities = $request->input('amenities');
+  /**
+   * Store a newly created resource in storage.
+   */
+  public function store(Request $request)
+  {
+    // things to do
+    //1. do validation
+    //2. fetch and create all amenities
+    //3. create property
 
-        if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
-        }
+    $loggedinuser = auth()->guard('sanctum')->user();
+    $validator = Validator::make($request->all(), [
+      'project' => 'required',
+      'name' => 'required',
+      "image" => 'required',
+      "description" => 'required',
+      "amenities" => 'required',
+      "amount" => 'required',
+    ]);
+    $amenities = $request->input('amenities');
 
-        $model = new Property();
-        $model->name = $request->input('name');
-        $model->project_id = $request->input('project');
-
-        //save image
-        $image = $request->file('image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('images/property'), $imageName);
-
-        $model->cover_image = '/images/property/' . $imageName;
-        $model->description = $request->input('description');
-        $model->log_user_id = $loggedinuser->id;
-        $model->amount = $request->input('amount');
-        $model->status = Property::Incompleted;
-
-        if ($model->save()) {
-            foreach (json_decode($amenities, true) as $amenity) {
-                $amenityModel = new PropertyAmenities();
-                $amenityModel->property_id = $model->id;
-                $amenityModel->amenity_id = $amenity["amenity"];
-                $amenityModel->quantity = $amenity["quantity"];
-                $amenityModel->log_user_id = $loggedinuser->id;
-                $amenityModel->status = Property::Incompleted;
-                $amenityModel->save();
-            }
-            return response()->json(["status" => "success"], 200);
-        }
-        return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled"], 400);
+    if ($validator->fails()) {
+      return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    $model = new Property();
+    $model->name = $request->input('name');
+    $model->project_id = $request->input('project');
 
-    public function show(string $id)
-    {
+    //save image
+    $image = $request->file('image');
+    $imageName = time() . '.' . $image->getClientOriginalExtension();
+    $image->move(public_path('images/property'), $imageName);
 
-        $model = Property::with(["project", "amenity.amenity", "payments", "client.client", "agent.affiliates", "agent.users"])->find($id);
-        if (!empty($model)) {
-            return new PropertyList($model);
-        } else {
-            return response()->json(["status" => "error", "message" => "Could not find the specific property"], 400);
-        }
-    }
+    $model->cover_image = '/images/property/' . $imageName;
+    $model->description = $request->input('description');
+    $model->log_user_id = $loggedinuser->id;
+    $model->amount = $request->input('amount');
+    $model->status = Property::Incompleted;
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            "image" => 'required',
-            "description" => 'required',
-            //"amenities" => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
-        }
-
-        $model = Property::find($id);
-        if (!empty($model)) {
-            $model->name = $request->input('name');
-            $model->description = $request->input('description');
-            $model->log_user_id = $model->log_user_id;
-            $model->status = $model->status;
-            if ($model->save()) {
-                return response()->json(["status" => "success", "message" => "You have successfully updted the record"], 200);
-            } else {
-                return response()->json(["status" => "error", "message" => "Something went wrong please try again"], 400);
-            }
-        } else {
-            return response()->json(["status" => "error", "message" => "There are no property at the moment with this property id"], 400);
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $model = Property::find($id);
-        if (!empty($model)) {
-            if ($model->delete()) {
-                return response()->json(["status" => "success"], 200);
-            } else {
-                return response()->json(["status" => "error", "message" => "Couldnot delete this record please retry after some minute"], 400);
-            }
-        }
-        return response()->json(["status" => "error", "message" => "The requested record does not exist"], 400);
-    }
-
-    public function search(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'query' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
-        }
-
-        $query = $request->input('query');
-        $page = $request->input('page', 1);
-        $perPage = $request->input('perpage', 10);
-
-        $property = Property::where('name', 'LIKE', "%$query%")
-            ->orWhere('description', 'LIKE', "%$query%")
-            ->with(["project", "amenity.amenity"])
-            ->paginate($perPage, ["*"], "page", $page);
-
-        if (!empty($property)) {
-            return PropertyList::collection($property);
-        } else {
-            return response()->json(["status" => "error", "message" => "No record matches your search."], 400);
-        }
-    }
-
-    public function viewPayment(string $id)
-    {
-        $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->find($id);
-        if (!empty($model)) {
-            return new ResourcesPropertyPayment($model);
-        }
-        return response()->json(["status" => "error", "message" => "There is no payment with the above id "], 400);
-    }
-
-    public function allPayment(Request $request, string $id)
-    {
-        $perPage = $request->input('per_page', 10);
-        $page = $request->input('page', 1);
-        $model = PropertyPayment::where("property_id", $id)->with("payment")->orderBy('created_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
-        if (!empty($model)) {
-            return ResourcesPropertyPayment::collection($model);
-        }
-        return response()->json(["status" => "error", "message" => "This property currently has no payment."], 400);
-    }
-
-    public function addPayment(Request $request)
-    {
-
-        $validator = Validator::make($request->all(), [
-            'property' => 'required',
-            'proofOfPayment' => 'required',
-            'amount' => 'required',
-            'modeOfPayment' => 'required',
-        ]);
-
-        $loggedinuser = auth()->guard('sanctum')->user();
-
-        // check if a property has an agent and client
-        //first fetch property with agent and client
-        $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
-        if (empty($getProperty->agent) or empty($getProperty->client)) {
-            // check if post value exist to create
-            $agentClientValidator = Validator::make($request->all(), [
-                'client' => 'required', //client_id
-                'agent' => 'required', //agent_id
-                'agentType' => 'required', //select of affiliate and employee
-                'paymentFrequency' => 'required', //select of affiliate and employee
-                'commision' => 'required', //commission for agent in percentage
-            ]);
-            if ($agentClientValidator->fails()) {
-                return response()->json(["status" => "error", "message" => "please ensure client and agent values are available", "data" => $getProperty], 400);
-            }
-
-            $client = $request->input("client");
-            $agent = $request->input("agent");
-            $createAgent = new PropertySalesAgent();
-            $paymentFrequency = new PaymentFrequency();
-            $paymentFrequency->property_id = $request->input("property");
-            $paymentFrequency->frequency = $request->input("paymentFrequency");
-            $paymentFrequency->log_user_id = $loggedinuser->id;
-            $paymentFrequency->status = Payment::Default;
-            $paymentFrequency->save();
-            $createAgent->property_id = $request->input("property");
-            $createAgent->agent_id = $agent;
-            $createAgent->agent_type = $request->input("agentType");
-            $createAgent->commission = $request->input("commision");
-            $createAgent->status = PropertySalesAgent::Default;
-            $createAgent->save();
-
-            //return response()->json(["data" => $createAgent], 200);
-
-            $createClient = new PropertyClient();
-            $createClient->property_id = $request->input("property");
-            $createClient->client_id = $client;
-            $createClient->log_user_id = $loggedinuser->id;
-            $createClient->status = PropertyClient::Default;
-            $createClient->save();
-        }
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'error', 'message' => "Please ensure that there is no empty requierd fields "], 400);
-        }
-
-        $propertyPaymentModel = new PropertyPayment();
-        $paymentModel = new Payment();
-        $paymentModel->amount = $request->input("amount");
-        $paymentModel->project_id = $getProperty->project_id;
-        $paymentModel->payment_type = Payment::Credit;
-        $paymentModel->mode_of_payment = $request->input("modeOfPayment");
-        $paymentModel->log_user_id = $loggedinuser->id;
-        $paymentModel->status = Payment::Default;
-        if ($paymentModel->save()) {
-            // check if the payment is a full payment and update the property status and if its a pertial payment use the info to update too
-            $totalPayment = $getProperty->payments->sum(function ($payment) {
-                return $payment->amount ?? 0;
-            });
-            if ($totalPayment >= $getProperty->amount) {
-                $getProperty->status = (int) Property::Completed;
-            } else {
-                $getProperty->status = (int) Property::IncompletedPayment;
-            }
-            $getProperty->save();
-            // take payment id and use it to create property payment relationship
-            $image = $request->file('proofOfPayment');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/proofofpayment'), $imageName);
-
-            $propertyPaymentModel->property_id = $request->input("property");
-            $propertyPaymentModel->payment_id = $paymentModel->id;
-            $propertyPaymentModel->log_user_id = $loggedinuser->id;
-            $propertyPaymentModel->prof_of_payment = '/images/proofofpayment/' . $imageName;
-            $propertyPaymentModel->status = PropertyPayment::Default;
-            if ($propertyPaymentModel->save()) {
-                return response()->json(["status" => "success"], 201);
-            }
-            return response()->json(["status" => "error"], 400);
-        }
-        return response()->json(["status" => "error"], 400);
-    }
-
-    public function client(string $id)
-    {
-        $model = Property::find($id);
-        if (!empty($model)) {
-
-            return new ClientResource($model->client->client);
-        }
-        return response()->json(["status" => "error", "message" => "There is presently no property with the above property ID "], 400);
-    }
-
-    public function updateAmenity(Request $request, string $id)
-    {
-        $validator = Validator::make($request->all(), [
-            //'propertyAmenity' => 'required',
-            'amenity' => 'required',
-            "quantity" => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(["status" => "error", "message" => "ensure that all required filed are properly filled"], 400);
-        }
-
-        $amenityModel = PropertyAmenities::find($id);
-        //$amenityModel->property_id = $amenityModel->property_id;
-        $amenityModel->amenity_id = $request->input("amenity");
-        $amenityModel->quantity = $request->input("quantity");
-        //$amenityModel->log_user_id =  $amenityModel->log_user_id;
-
-        if ($amenityModel->save()) {
-            return response()->json(["status" => "success"], 201);
-        }
-        return response()->json(["status" => "error", "message" => "something went wrong please try again "], 400);
-    }
-
-    public function deleteAmenity($id)
-    {
-        $model = PropertyAmenities::find($id);
-        if ($model->delete()) {
-            return response()->json(["status" => "success"], 200);
-        }
-        return response()->json(["status" => "error", "message" => "sorry we could not delete this resource at this moment."], 400);
-    }
-
-    public function addAmenity(Request $request)
-    {
-        $loggedinuser = auth()->guard('sanctum')->user();
-        $validator = Validator::make($request->all(), [
-            'property' => 'required',
-            'amenity' => 'required',
-            "quantity" => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(["status" => "error", "message" => "ensure that all required filed are properly filled"], 400);
-        }
-
+    if ($model->save()) {
+      foreach (json_decode($amenities, true) as $amenity) {
         $amenityModel = new PropertyAmenities();
-        $amenityModel->property_id = $request->input("property");
-        $amenityModel->amenity_id = $request->input("amenity");
-        $amenityModel->quantity = $request->input("quantity");
+        $amenityModel->property_id = $model->id;
+        $amenityModel->amenity_id = $amenity["amenity"];
+        $amenityModel->quantity = $amenity["quantity"];
         $amenityModel->log_user_id = $loggedinuser->id;
-        $amenityModel->status = PropertyAmenities::Default;
+        $amenityModel->status = Property::Incompleted;
+        $amenityModel->save();
+      }
+      return response()->json(["status" => "success"], 200);
+    }
+    return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled"], 400);
+  }
 
-        if ($amenityModel->save()) {
-            return response()->json(["status" => "success"], 201);
-        }
-        return response()->json(["status" => "error", "message" => "something went wrong please try again "], 400);
+  /**
+   * Display the specified resource.
+   */
+
+  public function show(string $id)
+  {
+
+    $model = Property::with(["project", "amenity.amenity", "payments", "client.client", "agent.affiliates", "agent.users"])->find($id);
+    if (!empty($model)) {
+      return new PropertyList($model);
+    } else {
+      return response()->json(["status" => "error", "message" => "Could not find the specific property"], 400);
+    }
+  }
+
+  /**
+   * Update the specified resource in storage.
+   */
+  public function update(Request $request, string $id)
+  {
+    $validator = Validator::make($request->all(), [
+      'name' => 'required',
+      "image" => 'required',
+      "description" => 'required',
+      //"amenities" => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
     }
 
-    public function stats($id)
-    {
-        $model = Property::with(["project.property", "project.propertyPayments", "project.propertySold", "project.propertyPertiallySold"])
-            ->where("project_id", $id)->first();
+    $model = Property::find($id);
+    if (!empty($model)) {
+      $model->name = $request->input('name');
+      $model->description = $request->input('description');
+      $model->log_user_id = $model->log_user_id;
+      $model->status = $model->status;
+      if ($model->save()) {
+        return response()->json(["status" => "success", "message" => "You have successfully updted the record"], 200);
+      } else {
+        return response()->json(["status" => "error", "message" => "Something went wrong please try again"], 400);
+      }
+    } else {
+      return response()->json(["status" => "error", "message" => "There are no property at the moment with this property id"], 400);
+    }
+  }
 
-        if ($model) {
-            return new PropertyStat($model);
+  /**
+   * Remove the specified resource from storage.
+   */
+  public function destroy(string $id)
+  {
+    $model = Property::find($id);
+    if (!empty($model)) {
+      if ($model->delete()) {
+        return response()->json(["status" => "success"], 200);
+      } else {
+        return response()->json(["status" => "error", "message" => "Couldnot delete this record please retry after some minute"], 400);
+      }
+    }
+    return response()->json(["status" => "error", "message" => "The requested record does not exist"], 400);
+  }
+
+  public function search(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'query' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
+    }
+
+    $query = $request->input('query');
+    $page = $request->input('page', 1);
+    $perPage = $request->input('perpage', 10);
+
+    $property = Property::where('name', 'LIKE', "%$query%")
+      ->orWhere('description', 'LIKE', "%$query%")
+      ->with(["project", "amenity.amenity"])
+      ->paginate($perPage, ["*"], "page", $page);
+
+    if (!empty($property)) {
+      return PropertyList::collection($property);
+    } else {
+      return response()->json(["status" => "error", "message" => "No record matches your search."], 400);
+    }
+  }
+
+  public function viewPayment(string $id)
+  {
+    $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->find($id);
+    if (!empty($model)) {
+      return new ResourcesPropertyPayment($model);
+    }
+    return response()->json(["status" => "error", "message" => "There is no payment with the above id "], 400);
+  }
+
+  public function allPayment(Request $request, string $id)
+  {
+    $perPage = $request->input('per_page', 10);
+    $page = $request->input('page', 1);
+    $model = PropertyPayment::where("property_id", $id)->with("payment")->orderBy('created_at', 'desc')->paginate($perPage, ['*'], 'page', $page);
+    if (!empty($model)) {
+      return ResourcesPropertyPayment::collection($model);
+    }
+    return response()->json(["status" => "error", "message" => "This property currently has no payment."], 400);
+  }
+
+  public function addPayment(Request $request)
+  {
+
+    $validator = Validator::make($request->all(), [
+      'property' => 'required',
+      'proofOfPayment' => 'required',
+      'amount' => 'required',
+      'modeOfPayment' => 'required',
+    ]);
+
+    $loggedinuser = auth()->guard('sanctum')->user();
+
+    // check if a property has an agent and client
+    //first fetch property with agent and client
+    $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
+    if (empty($getProperty->agent) or empty($getProperty->client)) {
+      // check if post value exist to create
+      $agentClientValidator = Validator::make($request->all(), [
+        'client' => 'required', //client_id
+        'agent' => 'required', //agent_id
+        'agentType' => 'required', //select of affiliate and employee
+        'paymentFrequency' => 'required', //select of affiliate and employee
+        'commision' => 'required', //commission for agent in percentage
+      ]);
+      if ($agentClientValidator->fails()) {
+        return response()->json(["status" => "error", "message" => "please ensure client and agent values are available", "data" => $getProperty], 400);
+      }
+
+      $client = $request->input("client");
+      $agent = $request->input("agent");
+      $createAgent = new PropertySalesAgent();
+      $paymentFrequency = new PaymentFrequency();
+      $paymentFrequency->property_id = $request->input("property");
+      $paymentFrequency->frequency = $request->input("paymentFrequency");
+      $paymentFrequency->log_user_id = $loggedinuser->id;
+      $paymentFrequency->status = Payment::Default;
+      $paymentFrequency->save();
+      $createAgent->property_id = $request->input("property");
+      $createAgent->agent_id = $agent;
+      $createAgent->agent_type = $request->input("agentType");
+      $createAgent->commission = $request->input("commision");
+      $createAgent->status = PropertySalesAgent::Default;
+      $createAgent->save();
+
+      //return response()->json(["data" => $createAgent], 200);
+
+      $createClient = new PropertyClient();
+      $createClient->property_id = $request->input("property");
+      $createClient->client_id = $client;
+      $createClient->log_user_id = $loggedinuser->id;
+      $createClient->status = PropertyClient::Default;
+      $createClient->save();
+    }
+
+    if ($validator->fails()) {
+      return response()->json(['status' => 'error', 'message' => "Please ensure that there is no empty requierd fields "], 400);
+    }
+
+    $propertyPaymentModel = new PropertyPayment();
+    $paymentModel = new Payment();
+    $paymentModel->amount = $request->input("amount");
+    $paymentModel->project_id = $getProperty->project_id;
+    $paymentModel->payment_type = Payment::Credit;
+    $paymentModel->mode_of_payment = $request->input("modeOfPayment");
+    $paymentModel->log_user_id = $loggedinuser->id;
+    $paymentModel->status = Payment::Default;
+    if ($paymentModel->save()) {
+      // check if the payment is a full payment and update the property status and if its a pertial payment use the info to update too
+      $totalPayment = $getProperty->payments->sum(function ($payment) {
+        return $payment->amount ?? 0;
+      });
+      if ($totalPayment >= $getProperty->amount) {
+        $getProperty->status = (int) Property::Completed;
+      } else {
+        $getProperty->status = (int) Property::IncompletedPayment;
+      }
+      $getProperty->save();
+      // take payment id and use it to create property payment relationship
+      $image = $request->file('proofOfPayment');
+      $imageName = time() . '.' . $image->getClientOriginalExtension();
+      $image->move(public_path('images/proofofpayment'), $imageName);
+
+      $propertyPaymentModel->property_id = $request->input("property");
+      $propertyPaymentModel->payment_id = $paymentModel->id;
+      $propertyPaymentModel->log_user_id = $loggedinuser->id;
+      $propertyPaymentModel->prof_of_payment = '/images/proofofpayment/' . $imageName;
+      $propertyPaymentModel->status = PropertyPayment::Default;
+      if ($propertyPaymentModel->save()) {
+        return response()->json(["status" => "success"], 201);
+      }
+      return response()->json(["status" => "error"], 400);
+    }
+    return response()->json(["status" => "error"], 400);
+  }
+
+  public function client(string $id)
+  {
+    $model = Property::find($id);
+    if (!empty($model)) {
+
+      return new ClientResource($model->client->client);
+    }
+    return response()->json(["status" => "error", "message" => "There is presently no property with the above property ID "], 400);
+  }
+
+  public function updateAmenity(Request $request, string $id)
+  {
+    $validator = Validator::make($request->all(), [
+      //'propertyAmenity' => 'required',
+      'amenity' => 'required',
+      "quantity" => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(["status" => "error", "message" => "ensure that all required filed are properly filled"], 400);
+    }
+
+    $amenityModel = PropertyAmenities::find($id);
+    //$amenityModel->property_id = $amenityModel->property_id;
+    $amenityModel->amenity_id = $request->input("amenity");
+    $amenityModel->quantity = $request->input("quantity");
+    //$amenityModel->log_user_id =  $amenityModel->log_user_id;
+
+    if ($amenityModel->save()) {
+      return response()->json(["status" => "success"], 201);
+    }
+    return response()->json(["status" => "error", "message" => "something went wrong please try again "], 400);
+  }
+
+  public function deleteAmenity($id)
+  {
+    $model = PropertyAmenities::find($id);
+    if ($model->delete()) {
+      return response()->json(["status" => "success"], 200);
+    }
+    return response()->json(["status" => "error", "message" => "sorry we could not delete this resource at this moment."], 400);
+  }
+
+  public function addAmenity(Request $request)
+  {
+    $loggedinuser = auth()->guard('sanctum')->user();
+    $validator = Validator::make($request->all(), [
+      'property' => 'required',
+      'amenity' => 'required',
+      "quantity" => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(["status" => "error", "message" => "ensure that all required filed are properly filled"], 400);
+    }
+
+    $amenityModel = new PropertyAmenities();
+    $amenityModel->property_id = $request->input("property");
+    $amenityModel->amenity_id = $request->input("amenity");
+    $amenityModel->quantity = $request->input("quantity");
+    $amenityModel->log_user_id = $loggedinuser->id;
+    $amenityModel->status = PropertyAmenities::Default;
+
+    if ($amenityModel->save()) {
+      return response()->json(["status" => "success"], 201);
+    }
+    return response()->json(["status" => "error", "message" => "something went wrong please try again "], 400);
+  }
+
+  public function stats($id)
+  {
+    $model = Property::with(["project.property", "project.propertyPayments", "project.propertySold", "project.propertyPertiallySold"])
+      ->where("project_id", $id)->first();
+
+    if ($model) {
+      return new PropertyStat($model);
+    } else {
+      // Handle the case when the model is not found
+      return new StatsNotAvailabel($model);
+    }
+  }
+
+  public function agent($id)
+  {
+    $model = Property::find($id);
+    if (!empty($model)) {
+      if (!empty($model->agent)) {
+        if ($model->agent->agent_type == PropertySalesAgent::Affiliate) {
+          return new AffiliateShow($model->agent->affiliates);
         } else {
-            // Handle the case when the model is not found
-            return new StatsNotAvailabel($model);
+          return new UsersResource($model->agent->users);
         }
+      }
+      return response()->json(["status" => "error", "This user presently has no agent."], 400);
     }
+    return response()->json(["status" => "error", "message" => "There is presently no property with the above property ID "], 400);
+  }
 
-    public function agent($id)
-    {
-        $model = Property::find($id);
-        if (!empty($model)) {
-            if (!empty($model->agent)) {
-                if ($model->agent->agent_type == PropertySalesAgent::Affiliate) {
-                    return new AffiliateShow($model->agent->affiliates);
-                } else {
-                    return new UsersResource($model->agent->users);
-                }
-            }
-            return response()->json(["status" => "error", "This user presently has no agent."], 400);
-        }
-        return response()->json(["status" => "error", "message" => "There is presently no property with the above property ID "], 400);
+  public function agentCommision(Request $request, $id)
+  {
+    $loggedinuser = auth()->guard('sanctum')->user();
+    $paymentModel = new Payment();
+    $commission = new AgentCommission();
+    $propertyModel = Property::with(["agent"])->find($id)->first();
+    $paymentModel->project_id = $propertyModel->project_id;
+    $paymentModel->amount = $request->input("amount");
+    $paymentModel->log_user_id = $loggedinuser->id;
+    $paymentModel->status = Payment::Default;
+    $paymentModel->mode_of_payment = $request->input("modeOfPayment");
+    $paymentModel->payment_type = Payment::Debit;
+    if ($paymentModel->save()) {
+      $commission->property_id = $id;
+      $commission->agent_id = $propertyModel->agent->agent_id;
+      $commission->payment_id = $paymentModel->id;
+      $commission->agent_type = $propertyModel->agent->agent_type;
+      $commission->log_user_id = $loggedinuser->id;
+      $commission->status = Payment::Default;
+      if ($commission->save()) {
+        return response()->json(["status" => "success"], 200);
+      }
+      return response()->json(["status" => "error", "message" => "something went wrong, please retry."], 400);
     }
+    return response()->json(["status" => "error", "message" => "something went wrong, please retry."], 400);
+  }
 
-    public function agentCommision(Request $request, $id)
-    {
-        $loggedinuser = auth()->guard('sanctum')->user();
-        $paymentModel = new Payment();
-        $commission = new AgentCommission();
-        $propertyModel = Property::with(["agent"])->find($id)->first();
-        $paymentModel->project_id = $propertyModel->project_id;
-        $paymentModel->amount = $request->input("amount");
-        $paymentModel->log_user_id = $loggedinuser->id;
-        $paymentModel->status = Payment::Default;
-        $paymentModel->mode_of_payment = $request->input("modeOfPayment");
-        $paymentModel->payment_type = Payment::Debit;
-        if ($paymentModel->save()) {
-            $commission->property_id = $id;
-            $commission->agent_id = $propertyModel->agent->agent_id;
-            $commission->payment_id = $paymentModel->id;
-            $commission->agent_type = $propertyModel->agent->agent_type;
-            $commission->log_user_id = $loggedinuser->id;
-            $commission->status = Payment::Default;
-            if ($commission->save()) {
-                return response()->json(["status" => "success"], 200);
-            }
-            return response()->json(["status" => "error", "message" => "something went wrong, please retry."], 400);
-        }
-        return response()->json(["status" => "error", "message" => "something went wrong, please retry."], 400);
+  public function paymentReceipt($id)
+  {
+    //receipt;
+    $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->find($id)->first();
+    $dateOfPayment = $model->created_at;
+    $client = $model->property->client->client->name;
+    $address = $model->property->client->client->address->full_address;
+    $propertyDescription = $model->property->description;
+    $propertyPayments = $model->property->payments->sum(function ($payment) {
+      return $payment->amount ?? 0;
+    });
+    $amount = number_format($model->payment->amount, 2, '.', ',');
+    $carbonDate = Carbon::parse($dateOfPayment);
+    $balance = number_format($model->property->amount - $propertyPayments, 2, '.', ',');
+    // Format the date as "April, 17, 2023"
+    $dateOfPayment = $carbonDate->format('F, d, Y');
+    $reciept = $model->reciept;
+    if (empty($model)) {
+      return response()->json(['status' => "error"], 400);
     }
-
-    public function paymentReceipt($id)
-    {
-        //receipt;
-        $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->find($id)->first();
-        $dateOfPayment = $model->created_at;
-        $client = $model->property->client->client->name;
-        $address = $model->property->client->client->address->full_address;
-        $propertyDescription = $model->property->description;
-        $propertyPayments = $model->property->payments->sum(function ($payment) {
-            return $payment->amount ?? 0;
-        });
-        $amount = number_format($model->payment->amount, 2, '.', ',');
-        $carbonDate = Carbon::parse($dateOfPayment);
-        $balance = number_format($model->property->amount - $propertyPayments, 2, '.', ',');
-        // Format the date as "April, 17, 2023"
-        $dateOfPayment = $carbonDate->format('F, d, Y');
-        $reciept = $model->reciept;
-        if (empty($model)) {
-            return response()->json(['status' => "error"], 400);
-        }
-        if (empty($reciept)) {
-            // generate reciept save it and reset it
-            $model->reciept = Str::random(5, 'abcdefghijklmnopqrstuvwxyz1234567890') . $model->id;
-            $model->save();
-            $reciept = $model->reciept;
-        }
-        $numberToWords = new NumberToWords();
-        $currencyTransformer = $numberToWords->getCurrencyTransformer('en');
-        $money = $model->payment->amount . "00";
-        $amountInWords = $currencyTransformer->toWords($money, 'NGN');
-        $imagePath = "https://tibilon.skillzserver.com/static/media/company_logo.861e326775b7cd6e6ac78c6d380a1dde.svg";
-        $pdfContent = "
+    if (empty($reciept)) {
+      // generate reciept save it and reset it
+      $model->reciept = Str::random(5, 'abcdefghijklmnopqrstuvwxyz1234567890') . $model->id;
+      $model->save();
+      $reciept = $model->reciept;
+    }
+    $numberToWords = new NumberToWords();
+    $currencyTransformer = $numberToWords->getCurrencyTransformer('en');
+    $money = $model->payment->amount . "00";
+    $amountInWords = $currencyTransformer->toWords($money, 'NGN');
+    $imagePath = "https://tibilon.skillzserver.com/static/media/company_logo.861e326775b7cd6e6ac78c6d380a1dde.svg";
+    $pdfContent = "
         <!DOCTYPE html>
         <!-- saved from url=(0038)file:///Users/mac/Downloads/index.html -->
         <html><head><meta http-equiv='Content-Type' content='text/html; charset=windows-1252'>
@@ -654,29 +654,29 @@ class PropertyController extends Controller
         </body></html>
         ";
 
-        // Initialize Dompdf
+    // Initialize Dompdf
 
-        $dompdf = new Dompdf(array('enable_remote' => true));
-        $dompdf->loadHtml($pdfContent);
+    $dompdf = new Dompdf(array('enable_remote' => true));
+    $dompdf->loadHtml($pdfContent);
 
-        // (Optional) Set paper size and orientation (e.g., A4, portrait)
-        $dompdf->setPaper('A4', 'portrait');
+    // (Optional) Set paper size and orientation (e.g., A4, portrait)
+    $dompdf->setPaper('A4', 'portrait');
 
-        // Render the PDF content
-        $dompdf->render();
+    // Render the PDF content
+    $dompdf->render();
 
-        // Generate PDF filename (you can customize this as needed)
-        $filename = 'receipt_' . $id . '.pdf';
+    // Generate PDF filename (you can customize this as needed)
+    $filename = 'receipt_' . $id . '.pdf';
 
-        // Download the PDF file
-        //return $dompdf->stream($filename);
+    // Download the PDF file
+    //return $dompdf->stream($filename);
 
-        $pdfFilePath = public_path('pdfs/' . $filename);
-        file_put_contents($pdfFilePath, $dompdf->output());
+    $pdfFilePath = public_path('pdfs/' . $filename);
+    file_put_contents($pdfFilePath, $dompdf->output());
 
-        // $pdfFilePath = storage_path('app/public/pdfs/') . 'receipt_' . $id . '.pdf';
-        // file_put_contents($pdfFilePath, $dompdf->output());
+    // $pdfFilePath = storage_path('app/public/pdfs/') . 'receipt_' . $id . '.pdf';
+    // file_put_contents($pdfFilePath, $dompdf->output());
 
-        return response()->json(['pdf_url' => asset('pdfs/' . 'receipt_' . $id . '.pdf')]);
-    }
+    return response()->json(['pdf_url' => asset('pdfs/' . 'receipt_' . $id . '.pdf')]);
+  }
 }
