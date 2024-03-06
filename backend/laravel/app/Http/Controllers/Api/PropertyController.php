@@ -434,7 +434,11 @@ class PropertyController extends Controller
   public function paymentReceipt($id)
   {
     //reciept;
+<<<<<<< HEAD
     $model = PropertyPayment::with(["payment", "property.payments","property.project"])->orderBy('created_at', 'desc')->where(["id"=>$id])->first();
+=======
+    $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->where(["id" => $id])->first();
+>>>>>>> 82b2fea (wip)
     $dateOfPayment = $model->created_at;
     $client = $model->property->client->client->name;
     $address = $model->property->client->client->address->full_address;
