@@ -243,43 +243,7 @@ export default function ProjectPropertiesDetails() {
           fetchMoreDataProps={getPropertyDetails}
         />
       </div>
-      <div className="flex justify-center gap-8 mt-[35px] mb-[53px]">
-        <Button
-          style={{
-            border: "1px solid red",
-            color: "red",
-            background: "white",
-            width: "163px",
-            height: "41px",
-          }}
-          variant="contained"
-        >
-          <div
-            onClick={() =>
-              openDialogModal(
-                "Delete Property",
-                "Are you sure you want to delete Property?"
-              )
-            }
-            className="text-[13px]"
-          >
-            Delete
-          </div>
-        </Button>
-        <Button
-          className="text-[15px]"
-          style={{
-            backgroundColor: "white",
-            border: "1px solid green",
-            color: "green",
-            width: "163px",
-            height: "41px",
-          }}
-          variant="contained"
-        >
-          <div className="text-[13px]">Edit</div>
-        </Button>
-      </div>
+      <br /><br />
 
       <div className="mb-[45px]">
         <hr />
