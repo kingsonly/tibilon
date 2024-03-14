@@ -92,6 +92,8 @@ export default function ProjectProperties() {
         .catch((error) => {
           console.log(error);
         });
+    } else if (e.target.value.length == 0){
+      getProperties()
     }
   };
 
