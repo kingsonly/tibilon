@@ -28,7 +28,7 @@ export default function PropertyClientInfo({ payments, projectId, property }) {
             <>No Agent Available</>
           ) : (
             <>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4"> 
                 <div className="flex gap-5 items-center">
                   <div className="font-bold text-[18px]">Name:</div>
                   <div className="font-light text-[17px]">
