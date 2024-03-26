@@ -17,6 +17,7 @@ import AppModal from "../../components/AppModal";
 import AddProjectAmenityModal from "../../components/AddProjectAmenityModal";
 import PropertyPaymentInfo from "../../components/PropertyPaymentInfo";
 import { getAllPropertyPayments } from "../../services/apiservices/paymentsServices";
+import PropertyClientInfo from "../../components/PropertyClientInfo";
 
 export default function ProjectPropertiesDetails() {
   const { id } = useParams();
@@ -30,6 +31,7 @@ export default function ProjectPropertiesDetails() {
   const [DialogTitle, setDialogTitle] = useState("");
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [openClientModal, setOpenClientModal] = useState(false);
   const [hasMore, setHasMore] = React.useState(false);
   const [link, setLink] = React.useState(
     `${process.env.REACT_APP_API_URL}/property`
@@ -42,6 +44,10 @@ export default function ProjectPropertiesDetails() {
 
   const openPayment = () => {
     setOpenPaymentModal(true);
+  };
+
+  const openClient = () => {
+    setOpenClientModal(true);
   };
   const getPropertyDetails = async () => {
     setLoading(true);
@@ -189,6 +195,19 @@ export default function ProjectPropertiesDetails() {
       </AppModal>
 
       <AppModal
+        modalIsOpen={openClientModal}
+        setIsOpen={setOpenClientModal}
+        title={"Client Information"}
+      >
+        <PropertyClientInfo
+          projectId={property?.project?.id}
+          // payments={""}
+          property={property}
+          // fetchData= {fetchData} setIsOpen={setIsOpen}
+        />
+      </AppModal>
+
+      <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         title={"Add Amenity"}
@@ -270,6 +289,9 @@ export default function ProjectPropertiesDetails() {
             height: "67px",
           }}
           variant="contained"
+          onClick={() => {
+            openClient();
+          }}
         >
           Clients Sales Details
         </Button>
