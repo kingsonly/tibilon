@@ -1,6 +1,7 @@
 import React,{useState} from "react";
 import pdfIcon from "../assests/pdf-icon-file.svg";
 import docsIcon from "../assests/docs-icon.svg";
+import mediaIcon from "../assests/media-icon.png";
 import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
 import DialogModal from "./DialogModal";
 
@@ -27,11 +28,11 @@ export default function FileTypeComponent({ document,action }) {
         message={dialogMessage}
         title={DialogTitle}
         action={deleteapiDocumet}
-        buttonText={"Delete"}
+        buttonText={"Delete"} 
       />
       <div>
         <img
-          src={`${document.type == "pdf" ? `${pdfIcon}` : `${docsIcon}`}`}
+          src={`${document.type == "pdf" ? `${pdfIcon}` : document.type == "Drawing" ? `${pdfIcon}` : document.type == "media" ? `${mediaIcon}` : `${docsIcon}`}`}
           alt="icon"
         />
         <div className="mt-6">
@@ -42,9 +43,9 @@ export default function FileTypeComponent({ document,action }) {
         </div>
       </div>
       <div className="w-[37px]">
-        <div>
+        {/* <div>
           <input type="checkbox" />
-        </div>
+        </div> */}
         <div className="bg-[white] rounded h-[154px] flex flex-col items-center justify-around mt-4">
           <div>
             <AiFillEye className="cursor-pointer text-[20px]" />{" "}

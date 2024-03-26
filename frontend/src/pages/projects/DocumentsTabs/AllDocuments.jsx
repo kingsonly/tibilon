@@ -6,7 +6,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import AddDocumentModal from "../../../components/AddDocumentModal";
 import { useParams } from "react-router-dom";
 
-const documents = [
+const documents = [ 
   {
     name: "Mabushi Project",
     date: "23/12/2022",
@@ -152,7 +152,7 @@ export default function AllDocuments() {
       const response = await axios.delete(
         `${process.env.REACT_APP_API_URL}/document/delete/${e}`,
         {
-          headers: {
+          headers: { 
             Authorization: `Bearer ${token}`,
           },
         }
@@ -174,6 +174,8 @@ export default function AllDocuments() {
         modalIsOpen={modalIsOpen}
         action={fetchData}
         project={id}
+
+        allowedTypes={'any'}
       />
       <InfiniteScroll
         dataLength={document.length}
