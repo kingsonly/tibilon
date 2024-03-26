@@ -74,6 +74,7 @@ export default function Login() {
             let data = response.data;
             if (data.status == "success") {
                 localStorage.setItem('token', data.token)
+                localStorage.setItem('name', data.name)
                 setLoader(false)
                 navigate('/dashboard');
             }

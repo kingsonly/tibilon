@@ -92,8 +92,32 @@ export default function ProjectProperties() {
         .catch((error) => {
           console.log(error);
         });
+    } else if (e.target.value.length == 0){
+      getProperties()
     }
   };
+
+  // const getProperties = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await getProjectPropertiesLists(
+  //       { id, per_page: perpage },
+  //       link
+  //     );
+  //     setLoading(false);
+  //     setProperties((prevData) => [...prevData, ...response.data.data]);
+  //     if (response.data.links.next == null) {
+  //       console.log(response.data.links.next, "abc");
+  //       setHasMore(false);
+  //     } else {
+  //       setHasMore(true);
+  //     }
+  //     setLink(response.data.links.next);
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.error(error);
+  //   }
+  // };
 
   const getProperties = async () => {
     try {
@@ -103,19 +127,24 @@ export default function ProjectProperties() {
         link
       );
       setLoading(false);
-      setProperties((prevData) => [...prevData, ...response.data.data]);
-      if (response.data.links.next == null) {
-        console.log(response.data.links.next, "abc");
+      if (response.data.links.next === null) {
         setHasMore(false);
       } else {
         setHasMore(true);
       }
       setLink(response.data.links.next);
+  
+      // Create a new array with the updated properties
+      const updatedProperties = [...properties, ...response.data.data];
+  
+      // Set the state with the new array
+      setProperties(updatedProperties);
     } catch (error) {
       setLoading(false);
       console.error(error);
     }
   };
+
 
   useEffect(() => {
     getProjectDashboard();
@@ -261,6 +290,7 @@ export default function ProjectProperties() {
                   project={project}
                   openEditModal={openEditModal}
                   setproperty={setproperty}
+                  fetchAction={getProperties}
                 />
               </div>
             ))}

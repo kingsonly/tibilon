@@ -119,14 +119,22 @@ export default function ProjectPropertiesDetails() {
       const res = await deleteAmenityFromProperty({ id: amenity.id });
       toast.success(`${res?.data?.status || res.message}`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,
       });
       getPropertyDetails();
       console.log(res);
-    } catch (error) {}
+    } catch (error) {
+      toast.error(`${error?.response?.data?.message || error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+    }
   };
 
   const deleteProperty = async () => {
@@ -136,7 +144,7 @@ export default function ProjectPropertiesDetails() {
       const response = await deleteProjectProperty(id);
       toast.success(`${response?.data?.status || response.message}`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,
@@ -146,7 +154,7 @@ export default function ProjectPropertiesDetails() {
       // pushAlert("Check your email for OTP to proceed.");
       toast.error(`${error?.response?.data?.message || error.message}`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,
@@ -243,43 +251,7 @@ export default function ProjectPropertiesDetails() {
           fetchMoreDataProps={getPropertyDetails}
         />
       </div>
-      <div className="flex justify-center gap-8 mt-[35px] mb-[53px]">
-        <Button
-          style={{
-            border: "1px solid red",
-            color: "red",
-            background: "white",
-            width: "163px",
-            height: "41px",
-          }}
-          variant="contained"
-        >
-          <div
-            onClick={() =>
-              openDialogModal(
-                "Delete Property",
-                "Are you sure you want to delete Property?"
-              )
-            }
-            className="text-[13px]"
-          >
-            Delete
-          </div>
-        </Button>
-        <Button
-          className="text-[15px]"
-          style={{
-            backgroundColor: "white",
-            border: "1px solid green",
-            color: "green",
-            width: "163px",
-            height: "41px",
-          }}
-          variant="contained"
-        >
-          <div className="text-[13px]">Edit</div>
-        </Button>
-      </div>
+      <br /><br />
 
       <div className="mb-[45px]">
         <hr />
