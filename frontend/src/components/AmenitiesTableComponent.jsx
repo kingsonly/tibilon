@@ -61,7 +61,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function TableComponent({
+export default function AmenitiesTableComponent({
   columns,
   data,
   actionText,
@@ -167,8 +167,8 @@ export default function TableComponent({
                     e.preventDefault();
                     e.stopPropagation();
                     openDialogModal(
-                      "Delete Client Details",
-                      "Are you sure you want to delete Client Details?"
+                      "Delete Amenity",
+                      "Are you sure you want to delete Amenity?"
                     )
                       ? deleteAction && deleteAction(row)
                       : null;

@@ -15,7 +15,7 @@ export default function DetailedPropertyCard(props) {
   const navigate = useNavigate()
   const { id } = useParams()
 
-  const openDialogModal = (title, message) => {
+  const openDialogModal = (title, message) => { 
     setDialogMessage(message);
     setDialogTitle(title);
     setOpen(true);

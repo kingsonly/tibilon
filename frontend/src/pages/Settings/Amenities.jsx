@@ -6,11 +6,14 @@ import AddEmployeeModalDetails from "../../components/AddEmployeeModalDetails";
 import AddAmenitiesModal from "../../components/AddAmenitiesModal";
 import BreadCrumb from "../../components/BreadCrumb";
 import { imageBaseUrl } from "../../services/apiservices/urls";
+import AmenitiesTableComponent from "../../components/AmenitiesTableComponent";
+
 
 export default function Amenities() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [data, setData] = React.useState([]);
-
+  const [hasMore, setHasMore] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     fetchData();
   }, []);
@@ -93,9 +96,9 @@ export default function Amenities() {
     alert(`Paginating....page ${page}`);
   };
 
-  const dataKeyAccessors = ["SN", "name", "image"];
+  const dataKeyAccessors = ["SN", "name", "image", "CTA"];
 
-  const columns = ["SN", "Name", "Image"];
+  const columns = ["SN", "Name", "Image", "Action"];
 
   const breadCrumbs = [
     {
@@ -108,6 +111,29 @@ export default function Amenities() {
     },
   ];
 
+  const deleteAction = async (amenity) => {
+    try {
+      const res = await deleteAmenityFromProperty({ id: amenity.id });
+      toast.success(`${res?.data?.status || res.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+      getPropertyDetails();
+      console.log(res);
+    } catch (error) {
+      toast.error(`${error?.response?.data?.message || error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+    }
+  };
+
   return (
     <div className="p-[47px] bg-white h-screen">
       <BreadCrumb breadCrumbs={breadCrumbs} />
@@ -119,15 +145,18 @@ export default function Amenities() {
         <AddAmenitiesModal fetchData={fetchData} setIsOpen={setIsOpen} />
       </AppModal>
       <div className="font-bold text-[30px] text-left">Amenities Details</div>
-      <hr className="mb-8 mt-3" />
-      <TableComponent
+      <hr className="mb-8 mt-3" />  
+      <AmenitiesTableComponent
         actionText="Add Amenities"
         columns={columns}
         data={data}
-        action={openModal}
+        action={openModal} 
         searchFunction={searchFunction}
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
+        deleteAction={deleteAction}
+        loading={loading}
+        hasMore={hasMore}
 
       />
     </div>

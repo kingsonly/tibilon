@@ -255,10 +255,10 @@ export default function ProjectPropertiesDetails() {
         </div>
       </div>
       <hr className="my-9" />
-      <div>
+      <div> 
         <TableComponent
           actionText="Add Amenity"
-          columns={columns}
+          columns={columns} 
           data={amenities}
           action={openModal}
           searchFunction={searchFunction}

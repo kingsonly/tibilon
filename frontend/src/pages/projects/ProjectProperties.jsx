@@ -134,6 +134,7 @@ export default function ProjectProperties() {
       }
       setLink(response.data.links.next);
   
+  
       // Create a new array with the updated properties
       const updatedProperties = [...properties, ...response.data.data];
   
