@@ -112,7 +112,9 @@ export default function AddClientModal(props) {
           },
         }
       );
+
       await props.fetchData();
+      location.reload()
       setStatus("success");
       setshow(true);
       setLoading(false);
