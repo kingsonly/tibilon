@@ -24,14 +24,14 @@ export default function AddClientModal(props) {
   const [status, setStatus] = useState("success");
   const [projectBlogImage, setProjectBlogImage] = React.useState();
   const [propertyImage, setpropertyImage] =
-    useState();
+    useState('default');
     // editProperty?.cover_image || []
 
   const [error, setError] = React.useState({
     name: false,
     email: false,
     address: false,
-    project: false,
+    project: false, 
     phone: false,
   });
 
