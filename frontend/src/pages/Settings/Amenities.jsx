@@ -88,7 +88,7 @@ export default function Amenities() {
       if (data.trim() !== "") {
         searchData(data);
       }
-    }, delay);
+    }, delay); 
   };
 
   const paginationChange = (page) => {

@@ -6,6 +6,8 @@ import SnackbarComponent from "./SnackbarComponent";
 import UploadButton from "./UploadButton";
 import projectUploadIcon from "../assests/projectUploadIcon.svg";
 import UploadIcon from "../assests/upload.svg";
+import { BlogToBase64 } from "../utils";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 export default function AddAmenitiesModal(props) {
   const [name, setName] = React.useState("");
@@ -14,6 +16,7 @@ export default function AddAmenitiesModal(props) {
   const [amenityIcon, setamenityIcon] = React.useState();
   const [message, setMessage] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const [image, setImage] = React.useState();
   const [error, setError] = React.useState({
     name: false,
   });
@@ -40,6 +43,11 @@ export default function AddAmenitiesModal(props) {
       }
 
       setamenityIcon(files[0]);
+
+      BlogToBase64(files[0], (err, res) => {
+        console.log(res, "image"); // Base64 `data:image/...` String result.
+        setImage(res);
+      });
     } catch (err) {
       console.log(err, "eoror");
     }
@@ -126,7 +134,7 @@ export default function AddAmenitiesModal(props) {
                 handleOnChange(e, "name");
               }}
             />
-          </div>
+          </div><br />
           <div>
             <div>
               {" "}
@@ -138,6 +146,29 @@ export default function AddAmenitiesModal(props) {
               />
             </div>
           </div>
+
+          <div className="w-[60px] h-[60px]">
+              {image && (
+                <div className="relative w-30 bg-gray-200 p-3">
+                  <button
+                    className="absolute top-0 right-0 text-gray-600 hover:text-gray-800"
+                    onClick={() => {
+                      setImage();
+
+                    }}
+                  >
+                    <AiFillCloseCircle className="text-[20px]" />
+                  </button>
+                  <p>
+                    <img
+                      className="w-[100%] h-[100%]"
+                      src={image}
+                      alt="project-image"
+                    />
+                  </p>
+                </div>
+                )}
+              </div>
         </div>
 
         <div className="flex justify-end">
