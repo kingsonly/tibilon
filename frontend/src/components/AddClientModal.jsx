@@ -151,7 +151,7 @@ export default function AddClientModal(props) {
     }
   };
 
-  return (
+  return ( 
     <div>
       <SnackbarComponent status={status} show={show} message={message} />
       <AppModal
