@@ -106,6 +106,10 @@ export default function TableComponent({
       title = "Delete Material";
       message = "Are you sure you want to delete this Material?";
       break;
+    case "unit":
+      title = "Delete Unit";
+      message = "Are you sure you want to delete this Unit?";
+      break;
     default:
       title = "Delete Details";
       message = "Are you sure you want to delete these details?";

@@ -119,7 +119,7 @@ export default function Amenities() {
     alert(`Paginating....page ${page}`);
   };
 
-  const dataKeyAccessors = ["SN", "name", "image", "CTA"];
+  const dataKeyAccessors = ["SN", "name", "image", "CTA"]; 
 
   const columns = ["SN", "Name", "Image", "Action"];
 

@@ -69,7 +69,7 @@ export default function AddAmenitiesModal(props) {
       setLoading(false);
       setStatus("error");
       setMessage("all fields are required");
-      setShow(true);
+      setShow(true); 
       setTimeout(() => {
         setShow(false);
       }, 6000);
