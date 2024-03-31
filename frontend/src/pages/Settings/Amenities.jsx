@@ -146,7 +146,7 @@ export default function Amenities() {
       </AppModal>
       <div className="font-bold text-[30px] text-left">Amenities Details</div>
       <hr className="mb-8 mt-3" />  
-      <AmenitiesTableComponent
+      <TableComponent
         actionText="Add Amenities"
         columns={columns}
         data={data}

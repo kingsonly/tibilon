@@ -192,8 +192,16 @@ export default function TableComponent({
                   <>
                     {moment(row[dataKeyAccessors[index]]).isValid() ? (
                       <>{row[dataKeyAccessors[index]]}</>
-                    ) : (
-                      <> {row[dataKeyAccessors[index]]}</>
+                    ) : ( 
+
+                      <>
+                      {dataKeyAccessors[index] == "image" ? (
+                        <>
+                          
+                        </>
+                      ) : (<> {row[dataKeyAccessors[index]]}</>)}
+                      </>
+                      
                     )}
                   </>
                 }
