@@ -2,14 +2,20 @@ import { Button } from "@mui/material";
 import React from "react";
 import TextInput from "./TextInput";
 import axios from "axios";
-import SnackbarComponent from "./SnackbarComponent"; 
+import SnackbarComponent from "./SnackbarComponent";
+import UploadButton from "./UploadButton";
+import projectUploadIcon from "../assests/projectUploadIcon.svg";
+import UploadIcon from "../assests/upload.svg";
+import { BlogToBase64 } from "../utils";
+import { AiFillCloseCircle } from "react-icons/ai";
 
-export default function AddMaterialsModal(props) {
-  const [name, setName] = React.useState("");
-  const [status, setStatus] = React.useState("success"); 
+export default function EditMaterialsModal(props) {
+  const [name, setName] = React.useState(props.data?.name);
+  const [status, setStatus] = React.useState("success");
   const [show, setShow] = React.useState(false);
   const [message, setMessage] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const [image, setImage] = React.useState(props.data?.image);
   const [error, setError] = React.useState({
     name: false,
   });
@@ -27,21 +33,18 @@ export default function AddMaterialsModal(props) {
     }
   };
 
-  const submit = () => {
+
+
+  const submit = async () => {
     // validate input
-    setLoading(true);
+
     let status = false;
     setError({
       name: false,
-
     });
 
-
-    let data = {
-      name: name,
-      // email: email,
-      // firstname: firstname,
-    };
+    const data = new FormData();
+    data.append("name", name);
 
     if (status) {
       setLoading(false);
@@ -53,16 +56,18 @@ export default function AddMaterialsModal(props) {
       }, 6000);
       return;
     }
-    create(data);
+    await create(data);
 
     // send to save and use feedback to show toast message.
   };
 
   const create = async (data) => {
+    setLoading(true);
     var token = localStorage.getItem("token");
+
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/material/create`,
+        `${process.env.REACT_APP_API_URL}/material/update/${props.data.id}`,
         data,
         {
           headers: {
@@ -70,20 +75,25 @@ export default function AddMaterialsModal(props) {
           },
         }
       );
+
       setStatus("success");
-      setMessage("Material was Created Successfully");
+      setMessage("Material was updated Successfully");
       setShow(true);
       setName("");
       setLoading(false);
 
       await props.fetchData();
       props.setIsOpen(false);
-
       setTimeout(() => {
         setShow(false);
       }, 6000);
     } catch (error) {
+      setLoading(false);
       // Handle the error
+      setStatus("error");
+      setShow(true);
+      setMessage(error?.response?.message || error?.message);
+
       console.error(error);
     }
   };
@@ -106,6 +116,7 @@ export default function AddMaterialsModal(props) {
               }}
             />
           </div>
+
         </div><br />
 
         <div className="flex justify-start">
@@ -118,6 +129,7 @@ export default function AddMaterialsModal(props) {
     {!loading ? "Save" : "Loading..."}
   </Button>
 </div>
+
       </div>
     </div>
   );
