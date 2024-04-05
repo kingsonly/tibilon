@@ -75,7 +75,7 @@ class MaterialController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $model = Material::find($id)->with(["materialType"])->first();
+        $model = Material::find($id)->with(["materialType"]); //->first();
         if(empty($model)){
             return response()->json(["status" => "error", "message" => "There are no material with this specific ID"],400);
         }

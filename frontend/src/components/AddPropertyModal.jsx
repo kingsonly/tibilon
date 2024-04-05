@@ -414,7 +414,7 @@ export default function AddPropertyModal(props) {
                       <td class="px-6 py-4">
                         {
                           amenitiesTypes.filter(
-                            (am) => am.id == amenity.amenity
+                            (am) => am?.id == amenity?.amenity
                           )[0]?.name
                         }
                       </td>

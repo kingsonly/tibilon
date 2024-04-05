@@ -76,18 +76,50 @@ export default function TableComponent({
   hasCustom,
   hasCustomIcon,
   hasCustomAction,
+  type,
+  viewAction,
+  editAction
 }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [open, setOpen] = React.useState(false);
   const [dialogMessage, setDialogMessage] = React.useState("");
   const [DialogTitle, setDialogTitle] = React.useState("");
+  const [dataToDelete, setDataToDelete] = React.useState("");
 
-  const openDialogModal = (title, message) => {
+  const openDialogModal = (type, dataToDelete) => {
+
+    let title = "";
+  let message = "";
+
+  // Determine the title and message based on the type prop
+  switch (type) {
+    case "amenity":
+      title = "Delete Amenity";
+      message = "Are you sure you want to delete this Amenity?";
+      break;
+    case "client":
+      title = "Delete Client Details";
+      message = "Are you sure you want to delete these Client Details?";
+      break;
+    case "material":
+      title = "Delete Material";
+      message = "Are you sure you want to delete this Material?";
+      break;
+    case "unit":
+      title = "Delete Unit";
+      message = "Are you sure you want to delete this Unit?";
+      break;
+    default:
+      title = "Delete Details";
+      message = "Are you sure you want to delete these details?";
+  }
+
     setDialogMessage(message);
     setDialogTitle(title);
     setOpen(true);
     // deleteAction();
+    setDataToDelete(dataToDelete);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -154,11 +186,11 @@ export default function TableComponent({
               <div className="flex gap-4">
                 <AiFillEdit
                   className="cursor-pointer"
-                  onClick={() => editAction && editAction()}
+                  onClick={() => editAction && editAction(row)}
                 />
                 <AiFillEye
                   className="cursor-pointer"
-                  onClick={() => viewAction && viewAction()}
+                  onClick={() => viewAction && viewAction(row)}
                 />
                 <AiFillDelete
                   className="cursor-pointer"
@@ -167,11 +199,8 @@ export default function TableComponent({
                     e.preventDefault();
                     e.stopPropagation();
                     openDialogModal(
-                      "Delete Client Details",
-                      "Are you sure you want to delete Client Details?"
+                      type, row
                     )
-                      ? deleteAction && deleteAction(row)
-                      : null;
                   }}
                 />
                 {hasCustom && hasCustomIcon ? (
@@ -192,8 +221,16 @@ export default function TableComponent({
                   <>
                     {moment(row[dataKeyAccessors[index]]).isValid() ? (
                       <>{row[dataKeyAccessors[index]]}</>
-                    ) : (
-                      <> {row[dataKeyAccessors[index]]}</>
+                    ) : ( 
+
+                      <>
+                      {dataKeyAccessors[index] == "image" ? (
+                        <>
+                          
+                        </>
+                      ) : (<> {row[dataKeyAccessors[index]]}</>)}
+                      </>
+                      
                     )}
                   </>
                 }
@@ -205,6 +242,14 @@ export default function TableComponent({
     );
   };
 
+  const handleDeleteConfirmation = async () => {
+    try {
+      deleteAction(dataToDelete); // Call deleteAction with amenityToDelete
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <DialogModal
@@ -212,7 +257,7 @@ export default function TableComponent({
         setOpen={setOpen}
         message={dialogMessage}
         title={DialogTitle}
-        action={deleteAction}
+        action={handleDeleteConfirmation}
         buttonText={"Delete"}
       />
       <div className="flex items-center justify-between mb-[19px]">

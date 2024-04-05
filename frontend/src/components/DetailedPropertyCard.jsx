@@ -129,11 +129,11 @@ export default function DetailedPropertyCard(props) {
                     <div className="w-[25px] h-[25px]">
                       <img
                         className="w-[100%] h-[100%]"
-                        src={`${imageBaseUrl}${amnty?.amenity.image}`}
+                        src={`${imageBaseUrl}${amnty?.amenity?.image}`}
                         alt="icon"
                       />
                     </div>{" "}
-                    <div>{amnty?.amenity.name}</div>{" "}
+                    <div>{amnty?.amenity?.name}</div>{" "}
                   </div>
                 </div>
               ))}

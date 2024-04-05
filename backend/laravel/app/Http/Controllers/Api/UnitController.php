@@ -61,7 +61,7 @@ class UnitController extends Controller
 
     public function show(string $id)
     {
-        $model = Unit::find($id)->first();
+        $model = Unit::find($id);
         if(!empty($model)){
             return new ResourcesUnit($model);
         }

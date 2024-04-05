@@ -30,7 +30,7 @@ class ClientController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage. 
      */
     public function store(Request $request)
     {
@@ -66,10 +66,18 @@ class ClientController extends Controller
         $model->log_user_id = $userAuth->id;
         $model->status = Client::DefaultStatus;
         $model->password = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
+        
+        // Check if image is set to 'default'
+    if ($request->input("image") !== 'default') {
         $image = $request->file('image');
         $imageName = time() . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('images/client'), $imageName);
         $model->image = '/images/client/' . $imageName;
+    } else {
+        // If image is 'default', set the image field to 'default'
+        $model->image = 'default';
+    }
+    
         if ($model->save()) {
             return response()->json(["status" => "success"], 200);
         }

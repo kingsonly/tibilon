@@ -36,7 +36,7 @@ export default function Login() {
             setName(value.target.value)
             setNameerror(true)
         }
-        if (type === "password") {
+        if (type === "password") { 
             setPassword(value.target.value)
             setPassworderror(true)
         }
