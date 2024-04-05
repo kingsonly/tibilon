@@ -130,7 +130,7 @@ export default function Units() {
   }
 
   const deleteAction = async (unit) => {
-    try {
+    try { 
 
       const res = await axios.delete(
         `${process.env.REACT_APP_API_URL}/unit/destroy/${unit.id}`,

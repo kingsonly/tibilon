@@ -110,6 +110,10 @@ export default function TableComponent({
       title = "Delete Unit";
       message = "Are you sure you want to delete this Unit?";
       break;
+    case "propertypayment":
+      title = "Delete Property Payment";
+      message = "Are you sure you want to delete this Property Payment?";
+      break;    
     default:
       title = "Delete Details";
       message = "Are you sure you want to delete these details?";
