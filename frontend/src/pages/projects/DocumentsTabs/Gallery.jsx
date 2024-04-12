@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DrawingsFileComponent from "../../../components/DrawingsFileComponent";
+import MediaFileComponent from "../../../components/MediaFileComponent";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -52,7 +52,7 @@ export default function Gallery() {
   };
   return (
     <div>
-      <AddDocumentModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} action={fetchData} project={id}  />
+      <AddDocumentModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} action={fetchData} project={id} allowedTypes={'media'}  />
 
       <div className="bg-white flex gap-4 flex-wrap mt-6">
         <div className="flex justify-center w-[100%]">
@@ -91,7 +91,7 @@ export default function Gallery() {
 
 
         {document?.map((document) => (
-          <DrawingsFileComponent document={document} />
+          <MediaFileComponent document={document} />
         ))}
       </div>
     </div>

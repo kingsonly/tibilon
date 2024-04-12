@@ -76,6 +76,9 @@ export default function AddUnitsModal(props) {
       setName("");
       setLoading(false);
 
+      await props.fetchData();
+      props.setIsOpen(false);
+
       setTimeout(() => {
         setShow(false);
       }, 6000);
@@ -103,17 +106,18 @@ export default function AddUnitsModal(props) {
               }}
             />
           </div>
-        </div>
+        </div><br />
 
-        <div className="flex justify-end">
-          <Button
-            variant="contained"
-            color="success"
-            onClick={() => submit(false)}
-          >
-            {!loading ? "Save" : "Loading......"}
-          </Button>
-        </div>
+        <div className="flex justify-start">
+  <Button
+    variant="contained"
+    color="success"
+    onClick={() => submit(false)}
+    style={{ width: '50%' }} // Add this prop to make the button full width
+  >
+    {!loading ? "Save" : "Loading..."}
+  </Button>
+</div>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import DetailedPropertyCard from "../../components/DetailedPropertyCard";
 import { AiOutlineSearch } from "react-icons/ai";
 import { projectData } from "../../data";
 import BreadCrumb from "../../components/BreadCrumb";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import AddPropertyModal from "../../components/AddPropertyModal";
 import {
@@ -17,6 +17,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 export default function ProjectProperties() {
   const [properties, setProperties] = useState([]);
   const { id } = useParams();
+  const { state } = useLocation();
   var token = localStorage.getItem("token");
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [amenities, setAmenities] = useState();
@@ -77,6 +78,47 @@ export default function ProjectProperties() {
     }
   };
 
+  const searchFunction = async (e) => {
+    if (e.target.value.length >= 3) {
+      let query = e.target.value;
+      let data = {
+        query: query,
+      };
+      axios
+        .post(`${process.env.REACT_APP_API_URL}/property/search`, data)
+        .then((response) => {
+          setProperties(response.data.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (e.target.value.length == 0){
+      getProperties()
+    }
+  };
+
+  // const getProperties = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await getProjectPropertiesLists(
+  //       { id, per_page: perpage },
+  //       link
+  //     );
+  //     setLoading(false);
+  //     setProperties((prevData) => [...prevData, ...response.data.data]);
+  //     if (response.data.links.next == null) {
+  //       console.log(response.data.links.next, "abc");
+  //       setHasMore(false);
+  //     } else {
+  //       setHasMore(true);
+  //     }
+  //     setLink(response.data.links.next);
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.error(error);
+  //   }
+  // };
+
   const getProperties = async () => {
     try {
       setLoading(true);
@@ -85,23 +127,29 @@ export default function ProjectProperties() {
         link
       );
       setLoading(false);
-      setProperties((prevData) => [...prevData, ...response.data.data]);
-      if (response.data.links.next == null) {
-        console.log(response.data.links.next, "abc");
+      if (response.data.links.next === null) {
         setHasMore(false);
       } else {
         setHasMore(true);
       }
       setLink(response.data.links.next);
+  
+  
+      // Create a new array with the updated properties
+      const updatedProperties = [...properties, ...response.data.data];
+  
+      // Set the state with the new array
+      setProperties(updatedProperties);
     } catch (error) {
       setLoading(false);
       console.error(error);
     }
   };
 
+
   useEffect(() => {
     getProjectDashboard();
-    fetchData();
+    //fetchData();
     getProperties();
     // getPropertyLists();
   }, [token]);
@@ -113,8 +161,8 @@ export default function ProjectProperties() {
 
   const breadCrumbs = [
     {
-      name: "Projects Action",
-      link: "/projects/actions/1",
+      name: "Project Actions",
+      link: `/projects/actions/${state?.id}/${state?.name}`,
     },
     {
       name: "Project Property",
@@ -122,8 +170,7 @@ export default function ProjectProperties() {
     },
   ];
 
-
-  console.log(properties,'propertiesproperties');
+  console.log(properties, "propertiesproperties");
   return (
     <div className="bg-white h-screen p-8">
       <BreadCrumb breadCrumbs={breadCrumbs} />
@@ -201,7 +248,7 @@ export default function ProjectProperties() {
               <input
                 className="w-[100%] ml-[20px] border-none focus:outline-0 placeholder-red-300::placeholder"
                 placeholder="Quick Search"
-                // onChange={searchFunction}
+                onChange={searchFunction}
                 role="search-input"
               />
             </div>
@@ -244,6 +291,7 @@ export default function ProjectProperties() {
                   project={project}
                   openEditModal={openEditModal}
                   setproperty={setproperty}
+                  fetchAction={getProperties}
                 />
               </div>
             ))}

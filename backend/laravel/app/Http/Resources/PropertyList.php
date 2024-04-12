@@ -36,6 +36,12 @@ class PropertyList extends JsonResource
                 $status = "available";
         }
 
+        $totalPayment = $this->payments->sum(function ($payment) {
+            return $payment->amount  ?? 0;
+        });
+
+        $balance = $this->amount - $totalPayment;
+
         return [
             "id" => $this->id,
             "name" => $this->name,
@@ -47,7 +53,9 @@ class PropertyList extends JsonResource
             "agent" => $agent,
             "client" => !empty($this->client) ? new ClientResource($this->client->client) : null,
             "payment" => $this->payments,
-            "status" => $status
+            "status" => $status,
+            "balance" => $balance,
+            "nuberic_status" => $this->status
         ];
     }
 }

@@ -1,14 +1,23 @@
-
 import React, { useState } from "react";
 import AllDocuments from "./DocumentsTabs/AllDocuments";
 import Drawings from "./DocumentsTabs/Drawings";
 import Gallery from "./DocumentsTabs/Gallery";
-
+import BreadCrumb from "../../components/BreadCrumb";
+import { useLocation } from "react-router-dom";
+import WordDocument from "./DocumentsTabs/WordDocument";
 export default function ProjectDocuments() {
-  const breadCrumbs = [
-    "All Documents",
-    "Drawings",
-    "Photos/Videos",
+  const breadCrumbs = ["All Documents", "Drawings", "Photos/Videos", "Word Documents"];
+
+  const { state } = useLocation(); 
+  const breadCrumb = [
+    {
+      name: "Project Actions",
+      link: `/projects/actions/${state?.id}/${state?.name}`,
+    },
+    {
+      name: "Project Documents",
+      link: "#",
+    },
   ];
 
   const [bookingStatge, setBookingStage] = useState();
@@ -21,13 +30,14 @@ export default function ProjectDocuments() {
         return <Drawings />;
       case 3:
         return <Gallery />;
+      case 4:
+        return <WordDocument />;
       default:
         return <AllDocuments />;
     }
   };
 
   const updateStage = (index) => {
-
     setActive(index);
 
     switch (index) {
@@ -40,6 +50,9 @@ export default function ProjectDocuments() {
       case 2:
         setBookingStage(3);
         break;
+      case 3:
+        setBookingStage(4);
+        break;
       default:
         setBookingStage(1);
     }
@@ -47,15 +60,17 @@ export default function ProjectDocuments() {
   return (
     <div className="bg-[white] p-[47px]">
       <div>
+        <BreadCrumb breadCrumbs={breadCrumb} />
+
         <div className="flex gap-0 items-center justify-center mb-8">
           {breadCrumbs.map((title, index) => (
             <div
               className="flex items-center justify-center text-[D7B569] font-bold text-[22px] cursor-pointer"
               style={{
-                borderBottom:`${active === index ? "" : "2px solid #CCCCCC"}`,
-                borderTop:`${active !== index ? "" : "2px solid #CCCCCC"}`,
-                borderLeft:`${active !== index ? "" : "2px solid #CCCCCC"}`,
-                borderRight:`${active !== index ? "" : "2px solid #CCCCCC"}`,
+                borderBottom: `${active === index ? "" : "2px solid #CCCCCC"}`,
+                borderTop: `${active !== index ? "" : "2px solid #CCCCCC"}`,
+                borderLeft: `${active !== index ? "" : "2px solid #CCCCCC"}`,
+                borderRight: `${active !== index ? "" : "2px solid #CCCCCC"}`,
                 width: "400px",
                 height: "60px",
               }}

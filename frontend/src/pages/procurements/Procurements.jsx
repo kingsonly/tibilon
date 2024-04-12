@@ -1,12 +1,10 @@
-
-
 import React from "react";
 import TabComponent from "../../components/TabComponent";
 import NewRequisition from "./NewRequisition";
 import ManageRequisition from "./ManageRequisition";
 import Requests from "./Requests";
 import CreateLPO from "./CreateLPO";
-
+import { Typography } from "@mui/material";
 
 const components = [
   {
@@ -34,8 +32,8 @@ const components = [
 export default function Procurements() {
   return (
     <div className="bg-white p-[47px]">
-      <TabComponent components={components} />
+      <Typography variant="h3">Coming Soon </Typography>
+      {/* <TabComponent components={components} /> */}
     </div>
   );
 }
-

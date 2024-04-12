@@ -5,7 +5,8 @@ import { CircularProgress } from "@mui/material";
 import { AiOutlineSearch } from "react-icons/ai";
 import AddDocumentModal from "../../../components/AddDocumentModal";
 import { useParams } from "react-router-dom";
-const documents = [
+
+const documents = [ 
   {
     name: "Mabushi Project",
     date: "23/12/2022",
@@ -103,34 +104,34 @@ export default function AllDocuments() {
   const fetchDataDel = async () => {
     var token = localStorage.getItem("token");
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/document`, { project: id }, {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/document`,
+        { project: id },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if(!hasMore){
-        setLoader(true)
+      if (!hasMore) {
+        setLoader(true);
       }
-      setDocument(prevData => [...prevData, ...response.data.data]);
-      if(response.data.links.next == null){
-        console.log(response.data.links.next,"abc")
-        setHasMore(false)
-      }else{
-        setHasMore(true)
+      setDocument((prevData) => [...prevData, ...response.data.data]);
+      if (response.data.links.next == null) {
+        console.log(response.data.links.next, "abc");
+        setHasMore(false);
+      } else {
+        setHasMore(true);
       }
       setLink(response.data.links.next);
-      setLoader(false)
-
+      setLoader(false);
     } catch (error) {
       // Handle the error
-      setLoader(false)
+      setLoader(false);
       console.error(error);
     }
   };
-
-  
 
   const searchFunction = (e) => {
     //Api call to search and update table data
@@ -148,20 +149,21 @@ export default function AllDocuments() {
   const action = async (e) => {
     var token = localStorage.getItem("token");
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/document/delete/${e}`, {
-
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setLoader(false)
-      setLink(`${process.env.REACT_APP_API_URL}/document`)
-      setDocument([])
-      fetchDataDel()
-
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/document/delete/${e}`,
+        {
+          headers: { 
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setLoader(false);
+      setLink(`${process.env.REACT_APP_API_URL}/document`);
+      setDocument([]);
+      fetchDataDel();
     } catch (error) {
       // Handle the error
-      setLoader(false)
+      setLoader(false);
       console.error(error);
     }
   };
@@ -172,6 +174,8 @@ export default function AllDocuments() {
         modalIsOpen={modalIsOpen}
         action={fetchData}
         project={id}
+
+        allowedTypes={'any'}
       />
       <InfiniteScroll
         dataLength={document.length}

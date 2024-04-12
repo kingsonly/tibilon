@@ -1,9 +1,12 @@
 import React from "react";
 import TableComponent from "../../components/TableComponent";
 import BreadCrumb from "../../components/BreadCrumb";
+import { useLocation } from "react-router-dom";
+import { Typography } from "@mui/material";
 
 export default function PaymentSchedule() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const { state } = useLocation();
 
   function openModal() {
     setIsOpen(true);
@@ -75,8 +78,8 @@ export default function PaymentSchedule() {
 
   const breadCrumbs = [
     {
-      name: "projects Action",
-      link: "/projects/actions/1",
+      name: "Project Actions",
+      link: `/projects/actions/${state?.id}/${state?.name}`,
     },
     {
       name: "Payment Schedule",
@@ -87,7 +90,8 @@ export default function PaymentSchedule() {
   return (
     <div className="p-[47px] bg-white">
       <BreadCrumb breadCrumbs={breadCrumbs} />
-      <TableComponent
+      <Typography variant="h3">Coming Soon </Typography>
+      {/* <TableComponent
         actionText="Upload Data"
         columns={columns}
         data={data}
@@ -95,7 +99,7 @@ export default function PaymentSchedule() {
         searchFunction={searchFunction}
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
-      />
+      /> */}
     </div>
   );
 }

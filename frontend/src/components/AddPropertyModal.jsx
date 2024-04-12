@@ -223,7 +223,7 @@ export default function AddPropertyModal(props) {
       await fetchAction();
       toast.success(`Successfully updated property`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,
@@ -233,7 +233,7 @@ export default function AddPropertyModal(props) {
       console.log(error, "ERROR::DELETING_PRODUCT");
       toast.error(`${error?.response?.data?.message || error.message}`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,
@@ -414,7 +414,7 @@ export default function AddPropertyModal(props) {
                       <td class="px-6 py-4">
                         {
                           amenitiesTypes.filter(
-                            (am) => am.id == amenity.amenity
+                            (am) => am?.id == amenity?.amenity
                           )[0]?.name
                         }
                       </td>

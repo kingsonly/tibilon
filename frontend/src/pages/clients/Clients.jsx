@@ -14,7 +14,7 @@ export default function Clients() {
   const [data, setData] = React.useState([]);
   const [link, setLink] = React.useState(`${process.env.REACT_APP_API_URL}/client`);
   
-  
+   
   const fetchData = async () => {
     
     var token = localStorage.getItem("token");

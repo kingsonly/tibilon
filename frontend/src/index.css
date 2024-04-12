@@ -179,3 +179,16 @@ input[type="checkbox"]{
 }
 
 
+.div-with-ellipsis {
+  /* Required properties */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide any overflowed content */
+  text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+
+  /* Optional properties */
+  width: 100%; /* Set the width to 100% */
+  text-align: center;
+  padding: 0 10px;
+}
+
+

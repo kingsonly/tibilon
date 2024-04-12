@@ -5,11 +5,25 @@ import AppModal from "../../components/AppModal";
 import AddEmployeeModalDetails from "../../components/AddEmployeeModalDetails";
 import AddAmenitiesModal from "../../components/AddAmenitiesModal";
 import BreadCrumb from "../../components/BreadCrumb";
-import { imageBaseUrl } from "../../services/apiservices/urls";
+import { imageBaseUrl } from "../../services/apiservices/urls"; 
+import { ToastContainer, toast } from "react-toastify";
+import { token } from "../../config";
+import EditAmenitiesModal from "../../components/EditAmenitiesModal";
+
 
 export default function Amenities() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [modalViewIsOpen, setIsViewOpen] = React.useState(false); 
+  const [modalIsEditOpen, setIsEditOpen] = React.useState(false);
+  
+
+
+  
+
   const [data, setData] = React.useState([]);
+  const [hasMore, setHasMore] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [viewData, setViewData] = useState();
 
   useEffect(() => {
     fetchData();
@@ -77,6 +91,18 @@ export default function Amenities() {
     setIsOpen(true);
   }
 
+  function viewAction(row) {
+    setIsViewOpen(true);
+
+    setViewData(row)
+  }
+
+  function editAction(row) {
+    setIsEditOpen(true);
+
+    setViewData(row)
+  }
+
   const searchFunction = (data) => {
     // Set a timeout to wait for the user to finish typing
     const delay = 5000; // Adjust this value as needed
@@ -85,7 +111,7 @@ export default function Amenities() {
       if (data.trim() !== "") {
         searchData(data);
       }
-    }, delay);
+    }, delay); 
   };
 
   const paginationChange = (page) => {
@@ -93,9 +119,9 @@ export default function Amenities() {
     alert(`Paginating....page ${page}`);
   };
 
-  const dataKeyAccessors = ["SN", "name", "image"];
+  const dataKeyAccessors = ["SN", "name", "image", "CTA"]; 
 
-  const columns = ["SN", "Name", "Image"];
+  const columns = ["SN", "Name", "Image", "Action"];
 
   const breadCrumbs = [
     {
@@ -108,9 +134,44 @@ export default function Amenities() {
     },
   ];
 
+  const deleteAction = async (amenity) => {
+    try {
+
+      console.log('amenity', amenity)
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/amenity/destroy/${amenity.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.success(`${res?.data?.status || res.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+      fetchData();
+      console.log(res);
+    } catch (error) {
+      toast.error(`${error?.response?.data?.message || error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+    }
+  };
+
+
   return (
     <div className="p-[47px] bg-white h-screen">
       <BreadCrumb breadCrumbs={breadCrumbs} />
+      <ToastContainer />
       <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
@@ -118,17 +179,44 @@ export default function Amenities() {
       >
         <AddAmenitiesModal fetchData={fetchData} setIsOpen={setIsOpen} />
       </AppModal>
+
+      <AppModal
+        modalIsOpen={modalIsEditOpen}
+        setIsOpen={setIsEditOpen}
+        title={"Edit Amenity"}
+      >
+        <EditAmenitiesModal fetchData={fetchData} setIsOpen={setIsEditOpen} data={viewData}/>
+      </AppModal>
+
+      <AppModal
+        modalIsOpen={modalViewIsOpen}
+        setIsOpen={setIsViewOpen}
+        title={"View Amenities Details"}
+      >
+        <div className="flex flex-col">
+            
+      <h2 style={{fontSize: '25px'}}>Name: {viewData && viewData.name}</h2><br />
+      <div>{viewData && <img className="w-[150px] h-[150px]" alt="icon" src={viewData.image} />}</div>
+        </div>
+      </AppModal>
+
+
       <div className="font-bold text-[30px] text-left">Amenities Details</div>
-      <hr className="mb-8 mt-3" />
+      <hr className="mb-8 mt-3" />  
       <TableComponent
         actionText="Add Amenities"
         columns={columns}
         data={data}
-        action={openModal}
+        action={openModal} 
         searchFunction={searchFunction}
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
-
+        deleteAction={deleteAction}
+        loading={loading}
+        hasMore={hasMore}
+        type="amenity"
+        viewAction={viewAction}
+        editAction={editAction}
       />
     </div>
   );

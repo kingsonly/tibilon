@@ -126,7 +126,7 @@ export default function ProjectPayment() {
 
       toast.success(`${res?.data?.status || res.message}`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,
@@ -136,7 +136,7 @@ export default function ProjectPayment() {
       setLoading(false);
       toast.error(`${error?.response?.data?.message || error.message}`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,

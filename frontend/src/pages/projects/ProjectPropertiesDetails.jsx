@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Button, CircularProgress } from "@mui/material";
 import TableComponent from "../../components/TableComponent";
 import {
@@ -17,9 +17,14 @@ import AppModal from "../../components/AppModal";
 import AddProjectAmenityModal from "../../components/AddProjectAmenityModal";
 import PropertyPaymentInfo from "../../components/PropertyPaymentInfo";
 import { getAllPropertyPayments } from "../../services/apiservices/paymentsServices";
+import PropertyClientInfo from "../../components/PropertyClientInfo";
+
+import EditProjectAmenityModal from "../../components/EditProjectAmenityModal";
 
 export default function ProjectPropertiesDetails() {
   const { id } = useParams();
+  const { state } = useLocation();
+
   const [property, setProperty] = useState();
   const [loading, setLoading] = useState(false);
   const [amenities, setAmenities] = useState([]);
@@ -28,10 +33,16 @@ export default function ProjectPropertiesDetails() {
   const [DialogTitle, setDialogTitle] = useState("");
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  const [openClientModal, setOpenClientModal] = useState(false);
   const [hasMore, setHasMore] = React.useState(false);
-  const [link, setLink] = React.useState(`${process.env.REACT_APP_API_URL}/property`);
+  const [link, setLink] = React.useState(
+    `${process.env.REACT_APP_API_URL}/property`
+  );
   const [perpage, setPerpage] = React.useState(10);
 
+  const [modalViewIsOpen, setIsViewOpen] = React.useState(false); 
+  const [modalIsEditOpen, setIsEditOpen] = React.useState(false);
+  const [viewData, setViewData] = useState();
 
   function openModal() {
     setIsOpen(true);
@@ -39,6 +50,10 @@ export default function ProjectPropertiesDetails() {
 
   const openPayment = () => {
     setOpenPaymentModal(true);
+  };
+
+  const openClient = () => {
+    setOpenClientModal(true);
   };
   const getPropertyDetails = async () => {
     setLoading(true);
@@ -52,6 +67,7 @@ export default function ProjectPropertiesDetails() {
           name: amt?.amenity?.name,
           quantity: amt?.quantity,
           id: amt?.id,
+          amenity_id: amt?.amenity_id,
         }))
       );
     } catch (error) {
@@ -97,14 +113,13 @@ export default function ProjectPropertiesDetails() {
   const breadCrumbs = [
     {
       name: "Projects Properties",
-      link: "/projects/actions/1",
+      link: `/projects/actions/project-properties/${state?.id}`,
     },
     {
       name: "Project Details",
       link: "#",
     },
   ];
-
 
   const openDialogModal = (title, message) => {
     setDialogMessage(message);
@@ -113,12 +128,11 @@ export default function ProjectPropertiesDetails() {
   };
 
   const deleteAction = async (amenity) => {
-
     try {
       const res = await deleteAmenityFromProperty({ id: amenity.id });
       toast.success(`${res?.data?.status || res.message}`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,
@@ -126,7 +140,13 @@ export default function ProjectPropertiesDetails() {
       getPropertyDetails();
       console.log(res);
     } catch (error) {
-
+      toast.error(`${error?.response?.data?.message || error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
     }
   };
 
@@ -137,7 +157,7 @@ export default function ProjectPropertiesDetails() {
       const response = await deleteProjectProperty(id);
       toast.success(`${response?.data?.status || response.message}`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,
@@ -147,13 +167,25 @@ export default function ProjectPropertiesDetails() {
       // pushAlert("Check your email for OTP to proceed.");
       toast.error(`${error?.response?.data?.message || error.message}`, {
         position: "top-right",
-        autoClose: 2000000000,
+        autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         draggable: false,
       });
     }
   };
+
+  function viewAction(row) {
+    setIsViewOpen(true);
+
+    setViewData(row)
+  }
+
+  function editAction(row) {
+    setIsEditOpen(true);
+
+    setViewData(row)
+  }
 
   return (
     <div className="bg-white h-screen p-8">
@@ -177,7 +209,20 @@ export default function ProjectPropertiesDetails() {
           projectId={property?.project?.id}
           // payments={""}
           property={property}
-        // fetchData= {fetchData} setIsOpen={setIsOpen}
+          // fetchData= {fetchData} setIsOpen={setIsOpen}
+        />
+      </AppModal>
+
+      <AppModal
+        modalIsOpen={openClientModal}
+        setIsOpen={setOpenClientModal}
+        title={"Client Information"}
+      >
+        <PropertyClientInfo
+          projectId={property?.project?.id}
+          // payments={""}
+          property={property}
+          // fetchData= {fetchData} setIsOpen={setIsOpen}
         />
       </AppModal>
 
@@ -193,6 +238,28 @@ export default function ProjectPropertiesDetails() {
         />
       </AppModal>
 
+
+      
+      <AppModal
+        modalIsOpen={modalIsEditOpen}
+        setIsOpen={setIsEditOpen}
+        title={"Edit Amenity"}
+      >
+        <EditProjectAmenityModal fetchData={getPropertyDetails} setIsOpen={setIsEditOpen} data={viewData}/>
+      </AppModal>
+
+      <AppModal
+        modalIsOpen={modalViewIsOpen}
+        setIsOpen={setIsViewOpen}
+        title={"View Amenities Details"}
+      >
+        <div className="flex flex-col">
+            
+      <h2 style={{fontSize: '25px'}}>Name: {viewData && viewData.name}</h2><br />
+      <div>Quantity: {viewData && viewData.quantity}</div>
+        </div>
+      </AppModal>
+
       {loading && (
         <div className="flex items-center justify-center w-[100%] mb-[20px]">
           <CircularProgress />
@@ -200,7 +267,7 @@ export default function ProjectPropertiesDetails() {
       )}
       <div className="flex justify-between">
         <div className="text-[24px] font-medium">View Property</div>
-        <div className="text-[#40A74E] text-[16px] font-bold">Amenities</div>
+        <div className="text-[#40A74E] text-[16px] font-bold"></div>
       </div>
       <hr className="my-8" />
 
@@ -229,10 +296,10 @@ export default function ProjectPropertiesDetails() {
         </div>
       </div>
       <hr className="my-9" />
-      <div>
+      <div> 
         <TableComponent
           actionText="Add Amenity"
-          columns={columns}
+          columns={columns} 
           data={amenities}
           action={openModal}
           searchFunction={searchFunction}
@@ -242,46 +309,13 @@ export default function ProjectPropertiesDetails() {
           loading={loading}
           hasMore={hasMore}
           fetchMoreDataProps={getPropertyDetails}
+          type="propertyamenity"
+          viewAction={viewAction}
+          editAction={editAction}
         />
       </div>
-      <div className="flex justify-center gap-8 mt-[35px] mb-[53px]">
-        <Button
-          style={{
-            border: "1px solid red",
-            color: "red",
-            background: "white",
-            width: "163px",
-            height: "41px",
-          }}
-          variant="contained"
-        >
-          <div
-            onClick={() =>
-              openDialogModal(
-                "Delete Property",
-                "Are you sure you want to delete Property?"
-              )
-            }
-            className="text-[13px]"
-          >
-            Delete
-          </div>
-        </Button>
-        <Button
-          className="text-[15px]"
-          style={{
-            backgroundColor: "white",
-            border: "1px solid green",
-            color: "green",
-            width: "163px",
-            height: "41px",
-          }}
-          variant="contained"
-        >
-          <div className="text-[13px]">Edit</div>
-        </Button>
-      </div>
-
+      <br /><br />
+ 
       <div className="mb-[45px]">
         <hr />
         <div className="my-[14px] font-medium text-[20px] ">
@@ -299,6 +333,9 @@ export default function ProjectPropertiesDetails() {
             height: "67px",
           }}
           variant="contained"
+          onClick={() => {
+            openClient();
+          }}
         >
           Clients Sales Details
         </Button>

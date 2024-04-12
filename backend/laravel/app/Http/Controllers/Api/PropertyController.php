@@ -2,30 +2,28 @@
 
 namespace App\Http\Controllers\Api;
 
-use NumberToWords\NumberToWords;
 use App\Http\Resources\AffiliateShow;
 use App\Http\Resources\ClientResource;
-use App\Models\Property;
-use App\Models\Amenities;
-use Illuminate\Http\Request;
-use App\Models\PropertyAmenities;
 use App\Http\Resources\PropertyList;
 use App\Http\Resources\PropertyPayment as ResourcesPropertyPayment;
-use App\Http\Resources\PropertyShow;
 use App\Http\Resources\PropertyStat;
 use App\Http\Resources\StatsNotAvailabel;
 use App\Http\Resources\UsersResource;
 use App\Models\AgentCommission;
 use App\Models\Payment;
 use App\Models\PaymentFrequency;
+use App\Models\Property;
+use App\Models\PropertyAmenities;
 use App\Models\PropertyClient;
 use App\Models\PropertyPayment;
 use App\Models\PropertySalesAgent;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Dompdf\Dompdf;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use NumberToWords\NumberToWords;
 
 class PropertyController extends Controller
 {
@@ -38,7 +36,6 @@ class PropertyController extends Controller
       'id' => 'required',
     ]);
 
-
     if ($validator->fails()) {
       return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
     }
@@ -50,13 +47,12 @@ class PropertyController extends Controller
     return PropertyList::collection($model);
   }
 
-
   /**
    * Store a newly created resource in storage.
    */
   public function store(Request $request)
   {
-    // things to do 
+    // things to do
     //1. do validation
     //2. fetch and create all amenities
     //3. create property
@@ -80,12 +76,12 @@ class PropertyController extends Controller
     $model->name = $request->input('name');
     $model->project_id = $request->input('project');
 
-    //save image 
+    //save image
     $image = $request->file('image');
     $imageName = time() . '.' . $image->getClientOriginalExtension();
     $image->move(public_path('images/property'), $imageName);
 
-    $model->cover_image = '/images/property/' . $imageName;;
+    $model->cover_image = '/images/property/' . $imageName;
     $model->description = $request->input('description');
     $model->log_user_id = $loggedinuser->id;
     $model->amount = $request->input('amount');
@@ -93,12 +89,12 @@ class PropertyController extends Controller
 
     if ($model->save()) {
       foreach (json_decode($amenities, true) as $amenity) {
-        $amenityModel =  new PropertyAmenities();
+        $amenityModel = new PropertyAmenities();
         $amenityModel->property_id = $model->id;
         $amenityModel->amenity_id = $amenity["amenity"];
         $amenityModel->quantity = $amenity["quantity"];
-        $amenityModel->log_user_id =  $loggedinuser->id;
-        $amenityModel->status =  Property::Incompleted;
+        $amenityModel->log_user_id = $loggedinuser->id;
+        $amenityModel->status = Property::Incompleted;
         $amenityModel->save();
       }
       return response()->json(["status" => "success"], 200);
@@ -120,7 +116,6 @@ class PropertyController extends Controller
       return response()->json(["status" => "error", "message" => "Could not find the specific property"], 400);
     }
   }
-
 
   /**
    * Update the specified resource in storage.
@@ -180,7 +175,6 @@ class PropertyController extends Controller
       return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
     }
 
-
     $query = $request->input('query');
     $page = $request->input('page', 1);
     $perPage = $request->input('perpage', 10);
@@ -230,10 +224,18 @@ class PropertyController extends Controller
     $loggedinuser = auth()->guard('sanctum')->user();
 
     // check if a property has an agent and client
-    //first fetch property with agent and client 
+    //first fetch property with agent and client
     $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
+    $totalPayment = $getProperty->payments->sum(function ($payment) {
+      return $payment->amount ?? 0;
+    }) + $request->amount;
+
+    if ($getProperty->status == 1 ||  $totalPayment > $getProperty->amount) {
+      return response()->json(["status" => "error", "message" => "You payment is complete or this amount is greater than the remaining balance"], 400);
+    }
+
     if (empty($getProperty->agent) or empty($getProperty->client)) {
-      // check if post value exist to create 
+      // check if post value exist to create
       $agentClientValidator = Validator::make($request->all(), [
         'client' => 'required', //client_id
         'agent' => 'required', //agent_id
@@ -242,13 +244,13 @@ class PropertyController extends Controller
         'commision' => 'required', //commission for agent in percentage
       ]);
       if ($agentClientValidator->fails()) {
-        return response()->json(["status" => "error", "message" => "please ensure client and agent values are available", "data" => $getProperty], 400);
+        return response()->json(["status" => "error", "message" => "please ensure client and agent values are available", "data" => $agentClientValidator], 400);
       }
 
       $client = $request->input("client");
       $agent = $request->input("agent");
-      $createAgent =  new PropertySalesAgent();
-      $paymentFrequency =  new PaymentFrequency();
+      $createAgent = new PropertySalesAgent();
+      $paymentFrequency = new PaymentFrequency();
       $paymentFrequency->property_id = $request->input("property");
       $paymentFrequency->frequency = $request->input("paymentFrequency");
       $paymentFrequency->log_user_id = $loggedinuser->id;
@@ -271,7 +273,6 @@ class PropertyController extends Controller
       $createClient->save();
     }
 
-
     if ($validator->fails()) {
       return response()->json(['status' => 'error', 'message' => "Please ensure that there is no empty requierd fields "], 400);
     }
@@ -290,9 +291,9 @@ class PropertyController extends Controller
         return $payment->amount ?? 0;
       });
       if ($totalPayment >= $getProperty->amount) {
-        $getProperty->status = (int)Property::Completed;
+        $getProperty->status = (int) Property::Completed;
       } else {
-        $getProperty->status = (int)Property::IncompletedPayment;
+        $getProperty->status = (int) Property::IncompletedPayment;
       }
       $getProperty->save();
       // take payment id and use it to create property payment relationship
@@ -300,13 +301,27 @@ class PropertyController extends Controller
       $imageName = time() . '.' . $image->getClientOriginalExtension();
       $image->move(public_path('images/proofofpayment'), $imageName);
 
-      $propertyPaymentModel->property_id = $request->input("property");;
+      $propertyPaymentModel->property_id = $request->input("property");
       $propertyPaymentModel->payment_id = $paymentModel->id;
       $propertyPaymentModel->log_user_id = $loggedinuser->id;
       $propertyPaymentModel->prof_of_payment = '/images/proofofpayment/' . $imageName;
       $propertyPaymentModel->status = PropertyPayment::Default;
       if ($propertyPaymentModel->save()) {
-        return response()->json(["status" => "success",], 201);
+        $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
+        // check if the payment is a full payment and update the property status and if its a pertial payment use the info to update too
+        $totalPayment = $getProperty->payments->sum(function ($payment) {
+          return $payment->amount ?? 0;
+        });
+
+        if ($totalPayment >= $getProperty->amount) {
+          $getProperty->status = (int)Property::Completed;
+        } else {
+          $getProperty->status = (int)Property::IncompletedPayment;
+        }
+
+        if ($getProperty->save()) {
+          return response()->json(["status" => "success",], 201);
+        }
       }
       return response()->json(["status" => "error"], 400);
     }
@@ -327,7 +342,7 @@ class PropertyController extends Controller
   {
     $validator = Validator::make($request->all(), [
       //'propertyAmenity' => 'required',
-      'amenity' => 'required',
+      'amenity' => 'required', 
       "quantity" => 'required',
     ]);
 
@@ -335,7 +350,7 @@ class PropertyController extends Controller
       return response()->json(["status" => "error", "message" => "ensure that all required filed are properly filled"], 400);
     }
 
-    $amenityModel =  PropertyAmenities::find($id);
+    $amenityModel = PropertyAmenities::find($id);
     //$amenityModel->property_id = $amenityModel->property_id;
     $amenityModel->amenity_id = $request->input("amenity");
     $amenityModel->quantity = $request->input("quantity");
@@ -369,13 +384,12 @@ class PropertyController extends Controller
       return response()->json(["status" => "error", "message" => "ensure that all required filed are properly filled"], 400);
     }
 
-    $amenityModel =  new PropertyAmenities();
+    $amenityModel = new PropertyAmenities();
     $amenityModel->property_id = $request->input("property");
     $amenityModel->amenity_id = $request->input("amenity");
     $amenityModel->quantity = $request->input("quantity");
-    $amenityModel->log_user_id =  $loggedinuser->id;
-    $amenityModel->status =  PropertyAmenities::Default;
-
+    $amenityModel->log_user_id = $loggedinuser->id;
+    $amenityModel->status = PropertyAmenities::Default;
 
     if ($amenityModel->save()) {
       return response()->json(["status" => "success"], 201);
@@ -402,9 +416,9 @@ class PropertyController extends Controller
     if (!empty($model)) {
       if (!empty($model->agent)) {
         if ($model->agent->agent_type == PropertySalesAgent::Affiliate) {
-          return new  AffiliateShow($model->agent->affiliates);
+          return new AffiliateShow($model->agent->affiliates);
         } else {
-          return new  UsersResource($model->agent->users);
+          return new UsersResource($model->agent->users);
         }
       }
       return response()->json(["status" => "error", "This user presently has no agent."], 400);
@@ -442,7 +456,7 @@ class PropertyController extends Controller
   public function paymentReceipt($id)
   {
     //reciept;
-    $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->find($id)->first();
+    $model = PropertyPayment::with(["payment", "property.payments"])->orderBy('created_at', 'desc')->where(["id" => $id])->first();
     $dateOfPayment = $model->created_at;
     $client = $model->property->client->client->name;
     $address = $model->property->client->client->address->full_address;
@@ -461,14 +475,15 @@ class PropertyController extends Controller
     }
     if (empty($reciept)) {
       // generate reciept save it and reset it 
-      $model->reciept = Str::random(5, 'abcdefghijklmnopqrstuvwxyz1234567890') . $model->id;
+      $model->reciept = str_pad($model->id, 3, '0', STR_PAD_LEFT);
       $model->save();
       $reciept = $model->reciept;
     }
     $numberToWords = new NumberToWords();
     $currencyTransformer = $numberToWords->getCurrencyTransformer('en');
     $money = $model->payment->amount . "00";
-    $amountInWords = $currencyTransformer->toWords($money, 'NGN');
+    $amountInWords = ucfirst($currencyTransformer->toWords($money, 'NGN'));
+    $amountInWords = str_replace("Nairas", " Naira", $amountInWords);
     $imagePath = "https://tibilon.skillzserver.com/static/media/company_logo.861e326775b7cd6e6ac78c6d380a1dde.svg";
     $pdfContent = "
         <!DOCTYPE html>
@@ -483,18 +498,18 @@ class PropertyController extends Controller
                 align-items: center;
                 justify-content: center;
               }
-        
+
               .parent-div {
                 padding: 24px;
               }
-        
+
               .heading {
                 width:100%;
                 text-align:center;
                 font-family: Arial, Helvetica, sans-serif;
                 font-size: 20px;
               }
-        
+
               table,
               td {
                 border: 2px solid #080808;
@@ -503,17 +518,17 @@ class PropertyController extends Controller
               thead{
                 background: #ccc;
               }
-        
+
               .td-right {
                 font-size: small;
                 text-align: right;
               }
-        
+
               .td-left {
                 font-size: small;
                 background-color: rgb(187, 138, 63);
               }
-        
+
               .receipt-information {
                 display: flex;
                 margin-top: 40px;
@@ -521,20 +536,20 @@ class PropertyController extends Controller
               .receipt-informationdiv {
                 width:50%;
               }
-        
+
               .client-name {
                 margin-top: 8px;
               }
-        
+
               .dotted-line {
                 border-top: 1px dotted;
                 margin-top: 30px;
               }
-        
+
               .items-description td:last-child {
                 white-space: nowrap;
               }
-        
+
               .vl {
                 border-left: 2px solid black;
                 height: 500px;
@@ -544,7 +559,7 @@ class PropertyController extends Controller
                 top: 8px;
               }
               .company-logo{
-                width: 100px;
+                width: 100%;
                 height: 100px;
                 background-image: url({$imagePath})
                 display: flex;
@@ -553,14 +568,14 @@ class PropertyController extends Controller
               }
               .vertical-line {
                 border-left: 0.5px solid rgb(38, 57, 11);
-                height: 100px; 
-                margin: 0 auto; 
+                height: 100px;
+                margin: 0 auto;
               }
               .mb-7{
                 margin-bottom: 7px;
               }
               .items-description td {
-                text-align: center; 
+                text-align: center;
                 padding-left: 5px;
               }
               .row-last{
@@ -568,17 +583,17 @@ class PropertyController extends Controller
               }
             </style>
           </head>
-        
+
           <body>
             <div class='body'>
               <div class='parent-div'>
-                <div class='company-logo'>
-                  <img src='{$imagePath}' width='100' height='100'>
+                <div class='heading'>
+                <h1 style='color:#DAB870'>Tibilon Construction Ltd</h1>
                 </div>
                 <div class='heading'>
-                  <h1>Payment Receipt</h1>
+                  <h2 style='text-decoration:underline'>Payment Receipt</h2>
                 </div>
-        
+
                 <div style='display:flex ' class='receipt-information'>
                   <div class='receipt-informationdiv' style='font-size: 20px;float:left'><b>Sold To:</b></div>
                   <div style='float:left ' class='receipt-informationdiv'>
@@ -594,9 +609,9 @@ class PropertyController extends Controller
                     </tr>
                   </tbody></table>
                   </div>
-                  
+
                 </div>
-        
+
                 <div class='client-name' style='clear: both;'>
                   <div class='client-name'><b>{$client}</b></div>
                   <div class='client-name'>
@@ -604,7 +619,7 @@ class PropertyController extends Controller
                   </div>
                 </div>
                 <hr class='dotted-line'>
-        
+
                 <div class='items-description'>
                   <table style='width: 98%'>
                     <thead>
@@ -616,20 +631,21 @@ class PropertyController extends Controller
                     </thead>
                     <tbody>
                     <tr style='height: 220px'>
-                      <td>1</td>
-                      <td>
-                        {$propertyDescription}
+                      <td style='height: 220px'>1</td>
+                      <td style='height: 220px'>
+                      
+                      {$model->property->project->name} ( {$propertyDescription} )
                       </td>
-                      <td>N{$amount}</td>
+                      <td style='height: 220px'>N{$amount}</td>
                     </tr>
                     <tr style='height: 100px;'>
-                      <td colspan='2' class='row-last'>  
+                      <td colspan='2' class='row-last'>
                         <div class='mb-7'><b>Amount in words:</b></div>
                         <div>{$amountInWords}</div>
                       </td>
                       <td  class='row-last' >
                         <div class='mb-7'> <b>Total Amount:</b></div>
-                        <div><b>N {$amount}</b></div>         
+                        <div><b>N {$amount}</b></div>
                       </td>
                     </tr>
                   </tbody>
@@ -650,15 +666,15 @@ class PropertyController extends Controller
                     <div>No 4 Santana Close, off Aminu</div>
                     <div>Kano Crescent, Abuja, FCT, Abuja.</div>
                   </div>
-                  
+
                   <div style='float:left;width:33%;border-right:solid 1px green;text-align:center;height:100px'><b>Phone:</b> 07031163634</div>
                   <div style='float:left;text-align:center;height:100px;width:33%'><b>Email:</b> info@tibilon.com</div>
                 </div>
                 </div>
               </div>
             </div>
-          
-        
+
+
         </body></html>
         ";
 

@@ -269,7 +269,7 @@ export default function AddProjectModal(props) {
                 handleOnChange={handleFileUploadChange}
               />
             </div>
-            <div className="w-[60px] h-[60px]">
+            <div className="w-[60px] h-[60px]"> 
               {projectBlogImage && (
                 <div className="relative w-30 bg-gray-200 p-3">
                   <button

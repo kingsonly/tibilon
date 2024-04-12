@@ -36,7 +36,7 @@ export default function Login() {
             setName(value.target.value)
             setNameerror(true)
         }
-        if (type === "password") {
+        if (type === "password") { 
             setPassword(value.target.value)
             setPassworderror(true)
         }
@@ -74,6 +74,7 @@ export default function Login() {
             let data = response.data;
             if (data.status == "success") {
                 localStorage.setItem('token', data.token)
+                localStorage.setItem('name', data.name)
                 setLoader(false)
                 navigate('/dashboard');
             }

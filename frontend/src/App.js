@@ -6,6 +6,7 @@ import Sidebar from "./components/SideBar/SideBar";
 import { useNavigate } from 'react-router-dom';
 import { SideBarLinks } from "./sideBarLinks";
 import { SideBarClientLinks } from "./sideBarClientLinks";
+import PageNotFound from "./pages/PageNotFound";
 
 
 function App() {
@@ -14,7 +15,7 @@ function App() {
     ({ path, title, component: Component, exact }) => (
       <Route
         key={path}
-        exact={exact}
+        exact={exact} 
         path={path}
         element={
           <PrivateAdminRoute path={path} key={path} exact={exact} title={title}>
@@ -54,6 +55,7 @@ function App() {
           {authRoutes}
           {clientPrivateRoutes}
           {privateRoutes}
+          <Route path="*" key="*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </div>

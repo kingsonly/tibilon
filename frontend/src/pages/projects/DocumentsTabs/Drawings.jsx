@@ -66,7 +66,7 @@ export default function Drawings() {
   };
   return (
     <div>
-      <AddDocumentModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} action={fetchData} project={id}  />
+      <AddDocumentModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} action={fetchData} project={id} allowedTypes={'drawing'}  />
       <InfiniteScroll
           dataLength={document.length}
           next={fetchData}

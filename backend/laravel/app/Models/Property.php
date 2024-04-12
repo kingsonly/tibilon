@@ -11,6 +11,7 @@ class Property extends Model
     use HasFactory;
     const Completed = 1;
     const Incompleted = 0;
+    const Available = 0;
     const IncompletedPayment = 2;
     public function payments()
     {

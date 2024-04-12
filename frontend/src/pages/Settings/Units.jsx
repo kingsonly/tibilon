@@ -4,11 +4,17 @@ import axios from "axios";
 import AppModal from "../../components/AppModal";
 import AddEmployeeModalDetails from "../../components/AddEmployeeModalDetails";
 import AddUnitsModal from "../../components/AddUnitsModal";
+import { ToastContainer, toast } from "react-toastify";
 import BreadCrumb from "../../components/BreadCrumb";
+import EditUnitsModal from "../../components/EditUnitsModal";
+import { token } from "../../config";
 
 export default function Units() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [data, setData] = React.useState([]);
+  const [modalViewIsOpen, setIsViewOpen] = React.useState(false);
+  const [modalIsEditOpen, setIsEditOpen] = React.useState(false);
+  const [viewData, setViewData] = useState();
 
   useEffect(() => {
     fetchData();
@@ -90,11 +96,13 @@ export default function Units() {
   const dataKeyAccessors = [
     "SN",
     "name",
+    "CTA"
   ];
 
   const columns = [
     "SN",
     "Name",
+    "Action"
   ];
 
   const breadCrumbs =[
@@ -109,16 +117,83 @@ export default function Units() {
     }
   ]
 
+  function viewAction(row) {
+    setIsViewOpen(true);
+
+    setViewData(row)
+  }
+
+  function editAction(row) {
+    setIsEditOpen(true);
+
+    setViewData(row)
+  }
+
+  const deleteAction = async (unit) => {
+    try { 
+
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/unit/destroy/${unit.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.success(`${res?.data?.status || res.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+      fetchData();
+      console.log(res);
+    } catch (error) {
+      toast.error(`${error?.response?.data?.message || error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+    }
+  };
+
   return (
     <div className="p-[47px] bg-white">
       <BreadCrumb breadCrumbs={breadCrumbs} />
+      <ToastContainer />
       <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         title={"New Unit"}
       >
-        <AddUnitsModal />
+        <AddUnitsModal fetchData={fetchData} setIsOpen={setIsOpen} />
       </AppModal>
+
+      <AppModal
+        modalIsOpen={modalIsEditOpen}
+        setIsOpen={setIsEditOpen}
+        title={"Edit Unit"}
+      >
+        <EditUnitsModal fetchData={fetchData} setIsOpen={setIsEditOpen} data={viewData}/>
+      </AppModal>
+
+      <AppModal
+        modalIsOpen={modalViewIsOpen}
+        setIsOpen={setIsViewOpen}
+        title={"View Unit Details"}
+      >
+        <div className="flex flex-col">
+            
+      <h2 style={{fontSize: '25px'}}>Name: {viewData && viewData.name}</h2><br />
+        </div>
+      </AppModal>
+
+
+
       <div className="font-bold text-[30px] text-left">Units Details</div>
       <hr className="mb-8 mt-3" />
       <TableComponent
@@ -129,6 +204,10 @@ export default function Units() {
         searchFunction={searchFunction}
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
+        type="unit"
+        deleteAction={deleteAction}
+        viewAction={viewAction}
+        editAction={editAction}
       />
     </div>
   );
