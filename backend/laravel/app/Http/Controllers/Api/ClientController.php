@@ -96,7 +96,7 @@ class ClientController extends Controller
         }
         return response()->json(["status" => "error", "message" => "There is not material with this ID " . $id], 400);
     }
-
+ 
     /**
      * Update the specified resource in storage.
      */

@@ -113,7 +113,11 @@ export default function TableComponent({
     case "propertypayment":
       title = "Delete Property Payment";
       message = "Are you sure you want to delete this Property Payment?";
-      break;    
+      break;   
+    case "propertyamenity":
+      title = "Delete Property Amenity";
+      message = "Are you sure you want to delete this Property Amenity?";
+      break;     
     default:
       title = "Delete Details";
       message = "Are you sure you want to delete these details?";

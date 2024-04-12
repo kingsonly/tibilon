@@ -19,6 +19,8 @@ import PropertyPaymentInfo from "../../components/PropertyPaymentInfo";
 import { getAllPropertyPayments } from "../../services/apiservices/paymentsServices";
 import PropertyClientInfo from "../../components/PropertyClientInfo";
 
+import EditProjectAmenityModal from "../../components/EditProjectAmenityModal";
+
 export default function ProjectPropertiesDetails() {
   const { id } = useParams();
   const { state } = useLocation();
@@ -37,6 +39,10 @@ export default function ProjectPropertiesDetails() {
     `${process.env.REACT_APP_API_URL}/property`
   );
   const [perpage, setPerpage] = React.useState(10);
+
+  const [modalViewIsOpen, setIsViewOpen] = React.useState(false); 
+  const [modalIsEditOpen, setIsEditOpen] = React.useState(false);
+  const [viewData, setViewData] = useState();
 
   function openModal() {
     setIsOpen(true);
@@ -61,6 +67,7 @@ export default function ProjectPropertiesDetails() {
           name: amt?.amenity?.name,
           quantity: amt?.quantity,
           id: amt?.id,
+          amenity_id: amt?.amenity_id,
         }))
       );
     } catch (error) {
@@ -168,6 +175,18 @@ export default function ProjectPropertiesDetails() {
     }
   };
 
+  function viewAction(row) {
+    setIsViewOpen(true);
+
+    setViewData(row)
+  }
+
+  function editAction(row) {
+    setIsEditOpen(true);
+
+    setViewData(row)
+  }
+
   return (
     <div className="bg-white h-screen p-8">
       <BreadCrumb breadCrumbs={breadCrumbs} />
@@ -219,6 +238,28 @@ export default function ProjectPropertiesDetails() {
         />
       </AppModal>
 
+
+      
+      <AppModal
+        modalIsOpen={modalIsEditOpen}
+        setIsOpen={setIsEditOpen}
+        title={"Edit Amenity"}
+      >
+        <EditProjectAmenityModal fetchData={getPropertyDetails} setIsOpen={setIsEditOpen} data={viewData}/>
+      </AppModal>
+
+      <AppModal
+        modalIsOpen={modalViewIsOpen}
+        setIsOpen={setIsViewOpen}
+        title={"View Amenities Details"}
+      >
+        <div className="flex flex-col">
+            
+      <h2 style={{fontSize: '25px'}}>Name: {viewData && viewData.name}</h2><br />
+      <div>Quantity: {viewData && viewData.quantity}</div>
+        </div>
+      </AppModal>
+
       {loading && (
         <div className="flex items-center justify-center w-[100%] mb-[20px]">
           <CircularProgress />
@@ -268,10 +309,13 @@ export default function ProjectPropertiesDetails() {
           loading={loading}
           hasMore={hasMore}
           fetchMoreDataProps={getPropertyDetails}
+          type="propertyamenity"
+          viewAction={viewAction}
+          editAction={editAction}
         />
       </div>
       <br /><br />
-
+ 
       <div className="mb-[45px]">
         <hr />
         <div className="my-[14px] font-medium text-[20px] ">

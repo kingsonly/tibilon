@@ -342,7 +342,7 @@ class PropertyController extends Controller
   {
     $validator = Validator::make($request->all(), [
       //'propertyAmenity' => 'required',
-      'amenity' => 'required',
+      'amenity' => 'required', 
       "quantity" => 'required',
     ]);
 
