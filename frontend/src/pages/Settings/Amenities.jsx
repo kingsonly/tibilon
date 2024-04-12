@@ -13,7 +13,7 @@ import EditAmenitiesModal from "../../components/EditAmenitiesModal";
 
 export default function Amenities() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [modalViewIsOpen, setIsViewOpen] = React.useState(false);
+  const [modalViewIsOpen, setIsViewOpen] = React.useState(false); 
   const [modalIsEditOpen, setIsEditOpen] = React.useState(false);
   
 
