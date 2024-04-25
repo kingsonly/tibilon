@@ -56,6 +56,8 @@ export default function AddPropertyModal(props) {
     amount: false
   });
 
+  console.log(amenitiesTypes)
+
   useEffect(() => {
     if (isEdit) {
       setallAmenities(
@@ -325,7 +327,10 @@ export default function AddPropertyModal(props) {
                 }}
               />
             </div>
-            <div className="text-center font-bold mt-[30px]">Amenities</div>
+
+            {!isEdit && (
+              <>
+              <div className="text-center font-bold mt-[30px]">Amenities</div>
             <hr className="mb-6 mt-2" />
             <div className="w-[100%] flex items-center justify-center gap-4">
               <div className="w-[100%] flex items-enter justify-center">
@@ -413,7 +418,7 @@ export default function AddPropertyModal(props) {
                       </th> */}
                       <td class="px-6 py-4">
                         {
-                          amenitiesTypes.filter(
+                          amenitiesTypes?.filter(
                             (am) => am?.id == amenity?.amenity
                           )[0]?.name
                         }
@@ -430,6 +435,9 @@ export default function AddPropertyModal(props) {
                 </tbody>
               </table>
             </div>
+              </>
+            )}
+            
           </div>
 
           <div className="flex justify-between mt-24">
@@ -446,6 +454,7 @@ export default function AddPropertyModal(props) {
               {loading ? "saving..." : isEdit ? "Update" : "Save"}
             </Button>
           </div>
+          <br /><br /><br />
         </div>
       </AppModal>
     </div>

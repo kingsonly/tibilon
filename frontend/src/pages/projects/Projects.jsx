@@ -71,7 +71,7 @@ export default function Projects() {
     } catch (error) {
       setLoading(false)
       // Handle the error
-      console.error(error);
+      console.error(error); 
     }
   };
   const searchFunction = (e) => {
