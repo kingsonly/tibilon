@@ -41,7 +41,7 @@ export default function ProjectProperties() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        } 
       );
 
       let i = 1;
@@ -149,7 +149,7 @@ export default function ProjectProperties() {
 
   useEffect(() => {
     getProjectDashboard();
-    //fetchData();
+    fetchData();
     getProperties();
     // getPropertyLists();
   }, [token]);

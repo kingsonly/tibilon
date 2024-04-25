@@ -18,7 +18,7 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
   const [modalIsEditOpen, setIsEditOpen] = React.useState(false);
   const [viewData, setViewData] = useState();
 
-  useEffect(() => {
+  function fetchPropertyPayment(){
     property?.payment?.map((pymt, index) => {
       pymt["index"] = index + 1;
       pymt["CTA"] = "CTA";
@@ -28,6 +28,14 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
     if (property?.payment?.length > 0 && property?.payment !== undefined) {
       setfirstTimePayment(false);
     }
+
+  }
+
+  useEffect(() => {
+
+    
+
+  fetchPropertyPayment()
   }, []);
 
   const dataKeyAccessors = [
@@ -40,11 +48,11 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
   ];
   const columns = [
     "S/N",
-    "amount",
-    "mode_of_payment",
+    "Amount",
+    "Mode of payment",
     "Payment Type",
-    "Payment Data",
-    "action",
+    "Payment Date",
+    "Action",
   ];
 
   const getReciept = async (id) => {
@@ -93,7 +101,7 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
     try { 
 
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/property/payment/destroy/${unit.id}`,
+        `${process.env.REACT_APP_API_URL}/property/deletepayment/${unit.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -108,6 +116,10 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
         closeOnClick: true,
         draggable: false,
       });
+
+      fetchPropertyPayment()
+
+      location.reload()
      
       console.log(res);
     } catch (error) {
@@ -139,7 +151,14 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
       >
         <div className="flex flex-col">
             
-      <h2 style={{fontSize: '25px'}}>Name: {viewData && viewData.name}</h2><br />
+      <h2 style={{fontSize: '25px'}}>Payment Information</h2><br />
+      <p>Amount: {viewData && viewData.amount}</p>
+      <p>Payment Type: {viewData && viewData.payment_type}</p>
+      <p>Status: {viewData && viewData.status}</p>
+      <p>Mode of Payment: {viewData && viewData.mode_of_payment}</p>
+      <p>Created At: {viewData && new Date(viewData.created_at).toLocaleString()}</p>
+
+
         </div>
       </AppModal>
       {" "}
