@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useEffect , useState} from "react";
+import React, { useEffect, useState } from "react";
 import TextInput from "./TextInput";
 import AppModal from "./AppModal";
 import UploadButton from "./UploadButton";
@@ -12,11 +12,15 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import SnackbarComponent from "./SnackbarComponent";
 
 export default function AddDocumentModal(props) {
-  const {modalIsOpen, setIsOpen, action, project } = props;
+  const { modalIsOpen, setIsOpen, action, project, allowedTypes } = props;
   const [title, setTitle] = useState("");
   const [file, setFile] = useState([]);
   const [documentType, setDocumentType] = useState("");
-  
+  const [allowedType, setAllowedType] = useState(allowedTypes);
+
+
+
+
   const [loading, setLoading] = useState(false);
   const [projectBlogImage, setProjectBlogImage] = React.useState();
   const [show, setShow] = useState(false);
@@ -29,40 +33,111 @@ export default function AddDocumentModal(props) {
     fileType: false,
   });
 
-  
   const handleOnChange = (e, name) => {
     switch (name) {
       case "title":
         setTitle(e.target.value);
         break;
-     
+
       default:
         //client goes here
         setDocumentType(e.target.value);
+
+        setMessage('');
+        setShow(false);
+        setStatus("success")
+
+        switch (e.target.value) {
+          case "media":
+            setAllowedType("media");
+            break;
+          case "Word Document":
+            setAllowedType("word");
+            break;
+          case "Drawing":
+            setAllowedType("drawing");
+            break;
+          case "Others":
+            setAllowedType("any");
+            break;
+          default:
+            break;
+        }
         break;
     }
+
+    
   };
 
   const handleFileUploadChange = (e) => {
-    const files = e.target.files || [];
-    setFile(files[0]);
+    const selectedFile = e.target.files[0];
 
-    BlogToBase64(files[0], (err, res) => {
+    // Check if a file is selected
+    if (!selectedFile) {
+      return;
+    }
+
+    // Validate file type based on allowedType
+    switch (allowedType) {
+      case "media":
+        // Accept media files (png, jpg, gif, video, etc.)
+        if (!selectedFile.type.includes("image") && !selectedFile.type.includes("video")) {
+          setStatus("error");
+          setMessage("Invalid file type. Please upload a media file.");
+          setShow(true);
+          setLoading(false);
+          return;
+        }
+        break;
+      case "word":
+        // Accept Word documents and text files
+        if (!selectedFile.type.includes("application/msword") && !selectedFile.type.includes("text")) {
+          setStatus("error");
+          setMessage("Invalid file type. Please upload a Word document or a text file.");
+          setShow(true);
+          setLoading(false);
+          return;
+        }
+        break;
+      case "drawing":
+        // Accept only PDF files
+        if (!selectedFile.type.includes("pdf")) {
+          setStatus("error");
+          setMessage("Invalid file type. Please upload a PDF file.");
+          setShow(true);
+          setLoading(false);
+          return;
+        }
+        break;
+      case "any":
+        // Accept any other type of file
+        break;
+      default:
+        // Default case if allowedType is not recognized
+  
+        setMessage('');
+        setShow(false);
+        setLoading(false);
+        return;
+    }
+
+    // Set the selected file and convert it to base64
+    setFile(selectedFile);
+    BlogToBase64(selectedFile, (err, res) => {
       console.log(res, "image"); // Base64 `data:image/...` String result.
       setProjectBlogImage(res);
     });
   };
-  
-  const save = async () => {
 
+  const save = async () => {
     let status = false;
     setError({
-        title: false,
-        file: false,
-        fileType: false,
+      title: false,
+      file: false,
+      fileType: false,
     });
 
-    if (file.length == 0) {
+    if (file.length === 0) {
       setError((prevError) => ({ ...prevError, file: true }));
       status = true;
     }
@@ -80,7 +155,7 @@ export default function AddDocumentModal(props) {
     if (status) {
       setLoading(false);
       setStatus("error");
-      setMessage("all fields are required");
+      setMessage("All fields are required");
       setShow(true);
       setTimeout(() => {
         setShow(false);
@@ -89,8 +164,8 @@ export default function AddDocumentModal(props) {
     }
 
     // on success we would
-    //setIsOpen(false)
-    //triger a refresh
+    // setIsOpen(false)
+    // triger a refresh
     let data = new FormData();
     data.append("file", file);
     data.append("title", title);
@@ -127,12 +202,14 @@ export default function AddDocumentModal(props) {
       setShow(true);
     }
   };
+
   const option = [
-    {label:"Drawing", value:"Drawing"},
-    {label:"Video / Images ", value:"media"},
-    {label:"Word Document", value:"Word Document"},
-    {label:"Others", value:"Others"},
-  ]
+    { label: "Drawing", value: "Drawing" },
+    { label: "Video / Images ", value: "media" },
+    { label: "Word Document", value: "Word Document" },
+    { label: "Others", value: "Others" },
+  ];
+
   return (
     <div>
       <SnackbarComponent status={status} show={show} message={message} />
@@ -190,7 +267,7 @@ export default function AddDocumentModal(props) {
                 }}
               />
             </div>
-
+ 
             <div className="w-1/2">
               {" "}
               <TextInput
@@ -210,7 +287,6 @@ export default function AddDocumentModal(props) {
             </div>
           </div>
 
-
           <div className="flex justify-end">
             <Button variant="contained" color="success" onClick={() => save()}>
               {loading ? "Saving..." : "Save"}
@@ -221,3 +297,4 @@ export default function AddDocumentModal(props) {
     </div>
   );
 }
+

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import MediaFileComponent from "../../../components/MediaFileComponent";
+import WordDocumentFileComponent from "../../../components/WordDocumentFileComponent";
 import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { AiOutlineSearch } from "react-icons/ai";
 import AddDocumentModal from "../../../components/AddDocumentModal";
 import { useParams } from "react-router-dom";
 
-export default function Gallery() {
+export default function WordDocument() {
   const [document, setDocument] = useState([]);
   const [loader, setLoader] = useState(true);
   const [modalIsOpen, setIsOpen] = React.useState(false);
@@ -19,7 +19,7 @@ export default function Gallery() {
     var token = localStorage.getItem("token");
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/document`, 
-      {project:id,fileType:"media"}, {
+      {project:id,fileType:"Word Document"}, {
 
         headers: {
           Authorization: `Bearer ${token}`,
@@ -52,7 +52,7 @@ export default function Gallery() {
   };
   return (
     <div>
-      <AddDocumentModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} action={fetchData} project={id} allowedTypes={'media'}  />
+      <AddDocumentModal setIsOpen={setIsOpen} modalIsOpen={modalIsOpen} action={fetchData} project={id} allowedTypes={'word'}  />
 
       <div className="bg-white flex gap-4 flex-wrap mt-6">
         <div className="flex justify-center w-[100%]">
@@ -77,7 +77,7 @@ export default function Gallery() {
             onClick={() => setIsOpen(true)}
             role="action-button"
           >
-            Add New Gallery
+            Add Word Document
           </div>
         </div>
 
@@ -91,7 +91,7 @@ export default function Gallery() {
 
 
         {document?.map((document) => (
-          <MediaFileComponent document={document} />
+          <WordDocumentFileComponent document={document} />
         ))}
       </div>
     </div>

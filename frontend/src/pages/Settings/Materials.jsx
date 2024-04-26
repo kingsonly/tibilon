@@ -5,10 +5,16 @@ import AppModal from "../../components/AppModal";
 import AddEmployeeModalDetails from "../../components/AddEmployeeModalDetails";
 import AddMaterials from "../../components/AddMaterialsModal";
 import BreadCrumb from "../../components/BreadCrumb";
+import { ToastContainer, toast } from "react-toastify";
+import EditMaterialsModal from "../../components/EditMaterialsModal";
+import { token } from "../../config";
 
 export default function Materials() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState([]); 
+  const [modalViewIsOpen, setIsViewOpen] = React.useState(false);
+  const [modalIsEditOpen, setIsEditOpen] = React.useState(false);
+  const [viewData, setViewData] = useState();
 
   useEffect(() => {
     fetchData();
@@ -89,6 +95,7 @@ export default function Materials() {
   const dataKeyAccessors = [
     "SN",
     "name",
+    "CTA"
     // "email",
     // "totalproperties",
     // "amount",
@@ -99,6 +106,7 @@ export default function Materials() {
   const columns = [
     "SN",
     "Name",
+    "Action"
     // "Email",
     // "Property Sold",
     // "Total Amount",
@@ -118,16 +126,82 @@ export default function Materials() {
     }
   ]
 
+  function viewAction(row) {
+    setIsViewOpen(true);
+
+    setViewData(row)
+  }
+
+  function editAction(row) {
+    setIsEditOpen(true);
+
+    setViewData(row)
+  }
+
+  const deleteAction = async (material) => {
+    try {
+
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/material/destroy/${material.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.success(`${res?.data?.status || res.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+      fetchData();
+      console.log(res);
+    } catch (error) {
+      toast.error(`${error?.response?.data?.message || error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+    }
+  };
+
   return (
     <div className="p-[47px] bg-white">
             <BreadCrumb breadCrumbs={breadCrumbs}/>
+            <ToastContainer />
       <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
         title={"Add Material"}
       >
-        <AddMaterials />
+        <AddMaterials fetchData={fetchData} setIsOpen={setIsOpen} />
       </AppModal>
+
+      <AppModal
+        modalIsOpen={modalIsEditOpen}
+        setIsOpen={setIsEditOpen}
+        title={"Edit Material"}
+      >
+        <EditMaterialsModal fetchData={fetchData} setIsOpen={setIsEditOpen} data={viewData}/>
+      </AppModal>
+
+      <AppModal
+        modalIsOpen={modalViewIsOpen}
+        setIsOpen={setIsViewOpen}
+        title={"View Material Details"}
+      >
+        <div className="flex flex-col">
+            
+      <h2 style={{fontSize: '25px'}}>Name: {viewData && viewData.name}</h2><br />
+        </div>
+      </AppModal>
+
+
       <div className="font-bold text-[30px] text-left">Material Details</div>
       <hr className="mb-8 mt-3" />
       <TableComponent
@@ -138,6 +212,10 @@ export default function Materials() {
         searchFunction={searchFunction}
         paginationChange={paginationChange}
         dataKeyAccessors={dataKeyAccessors}
+        type="material"
+        deleteAction={deleteAction}
+        viewAction={viewAction}
+        editAction={editAction}
       />
     </div>
   );

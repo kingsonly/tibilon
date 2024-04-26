@@ -1,16 +1,24 @@
 import { Button } from "@mui/material";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TableComponent from "./TableComponent";
 import { imageBaseUrl } from "../services/apiservices/urls";
 
 import { BsReceipt } from "react-icons/bs";
 import axios from "axios";
+import AppModal from "./AppModal";
+import { ToastContainer, toast } from "react-toastify";
+import { token } from "../config";
+import EditPropertyPaymentModal from "./EditPropertyPaymentModal";
+
 export default function PropertyPaymentInfo({ payments, projectId, property }) {
   const navigate = useNavigate();
   const [firstTimePayment, setfirstTimePayment] = React.useState(true);
+  const [modalViewIsOpen, setIsViewOpen] = React.useState(false);
+  const [modalIsEditOpen, setIsEditOpen] = React.useState(false);
+  const [viewData, setViewData] = useState();
 
-  useEffect(() => {
+  function fetchPropertyPayment(){
     property?.payment?.map((pymt, index) => {
       pymt["index"] = index + 1;
       pymt["CTA"] = "CTA";
@@ -20,6 +28,14 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
     if (property?.payment?.length > 0 && property?.payment !== undefined) {
       setfirstTimePayment(false);
     }
+
+  }
+
+  useEffect(() => {
+
+    
+
+  fetchPropertyPayment()
   }, []);
 
   const dataKeyAccessors = [
@@ -32,11 +48,11 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
   ];
   const columns = [
     "S/N",
-    "amount",
-    "mode_of_payment",
+    "Amount",
+    "Mode of payment",
     "Payment Type",
-    "Payment Data",
-    "action",
+    "Payment Date",
+    "Action",
   ];
 
   const getReciept = async (id) => {
@@ -69,130 +85,104 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
     // }
   };
 
+  function viewAction(row) {
+    setIsViewOpen(true);
+
+    setViewData(row)
+  }
+
+  function editAction(row) {
+    setIsEditOpen(true);
+
+    setViewData(row)
+  }
+
+  const deleteAction = async (unit) => {
+    try { 
+
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/property/deletepayment/${unit.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.success(`${res?.data?.status || res.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+
+      fetchPropertyPayment()
+
+      location.reload()
+     
+      console.log(res);
+    } catch (error) {
+      toast.error(`${error?.response?.data?.message || error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: false,
+      });
+    }
+  };
+
   return (
     <Fragment>
+ <ToastContainer />
+<AppModal
+        modalIsOpen={modalIsEditOpen}
+        setIsOpen={setIsEditOpen}
+        title={"Edit Property Payment"}
+      >
+        <EditPropertyPaymentModal setIsOpen={setIsEditOpen} data={viewData}/>
+      </AppModal>
+
+      <AppModal
+        modalIsOpen={modalViewIsOpen}
+        setIsOpen={setIsViewOpen}
+        title={"View Property Payment Details"}
+      >
+        <div className="flex flex-col">
+            
+      <h2 style={{fontSize: '25px'}}>Payment Information</h2><br />
+      <p>Amount: {viewData && viewData.amount}</p>
+      <p>Payment Type: {viewData && viewData.payment_type}</p>
+      <p>Status: {viewData && viewData.status}</p>
+      <p>Mode of Payment: {viewData && viewData.mode_of_payment}</p>
+      <p>Created At: {viewData && new Date(viewData.created_at).toLocaleString()}</p>
+
+
+        </div>
+      </AppModal>
       {" "}
       <div>
-        <div className="text-[#D7B569] font-bold text-[23px]">
-          Agent Information
-        </div>
-        <div
-          className="flex justify-between items-center mb-10"
-          style={{
-            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            padding: "23px",
-          }}
-        >
-          {property?.agent == null ? (
-            <>No Agent Available</>
-          ) : (
-            <>
-              <div className="flex flex-col gap-4">
-                <div className="flex gap-5 items-center">
-                  <div className="font-bold text-[18px]">Name:</div>
-                  <div className="font-light text-[17px]">
-                    {property?.agent?.lastname} {property?.agent?.firstname}
-                  </div>
-                </div>
-                <div className="flex gap-5 items-center">
-                  <div className="font-bold text-[18px]">Email:</div>
-                  <div className="font-light text-[17px]">
-                    {property?.agent?.email}
-                  </div>
-                </div>
-              </div>
-              <div></div>
-            </>
-          )}
-        </div>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+  <Button
+    style={{
+      backgroundColor: "#40A74E",
+      color: "white",
+      width: "155px",
+      height: "44px",
+    }}
+    variant="contained"
+    onClick={() => {
+      navigate(
+        `/projects/${projectId}/actions/project-properties/details/payments/${firstTimePayment}/${property?.id}`
+      );
+    }}
+  >
+    Add Payments
+  </Button>
+</div>
 
-        <div className="text-[#D7B569] font-bold text-[23px]">
-          Client Information
-        </div>
-        <div
-          className="flex justify-between items-center"
-          style={{
-            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            padding: "23px",
-          }}
-        >
-          {property?.client == null ? (
-            <>
-              No Client Available
-              <Button
-                // className="h-[67px] text-[white] bg-[#40A74E] w-[320px]"
-                style={{
-                  backgroundColor: "#40A74E",
-                  color: "white",
-                  width: "155px",
-                  height: "44px",
-                }}
-                variant="contained"
-                onClick={() => {
-                  navigate(
-                    `/projects/${projectId}/actions/project-properties/details/payments/${firstTimePayment}/${property?.id}`
-                  );
-                }}
-              >
-                Add Payments
-              </Button>
-            </>
-          ) : (
-            <>
-              <div className="flex flex-col gap-4">
-                <div className="flex gap-5 items-center">
-                  <div className="font-bold text-[18px]">Name:</div>
-                  <div className="font-light text-[17px]">
-                    {property?.client?.name}
-                  </div>
-                </div>
-                <div className="flex gap-5 items-center">
-                  <div className="font-bold text-[18px]">Address:</div>
-                  <div className="font-light text-[17px]">
-                    {property?.client?.address?.full_address}
-                  </div>
-                </div>
-                <div className="flex gap-5 items-center">
-                  <div className="font-bold text-[18px]">Email:</div>
-                  <div className="font-light text-[17px]">
-                    {property?.client?.email}
-                  </div>
-                </div>
-                <div className="flex gap-5 items-center">
-                  <div className="font-bold text-[18px]">Phone No:</div>
-                  <div className="font-light text-[17px]">
-                    {property?.client?.phone}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className="w-[155px] h-[197px] mb-5">
-                  <img
-                    className="w-[100%] h-[100%] object-contain"
-                    src={`${imageBaseUrl}${property?.client?.image}`}
-                  />
-                </div>
-                <Button
-                  // className="h-[67px] text-[white] bg-[#40A74E] w-[320px]"
-                  style={{
-                    backgroundColor: "#40A74E",
-                    color: "white",
-                    width: "155px",
-                    height: "44px",
-                  }}
-                  variant="contained"
-                  onClick={() => {
-                    navigate(
-                      `/projects/${projectId}/actions/project-properties/details/payments/${firstTimePayment}/${property?.id}`
-                    );
-                  }}
-                >
-                  Add Payments
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
+
       </div>
       <div className="mt-[30px]">
         {" "}
@@ -200,19 +190,23 @@ export default function PropertyPaymentInfo({ payments, projectId, property }) {
           Payment Information
         </div>
         {property?.payment.length == 0 ? (
-          <>No Client Available</>
+          <>No Payment Information</>
         ) : (
           <TableComponent
             actionText={null}
             columns={columns}
             data={property?.payment}
             // action={openModal}
-            // searchFunction={searchFunction}
+            // searchFunction={searchFunction} 
             // paginationChange={paginationChange}
             dataKeyAccessors={dataKeyAccessors}
             hasCustom={true}
             hasCustomIcon={<BsReceipt className="cursor-pointer" />}
             hasCustomAction={getReciept}
+            type="propertypayment"
+            deleteAction={deleteAction}
+            viewAction={viewAction}
+            editAction={editAction}
           />
         )}
       </div>

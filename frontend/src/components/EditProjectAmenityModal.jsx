@@ -3,9 +3,15 @@ import React from "react";
 import TextInput from "./TextInput";
 import axios from "axios";
 import SnackbarComponent from "./SnackbarComponent";
+import UploadButton from "./UploadButton";
+import projectUploadIcon from "../assests/projectUploadIcon.svg";
+import UploadIcon from "../assests/upload.svg";
+import { BlogToBase64 } from "../utils";
+import { AiFillCloseCircle } from "react-icons/ai";
 
-export default function AddUnitsModal(props) {
-  const [name, setName] = React.useState("");
+export default function EditProjectAmenityModal(props) {
+  const [name, setName] = React.useState(props.data?.name);
+  const [quantity, setQuantity] = React.useState(props.data?.quantity);
   const [status, setStatus] = React.useState("success");
   const [show, setShow] = React.useState(false);
   const [message, setMessage] = React.useState("");
@@ -16,10 +22,12 @@ export default function AddUnitsModal(props) {
 
   const handleOnChange = (e, inputeName) => {
     switch (inputeName) {
-      case "name":
-        // code to be executed when the expression matches value1
-        setName(e.target.value);
-        break;
+        case "quantity":
+          // code to be executed when the expression matches value1
+          setQuantity(e.target.value);
+          break;
+
+        
 
       default:
         // code to be executed when the expression does not match any of the cases
@@ -27,22 +35,21 @@ export default function AddUnitsModal(props) {
     }
   };
 
-  const submit = () => {
+
+  const submit = async () => {
     // validate input
-    setLoading(true);
+
     let status = false;
     setError({
-      name: false,
-
+      quantity: false,
     });
 
+    const data = {
+      "amenity": props.data?.amenity_id,
+      "quantity": quantity,
+    }
 
-    let data = {
-      name: name,
-      // email: email,
-      // firstname: firstname,
-    };
-
+    
     if (status) {
       setLoading(false);
       setStatus("error");
@@ -53,16 +60,18 @@ export default function AddUnitsModal(props) {
       }, 6000);
       return;
     }
-    create(data);
+    await update(data);
 
     // send to save and use feedback to show toast message.
   };
 
-  const create = async (data) => {
+  const update = async (data) => {
+    setLoading(true);
     var token = localStorage.getItem("token");
+
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/unit/create`,
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/property/updateamenity/${props.data.id}`,
         data,
         {
           headers: {
@@ -70,20 +79,25 @@ export default function AddUnitsModal(props) {
           },
         }
       );
+
       setStatus("success");
-      setMessage("Unit was Created Successfully");
+      setMessage("Project Amenity was Updated Successfully");
       setShow(true);
       setName("");
       setLoading(false);
 
       await props.fetchData();
       props.setIsOpen(false);
-
       setTimeout(() => {
         setShow(false);
       }, 6000);
     } catch (error) {
+      setLoading(false);
       // Handle the error
+      setStatus("error");
+      setShow(true);
+      setMessage(error?.response?.message || error?.message);
+
       console.error(error);
     }
   };
@@ -94,18 +108,24 @@ export default function AddUnitsModal(props) {
       <div className="">
         <div className="grid grid-cols-2 gap-4  ">
           <div className="">
+
+
+<h2 style={{fontSize: '25px'}}>Name: {name && name}</h2><br />
+          </div><br />
+          <div className="">
             <TextInput
               className="h-[70px] mt-6"
               required
-              id="name"
-              label="name"
-              error={error["name"]}
-              value={name}
+              id="quantity"
+              label="Quantity"
+              error={error["quantity"]}
+              value={quantity}
               onChange={(e) => {
-                handleOnChange(e, "name");
+                handleOnChange(e, "quantity");
               }}
             />
-          </div>
+          </div><br />
+  
         </div><br />
 
         <div className="flex justify-start">
@@ -118,6 +138,7 @@ export default function AddUnitsModal(props) {
     {!loading ? "Save" : "Loading..."}
   </Button>
 </div>
+
       </div>
     </div>
   );

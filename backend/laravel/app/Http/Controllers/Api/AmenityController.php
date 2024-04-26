@@ -76,11 +76,8 @@ class AmenityController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required',
+            'image' => 'required',
             'name' => 'required',
-            "gender" => 'required',
-            "address" => 'required',
-            "phone_number" => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -91,18 +88,20 @@ class AmenityController extends Controller
         if (!empty($model)) {
 
             $model->name = $request->input('name');
-            $model->gender = $request->input('gender');
-            $model->email = $request->input('email');
-            $model->address = $request->input('address');
-            $model->phone_number = $request->input('phone_number');
-            $model->status = Amenities::DefaultStatus;
+
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/amenities'), $imageName);
+
+            $model->image = '/images/amenities/' . $imageName;
+
             if ($model->save()) {
                 return response()->json(["status" => "success", "message" => "You have successfully updted the record"], 200);
             } else {
                 return response()->json(["status" => "error", "message" => "Something went wrong please try again"], 400);
             }
         } else {
-            return response()->json(["status" => "error", "message" => "There are no Affiliates at the moment"], 400);
+            return response()->json(["status" => "error", "message" => "The requested record does not exist"], 400);
         }
     }
 

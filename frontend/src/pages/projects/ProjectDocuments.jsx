@@ -4,10 +4,11 @@ import Drawings from "./DocumentsTabs/Drawings";
 import Gallery from "./DocumentsTabs/Gallery";
 import BreadCrumb from "../../components/BreadCrumb";
 import { useLocation } from "react-router-dom";
+import WordDocument from "./DocumentsTabs/WordDocument";
 export default function ProjectDocuments() {
-  const breadCrumbs = ["All Documents", "Drawings", "Photos/Videos"];
+  const breadCrumbs = ["All Documents", "Drawings", "Photos/Videos", "Word Documents"];
 
-  const { state } = useLocation();
+  const { state } = useLocation(); 
   const breadCrumb = [
     {
       name: "Project Actions",
@@ -29,6 +30,8 @@ export default function ProjectDocuments() {
         return <Drawings />;
       case 3:
         return <Gallery />;
+      case 4:
+        return <WordDocument />;
       default:
         return <AllDocuments />;
     }
@@ -46,6 +49,9 @@ export default function ProjectDocuments() {
         break;
       case 2:
         setBookingStage(3);
+        break;
+      case 3:
+        setBookingStage(4);
         break;
       default:
         setBookingStage(1);

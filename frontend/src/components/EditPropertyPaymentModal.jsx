@@ -9,49 +9,38 @@ import UploadIcon from "../assests/upload.svg";
 import { BlogToBase64 } from "../utils";
 import { AiFillCloseCircle } from "react-icons/ai";
 
-export default function AddAmenitiesModal(props) {
-  const [name, setName] = React.useState("");
+export default function EditPropertyPaymentModal(props) {
+  const [amount, setAmount] = React.useState(props.data?.amount);
+  const [modeOfPayment, setModeOfPayment] = React.useState(props.data?.mode_of_payment);
+
   const [status, setStatus] = React.useState("success");
   const [show, setShow] = React.useState(false);
-  const [amenityIcon, setamenityIcon] = React.useState();
   const [message, setMessage] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const [image, setImage] = React.useState();
+  const [image, setImage] = React.useState(props.data?.image);
   const [error, setError] = React.useState({
     name: false,
   });
 
+ 
+
   const handleOnChange = (e, inputeName) => {
     switch (inputeName) {
-      case "name":
+      case "amount":
         // code to be executed when the expression matches value1
-        setName(e.target.value);
+        setAmount(e.target.value);
         break;
-
+      case "modeOfPayment":
+        // code to be executed when the expression matches value1
+        setModeOfPayment(e.target.value);
+        break;
       default:
         // code to be executed when the expression does not match any of the cases
-        setName(e.target.value);
+        console.log(error)
     }
   };
 
-  const handleFileUploadChange = (e) => {
-    try {
-      const files = e.target.files || [];
 
-      if (files.length == 0) {
-        return;
-      }
-
-      setamenityIcon(files[0]);
-
-      BlogToBase64(files[0], (err, res) => {
-        console.log(res, "image"); // Base64 `data:image/...` String result.
-        setImage(res);
-      });
-    } catch (err) {
-      console.log(err, "eoror");
-    }
-  };
 
   const submit = async () => {
     // validate input
@@ -61,32 +50,36 @@ export default function AddAmenitiesModal(props) {
       name: false,
     });
 
-    const data = new FormData();
-    data.append("image", amenityIcon);
-    data.append("name", name);
+    const data = {
+      "amount": amount,
+      "mode_of_payment": modeOfPayment
+    }
+
+    
 
     if (status) {
       setLoading(false);
       setStatus("error");
       setMessage("all fields are required");
-      setShow(true); 
+      setShow(true);
       setTimeout(() => {
         setShow(false);
       }, 6000);
       return;
     }
     await create(data);
-
+  
     // send to save and use feedback to show toast message.
   };
 
   const create = async (data) => {
     setLoading(true);
     var token = localStorage.getItem("token");
-
+    
+    
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/amenity/create`,
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/property/updatepayment/${props.data.id}`,
         data,
         {
           headers: {
@@ -96,12 +89,16 @@ export default function AddAmenitiesModal(props) {
       );
 
       setStatus("success");
-      setMessage("Amenities was Created Successfully");
+      setMessage("Payment was updated Successfully");
       setShow(true);
-      setName("");
+
+
+      setAmount('')
+setModeOfPayment('')
       setLoading(false);
 
-      await props.fetchData();
+      location.reload()
+
       props.setIsOpen(false);
       setTimeout(() => {
         setShow(false);
@@ -117,6 +114,10 @@ export default function AddAmenitiesModal(props) {
     }
   };
 
+  const paymentModes = [    { label: "Transfer", value: "transfer" },
+  { label: "Card", value: "card" },
+  { label: "Bank", value: "bank" },]
+
   return (
     <div>
       <SnackbarComponent status={status} show={show} message={message} />
@@ -126,49 +127,36 @@ export default function AddAmenitiesModal(props) {
             <TextInput
               className="h-[70px] mt-6"
               required
-              id="name"
-              label="Name"
-              error={error["name"]}
-              value={name}
+              id="amount"
+              label="Amount"
+              error={error["amount"]}
+              value={amount}
               onChange={(e) => {
-                handleOnChange(e, "name");
+                handleOnChange(e, "amount");
               }}
             />
-          </div><br />
-          <div>
-            <div>
-              {" "}
-              <UploadButton
-                leftIcon={projectUploadIcon}
-                rightIcon={UploadIcon}
-                text="Upload Icon"
-                handleOnChange={handleFileUploadChange}
-              />
-            </div>
           </div>
 
-          <div className="w-[60px] h-[60px]">
-              {image && (
-                <div className="relative w-30 bg-gray-200 p-3">
-                  <button
-                    className="absolute top-0 right-0 text-gray-600 hover:text-gray-800"
-                    onClick={() => {
-                      setImage();
+          <div>
+          <TextInput
+                      // className="h-[70px]"
+                      required
+                      id="outlined-required"
+                      label="Mode of Payment"
+                      defaultValue={modeOfPayment}
+                      value={modeOfPayment}
+                      type="select"
+                      // error={error["project"]}
+                      options={paymentModes?.map((mode) => ({
+                        label: mode.label,
+                        value: mode.value,
+                      }))}
+                      onChange={(e) =>
+                        handleOnChange(e, "modeOfPayment")
+                      }
+                      />
+          </div>
 
-                    }}
-                  >
-                    <AiFillCloseCircle className="text-[20px]" />
-                  </button>
-                  <p>
-                    <img
-                      className="w-[100%] h-[100%]"
-                      src={image}
-                      alt="project-image"
-                    />
-                  </p>
-                </div>
-                )}
-              </div>
         </div><br />
 
         <div className="flex justify-start">

@@ -123,9 +123,9 @@ class PropertyController extends Controller
   public function update(Request $request, string $id)
   {
     $validator = Validator::make($request->all(), [
-      'name' => 'required',
-      "image" => 'required',
-      "description" => 'required',
+      'name' => 'sometimes',
+      "image" => 'sometimes',
+      "description" => 'sometimes',
       //"amenities" => 'required',
     ]);
 
@@ -328,6 +328,51 @@ class PropertyController extends Controller
     return response()->json(["status" => "error"], 400);
   }
 
+public function deletePayment(string $id)
+  {
+    $payment = Payment::find($id);
+    if (!empty($payment)) {
+      if ($payment->delete()) {
+        return response()->json(["status" => "success", 'message' => 'Payment deleted successfully'], 200);
+      } else {
+        return response()->json(["status" => "error", "message" => "Couldnot delete this payment please retry after some minute"], 400);
+      }
+    }
+    return response()->json(["status" => "error", "message" => "Failed to delete payment"], 400);
+  }
+
+
+  public function updatePayment(Request $request, string $id)
+  {
+    $validator = Validator::make($request->all(), [
+      'amount' => 'required',
+      "mode_of_payment" => 'required',
+
+
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
+    }
+
+    $model = Payment::find($id);
+    if (!empty($model)) {
+      $model->amount = $request->input('amount');
+      $model->mode_of_payment = $request->input('mode_of_payment');
+
+      if ($model->save()) {
+        return response()->json(["status" => "success", "message" => "You have successfully updted the record"], 200);
+      } else {
+        return response()->json(["status" => "error", "message" => "Something went wrong please try again"], 400);
+      }
+    } else {
+      return response()->json(["status" => "error", "message" => "There are no property at the moment with this property id"], 400);
+    }
+  }
+
+
+
+
   public function client(string $id)
   {
     $model = Property::find($id);
@@ -342,7 +387,7 @@ class PropertyController extends Controller
   {
     $validator = Validator::make($request->all(), [
       //'propertyAmenity' => 'required',
-      'amenity' => 'required',
+      'amenity' => 'required', 
       "quantity" => 'required',
     ]);
 
