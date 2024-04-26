@@ -122,6 +122,8 @@ Route::group(['prefix' => 'property', 'middleware' => ['auth:sanctum']], functio
     Route::delete("/destroy/{id}",[PropertyController::class,"destroy"]);
     Route::get("/stats/{id}",[PropertyController::class,"stats"]);
     Route::post("/addpayment",[PropertyController::class,"addPayment"]);
+    Route::patch("/updatepayment/{id}",[PropertyController::class,"updatePayment"]);
+    Route::delete("/deletepayment/{id}",[PropertyController::class,"deletePayment"]);
     Route::get("/client/{id}",[PropertyController::class,"client"]);
     Route::post("/addamenity",[PropertyController::class,"addAmenity"]);
     Route::patch("/updateamenity/{id}",[PropertyController::class,"updateAmenity"]);

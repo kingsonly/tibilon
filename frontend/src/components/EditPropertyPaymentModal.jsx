@@ -10,7 +10,9 @@ import { BlogToBase64 } from "../utils";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 export default function EditPropertyPaymentModal(props) {
-  const [name, setName] = React.useState(props.data?.name);
+  const [amount, setAmount] = React.useState(props.data?.amount);
+  const [modeOfPayment, setModeOfPayment] = React.useState(props.data?.mode_of_payment);
+
   const [status, setStatus] = React.useState("success");
   const [show, setShow] = React.useState(false);
   const [message, setMessage] = React.useState("");
@@ -20,16 +22,21 @@ export default function EditPropertyPaymentModal(props) {
     name: false,
   });
 
+ 
+
   const handleOnChange = (e, inputeName) => {
     switch (inputeName) {
-      case "name":
+      case "amount":
         // code to be executed when the expression matches value1
-        setName(e.target.value);
+        setAmount(e.target.value);
         break;
-
+      case "modeOfPayment":
+        // code to be executed when the expression matches value1
+        setModeOfPayment(e.target.value);
+        break;
       default:
         // code to be executed when the expression does not match any of the cases
-        setName(e.target.value);
+        console.log(error)
     }
   };
 
@@ -43,8 +50,12 @@ export default function EditPropertyPaymentModal(props) {
       name: false,
     });
 
-    const data = new FormData();
-    data.append("name", name);
+    const data = {
+      "amount": amount,
+      "mode_of_payment": modeOfPayment
+    }
+
+    
 
     if (status) {
       setLoading(false);
@@ -57,17 +68,18 @@ export default function EditPropertyPaymentModal(props) {
       return;
     }
     await create(data);
-
+  
     // send to save and use feedback to show toast message.
   };
 
   const create = async (data) => {
     setLoading(true);
     var token = localStorage.getItem("token");
-
+    
+    
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/unit/update/${props.data.id}`,
+      const response = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/property/updatepayment/${props.data.id}`,
         data,
         {
           headers: {
@@ -77,10 +89,15 @@ export default function EditPropertyPaymentModal(props) {
       );
 
       setStatus("success");
-      setMessage("Unit was updates Successfully");
+      setMessage("Payment was updated Successfully");
       setShow(true);
-      setName("");
+
+
+      setAmount('')
+setModeOfPayment('')
       setLoading(false);
+
+      location.reload()
 
       props.setIsOpen(false);
       setTimeout(() => {
@@ -97,6 +114,10 @@ export default function EditPropertyPaymentModal(props) {
     }
   };
 
+  const paymentModes = [    { label: "Transfer", value: "transfer" },
+  { label: "Card", value: "card" },
+  { label: "Bank", value: "bank" },]
+
   return (
     <div>
       <SnackbarComponent status={status} show={show} message={message} />
@@ -106,14 +127,34 @@ export default function EditPropertyPaymentModal(props) {
             <TextInput
               className="h-[70px] mt-6"
               required
-              id="name"
-              label="Name"
-              error={error["name"]}
-              value={name}
+              id="amount"
+              label="Amount"
+              error={error["amount"]}
+              value={amount}
               onChange={(e) => {
-                handleOnChange(e, "name");
+                handleOnChange(e, "amount");
               }}
             />
+          </div>
+
+          <div>
+          <TextInput
+                      // className="h-[70px]"
+                      required
+                      id="outlined-required"
+                      label="Mode of Payment"
+                      defaultValue={modeOfPayment}
+                      value={modeOfPayment}
+                      type="select"
+                      // error={error["project"]}
+                      options={paymentModes?.map((mode) => ({
+                        label: mode.label,
+                        value: mode.value,
+                      }))}
+                      onChange={(e) =>
+                        handleOnChange(e, "modeOfPayment")
+                      }
+                      />
           </div>
 
         </div><br />

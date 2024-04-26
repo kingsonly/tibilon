@@ -8,7 +8,7 @@ export default function Properties() {
   const [modalIsOpen, setIsOpen] = React.useState(false);
 
   function openModal() {
-    setIsOpen(true);
+    setIsOpen(true); 
   }
 
   const data = [
