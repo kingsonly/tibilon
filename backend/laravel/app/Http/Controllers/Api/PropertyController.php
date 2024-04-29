@@ -740,17 +740,17 @@ public function deletePayment(string $id)
     // Download the PDF file
     //return $dompdf->stream($filename);
 
-    $pdfDirectory = public_path('/public/pdfs/');
+    $pdfDirectory = public_path('/pdfs/');
     if (!file_exists($pdfDirectory)) {
         mkdir($pdfDirectory, 0777, true); // Create the directory recursively
     }
 
-    $pdfFilePath = public_path('/public/pdfs/' . $filename);
+    $pdfFilePath = public_path('/pdfs/' . $filename);
     file_put_contents($pdfFilePath, $dompdf->output());
 
     // $pdfFilePath = storage_path('app/public/pdfs/') . 'receipt_' . $id . '.pdf';
     // file_put_contents($pdfFilePath, $dompdf->output());
 
-    return response()->json(['pdf_url' => asset('pdfs/' . 'receipt_' . $id . '.pdf')]);
+    return response()->json(['pdf_url' => asset('/public/pdfs/' . 'receipt_' . $id . '.pdf')]);
   }
 }

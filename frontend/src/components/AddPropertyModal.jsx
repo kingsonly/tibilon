@@ -306,6 +306,7 @@ export default function AddPropertyModal(props) {
                 required
                 id="outlined-required"
                 label="Amount"
+                error={error["amount"]}
                 defaultValue={amount || editProperty?.amount}
                 type="number"
                 onChange={(e) => {
