@@ -740,6 +740,11 @@ public function deletePayment(string $id)
     // Download the PDF file
     //return $dompdf->stream($filename);
 
+    $pdfDirectory = public_path('/public/pdfs/');
+    if (!file_exists($pdfDirectory)) {
+        mkdir($pdfDirectory, 0777, true); // Create the directory recursively
+    }
+
     $pdfFilePath = public_path('/public/pdfs/' . $filename);
     file_put_contents($pdfFilePath, $dompdf->output());
 
