@@ -12,7 +12,12 @@ export default function DrawingsFileComponent({ document }) {
         setIsOpen={setModalIsOpen}
         title="Document"
       >
-        <DocumentsContent document={document} />
+        {/* <DocumentsContent document={document} /> */}
+        <div
+            className="border-2 rounded w-[200px] h-[48px] bg-[#40A74E] text-white flex items-center text-[15px] font-bold justify-center cursor-pointer"
+          >
+            <a href={`https://api.tibilon.skillzserver.com/public/${document.file}`}>View document</a>
+          </div>
       </AppModal>
       <div
         onClick={() => {

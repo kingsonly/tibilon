@@ -262,6 +262,7 @@ export default function ProjectPayment() {
             setProofOfPaymentPreview={setProofOfPaymentPreview}
             proofOfPayment={proofOfPayment}
             proofOfPaymentPreview={proofOfPaymentPreview}
+            updateStage={updateStage}
             submit={submit}
             loading={loading}
           />

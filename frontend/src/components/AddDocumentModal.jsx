@@ -11,11 +11,14 @@ import { BlogToBase64 } from "../utils";
 import { AiFillCloseCircle } from "react-icons/ai";
 import SnackbarComponent from "./SnackbarComponent";
 
+import pdfIcon from "../assests/pdf-icon-file.svg";
+import docsIcon from "../assests/docs-icon.svg";
+
 export default function AddDocumentModal(props) {
   const { modalIsOpen, setIsOpen, action, project, allowedTypes } = props;
   const [title, setTitle] = useState("");
   const [file, setFile] = useState([]);
-  const [documentType, setDocumentType] = useState("");
+  const [documentType, setDocumentType] = useState(allowedTypes != 'any' ? allowedTypes : "");
   const [allowedType, setAllowedType] = useState(allowedTypes);
 
 
@@ -66,7 +69,7 @@ export default function AddDocumentModal(props) {
         break;
     }
 
-    
+
   };
 
   const handleFileUploadChange = (e) => {
@@ -91,7 +94,8 @@ export default function AddDocumentModal(props) {
         break;
       case "word":
         // Accept Word documents and text files
-        if (!selectedFile.type.includes("application/msword") && !selectedFile.type.includes("text")) {
+        if (!selectedFile.type.includes("application/msword") &&
+        !selectedFile.type.includes("application/vnd.openxmlformats-officedocument.wordprocessingml.document") && !selectedFile.type.includes("text")) {
           setStatus("error");
           setMessage("Invalid file type. Please upload a Word document or a text file.");
           setShow(true);
@@ -114,7 +118,7 @@ export default function AddDocumentModal(props) {
         break;
       default:
         // Default case if allowedType is not recognized
-  
+
         setMessage('');
         setShow(false);
         setLoading(false);
@@ -192,6 +196,10 @@ export default function AddDocumentModal(props) {
       setMessage("Successful");
       setShow(true);
       setLoading(false);
+
+      setTimeout(()=> {
+        location.reload()
+      }, 2000)
     } catch (error) {
       // Handle the error
       console.error(error);
@@ -216,7 +224,8 @@ export default function AddDocumentModal(props) {
       <AppModal
         modalIsOpen={modalIsOpen}
         setIsOpen={setIsOpen}
-        title={"Add New Document"}
+        title={allowedTypes === 'word' ? 'Add New WOrd Document' : allowedTypes === 'media' ? 'Add New Gallery' : allowedTypes === 'drawing' ? 'Add New Drawing' : 'Add New Document'}
+
       >
         <div className=" ">
           <div className="flex gap-4 mb-[5px]">
@@ -226,6 +235,7 @@ export default function AddDocumentModal(props) {
                 rightIcon={UploadIcon}
                 text="Select Document"
                 handleOnChange={handleFileUploadChange}
+                allowedTypes={allowedTypes}
               />
             </div>
             <div className="w-[60px] h-[60px]">
@@ -235,7 +245,7 @@ export default function AddDocumentModal(props) {
                     className="absolute top-0 right-0 text-gray-600 hover:text-gray-800"
                     onClick={() => {
                       setProjectBlogImage();
-                      setImage("");
+                      // setImage("");
                     }}
                   >
                     <AiFillCloseCircle className="text-[20px]" />
@@ -243,7 +253,8 @@ export default function AddDocumentModal(props) {
                   <p>
                     <img
                       className="w-[100%] h-[100%]"
-                      src={projectBlogImage}
+                      src={allowedTypes == "drawing" ? pdfIcon : allowedTypes == "word" ?
+                      docsIcon : projectBlogImage}
                       alt="project-image"
                     />
                   </p>
@@ -267,7 +278,7 @@ export default function AddDocumentModal(props) {
                 }}
               />
             </div>
- 
+            {allowedTypes === 'any' ? 
             <div className="w-1/2">
               {" "}
               <TextInput
@@ -284,7 +295,8 @@ export default function AddDocumentModal(props) {
                 options={option}
                 value={documentType}
               />
-            </div>
+            </div> : <></>}
+
           </div>
 
           <div className="flex justify-end">

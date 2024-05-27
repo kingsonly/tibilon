@@ -4,9 +4,10 @@ import axios from "axios";
 import { CircularProgress } from "@mui/material";
 import { AiOutlineSearch } from "react-icons/ai";
 import AddDocumentModal from "../../../components/AddDocumentModal";
+import WordDocumentFileComponent from "../../../components/WordDocumentFileComponent";
 import { useParams } from "react-router-dom";
 
-const documents = [ 
+const documents = [
   {
     name: "Mabushi Project",
     date: "23/12/2022",
@@ -54,6 +55,8 @@ const documents = [
   },
 ];
 import InfiniteScroll from "react-infinite-scroll-component";
+import DrawingsFileComponent from "../../../components/DrawingsFileComponent";
+import MediaFileComponent from "../../../components/MediaFileComponent";
 
 export default function AllDocuments() {
   const [document, setDocument] = useState([]);
@@ -152,7 +155,7 @@ export default function AllDocuments() {
       const response = await axios.delete(
         `${process.env.REACT_APP_API_URL}/document/delete/${e}`,
         {
-          headers: { 
+          headers: {
             Authorization: `Bearer ${token}`,
           },
         }
@@ -222,9 +225,30 @@ export default function AllDocuments() {
             </div>
           ) : null}
 
-          {document?.map((document) => (
-            <FileTypeComponent document={document} action={action} />
-          ))}
+          {document?.map((document) => {
+            console.log(document)
+
+
+            if (document.type == "word") {
+              return (
+                <WordDocumentFileComponent document={document} />
+              )
+            } else if (document.type == "drawing") {
+              return (
+                <DrawingsFileComponent document={document} />
+              )
+            } else if (document.type == "media") {
+              return (
+                <MediaFileComponent document={document} />
+              )
+            } else {
+
+              return (
+                <FileTypeComponent document={document} action={action} />
+              )
+            }
+
+          })}
         </div>
       </InfiniteScroll>
     </div>
