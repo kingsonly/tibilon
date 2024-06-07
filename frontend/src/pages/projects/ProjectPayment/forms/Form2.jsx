@@ -136,7 +136,7 @@ export default function Form2({
           marginRight: "20px"
         }}
         variant="contained"
-        onClick={() => navigate(-1)}
+        onClick={() => updateStage(0, true)}
       >
         Back
       </Button>
