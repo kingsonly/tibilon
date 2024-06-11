@@ -262,6 +262,7 @@ export default function ProjectPayment() {
             setProofOfPaymentPreview={setProofOfPaymentPreview}
             proofOfPayment={proofOfPayment}
             proofOfPaymentPreview={proofOfPaymentPreview}
+            updateStage={updateStage}
             submit={submit}
             loading={loading}
           />
@@ -284,17 +285,21 @@ export default function ProjectPayment() {
     }
   };
 
-  const updateStage = (index) => {
-    setActive((prev) => [...prev, index]);
-
-    if (active.includes(1)) {
-      if (index == 0 || 1 || timer == false) {
-        // setActive(active.filter(current=> current != index))
-        // alert("save__and_go_back");
-        // setActive([0]);
-        return;
-      }
+  const updateStage = (index, isBack) => {
+    
+    if(isBack){
+      setActive([0])
+    } else{
+      setActive((prev) => [...prev, index]);
     }
+    // if (active.includes(1)) {
+    //   if (index == 0 || 1 || timer == false) {
+    //     // setActive(active.filter(current=> current != index))
+    //     // alert("save__and_go_back");
+    //     // setActive([0]);
+    //     return;
+    //   }
+    // }
 
     switch (index) {
       case 0:

@@ -198,6 +198,8 @@ export default function AddPropertyModal(props) {
       await fetchAction();
       setMessage("Property successfully created");
       setIsOpen(false);
+
+       location.reload()
     } catch (error) {
       setLoading(false);
       setStatus("error");
@@ -230,6 +232,8 @@ export default function AddPropertyModal(props) {
         closeOnClick: true,
         draggable: false,
       });
+
+       location.reload()
     } catch (error) {
       setLoading(false);
       console.log(error, "ERROR::DELETING_PRODUCT");
@@ -305,7 +309,7 @@ export default function AddPropertyModal(props) {
                 className="h-[70px] mt-6"
                 required
                 id="outlined-required"
-                label="Amount"
+                label="Amount (₦)"
                 error={error["amount"]}
                 defaultValue={amount || editProperty?.amount}
                 type="number"

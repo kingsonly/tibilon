@@ -1,6 +1,7 @@
 import React from "react";
 import TextInput from "../../../../components/TextInput";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Form1(props) {
   const {
@@ -27,6 +28,8 @@ export default function Form1(props) {
     { label: "Employee", value: 0 },
     { label: "Affiliate", value: 1 },
   ];
+
+  const navigate = useNavigate();
   return (
     <div className="bg-[white] p-10">
       <div className="">
@@ -35,7 +38,7 @@ export default function Form1(props) {
           required
           type="select"
           id="outlined-required"
-          label="client"
+          label="Client"
           // error={error ?? ["client"]}
           // defaultValue="Property Description"
           onChange={(e) => {
@@ -126,6 +129,22 @@ export default function Form1(props) {
           />
         </div>
       </div>
+
+      <Button
+        // className="h-[67px] text-[white] bg-[#40A74E] w-[320px]"
+        style={{
+          backgroundColor: "red",
+          color: "white",
+          width: "150px",
+          height: "50px",
+          marginTop: "10px",
+          marginRight: "20px"
+        }}
+        variant="contained"
+        onClick={() => navigate(-1)}
+      >
+        Cancel
+      </Button>
 
       <Button
         // className="h-[67px] text-[white] bg-[#40A74E] w-[320px]"
