@@ -5,6 +5,7 @@ export default function UploadButton({
   rightIcon,
   handleOnChange,
   text,
+  allowedTypes
 }) {
   const fileRef = useRef(null);
   return (
@@ -27,6 +28,7 @@ export default function UploadButton({
               onChange={handleOnChange}
               style={{ display: "none" }}
               ref={fileRef}
+              accept={allowedTypes == "media" ? "image/*,audio/*,video/*" : allowedTypes == "drawing" ? ".pdf" : allowedTypes == "word" ? ".doc,.docx,.txt" : '*/*'}
             />
             {text}
           </div>

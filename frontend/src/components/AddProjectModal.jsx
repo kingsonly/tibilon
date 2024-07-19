@@ -241,6 +241,8 @@ export default function AddProjectModal(props) {
       setMessage("Successful");
       setShow(true);
       setLoading(false);
+
+      location.reload()
     } catch (error) {
       // Handle the error
       console.error(error);

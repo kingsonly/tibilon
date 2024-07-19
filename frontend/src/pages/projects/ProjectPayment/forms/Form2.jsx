@@ -5,6 +5,7 @@ import houseIcon from "../../../../assests/house-damage.svg";
 import plusIcon from "../../../../assests/plus-icon.svg";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Form2({
   error,
@@ -18,6 +19,7 @@ export default function Form2({
   proofOfPaymentPreview,
   proofOfPayment,
   submit,
+  updateStage,
   loading,
 }) {
   const modeOfPayments = [
@@ -25,6 +27,8 @@ export default function Form2({
     { label: "Card", value: "card" },
     { label: "Bank", value: "bank" },
   ];
+
+  const navigate = useNavigate();
 
   return (
     <div className="bg-[white] p-10">
@@ -119,6 +123,23 @@ export default function Form2({
           )}
         </div>
       </div>
+
+
+      <Button
+        // className="h-[67px] text-[white] bg-[#40A74E] w-[320px]"
+        style={{
+          backgroundColor: "gray",
+          color: "white",
+          width: "150px",
+          height: "50px",
+          marginTop: "10px",
+          marginRight: "20px"
+        }}
+        variant="contained"
+        onClick={() => updateStage(0, true)}
+      >
+        Back
+      </Button>
       <Button
         // className="h-[67px] text-[white] bg-[#40A74E] w-[320px]"
         style={{
