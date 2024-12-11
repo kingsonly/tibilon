@@ -130,6 +130,9 @@ class ProjectController extends Controller
             }
         }
 
+
+   
+
         $model->name = $request->input("name");
         $model->image = $request->input("image");
         $model->project_manager_user_id = $request->input("manager");

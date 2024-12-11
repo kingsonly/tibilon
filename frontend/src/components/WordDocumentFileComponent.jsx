@@ -42,6 +42,9 @@ export default function WordDocumentFileComponent({ document }) {
           <span className="font-bold text-[13px]">File</span>{" "}
           <span className="font-medium text-[12px]">{document.name}</span>{" "}
         </div>
+        <div>
+          <span className="font-bold text-[13px]">Date</span> <span className="font-medium text-[12px]">{new Date(document.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })} </span>{" "}
+        </div>
         {/* <div className="">
           <span className="font-bold text-[13px]">Category</span>{" "}
           <span className="font-medium text-[12px]">{document.category}</span>{" "}
