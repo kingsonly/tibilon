@@ -139,6 +139,7 @@ class PropertyController extends Controller
       $model->description = $request->input('description');
       $model->log_user_id = $model->log_user_id;
       $model->status = $model->status;
+      $model->amount = $request->input("amount");
       if ($model->save()) {
         return response()->json(["status" => "success", "message" => "You have successfully updted the record"], 200);
       } else {
