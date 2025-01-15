@@ -7,7 +7,7 @@ on:
   #   #   - main
   pull_request:
     branches:
-      - staging
+      - production
     types: [closed]
 
 jobs:
