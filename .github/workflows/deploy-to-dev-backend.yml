@@ -58,7 +58,12 @@ jobs:
 
       - name: Find and replace env variables
         run: |
-          sed -i -e 's:AUTOMATOR_TASK_CREATED=forge:AUTOMATOR_TASK_CREATED=formbuilder_queue,notification_queue,processflow_queue:g' .env &&
+          sed -i -e 's:/public/index.php:/index.php:g' backend/laravel/public/index.php &&
+          sed -i -e 's:/../vendor/autoload.php:/vendor/autoload.php:g' backend/laravel/public/index.php &&
+          sed -i -e 's:DB_DATABASE=forge:DB_DATABASE=${{secrets.DB_DATABASE_DEV}}:g' backend/laravel/.env &&
+          sed -i -e 's:DB_USERNAME=forge:DB_USERNAME=${{secrets.DB_USERNAME_DEV}}:g' backend/laravel/.env  &&
+          sed -i -e 's:/../bootstrap/app.php:/bootstrap/app.php:g' backend/laravel/public/index.php &&
+          sed -i -e 's:DB_PASSWORD=forge:DB_PASSWORD="${{secrets.DB_PASSWORD_DEV}}":g' backend/laravel/.env 
 
       
       - name: SSH login
@@ -67,9 +72,9 @@ jobs:
           echo "${{secrets.SSH_PRIVATE_DEV_KEY}}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           rsync --delete -va -e 'ssh -p 7822 -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no' \
-            backend/app backend/database backend/phpunit.xml backend/storage backend/vendor backend/artisan backend/.env backend/tests backend/bootstrap \
-            backend/composer.json backend/resources backend/composer.lock backend/routes backend/config backend/package.json \
-            backend/public/ backend/public skillz@103.72.76.68:tibilonproduction
+            backend/laravel/app backend/laravel/database backend/laravel/phpunit.xml backend/laravel/storage backend/laravel/vendor backend/laravel/artisan backend/laravel/.env backend/laravel/tests backend/laravel/bootstrap \
+            backend/laravel/composer.json backend/laravel/resources backend/laravel/composer.lock backend/laravel/routes backend/laravel/config backend/laravel/package.json \
+            backend/laravel/public/ backend/laravel/public skillz@103.72.76.68:tibilonproduction
 
       - name: SSH and effect migration
         run: |
