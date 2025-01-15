@@ -27,7 +27,7 @@ jobs:
         run: cd backend && php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
-        run: CI=false cd backend && composer clear-cache && CI=false composer update && CI=false php artisan key:generate
+        run: CI=false cd backend/laravel && composer clear-cache && CI=false composer update && CI=false php artisan key:generate
 
       - name: Update apt repositories
         run: sudo apt update
