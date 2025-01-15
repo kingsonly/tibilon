@@ -1,14 +1,14 @@
 name: tibilon-backend-dev-deployment
-# on:
-#   push:
 on:
-  # push:
-  #   # branches:
-  #   #   - main
-  pull_request:
-    branches:
-      - production
-    types: [closed]
+  push:
+# on:
+#   # push:
+#   #   # branches:
+#   #   #   - main
+#   pull_request:
+#     branches:
+#       - production
+#     types: [closed]
 
 jobs:
   
