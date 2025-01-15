@@ -24,7 +24,7 @@ jobs:
           php-version: '8.3'
 
       - name: Copy .env
-        run: cd backend && php -r "file_exists('.env') || copy('.env.example', '.env');"
+        run: cd backend/laravel && php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Dependencies
         run: CI=false cd backend/laravel && composer clear-cache && CI=false composer update && CI=false php artisan key:generate
