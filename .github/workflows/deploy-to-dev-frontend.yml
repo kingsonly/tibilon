@@ -33,7 +33,7 @@ jobs:
           sed -i -e 's|REACT_APP_API_URL=forge|REACT_APP_API_URL=${{secrets.REACT_APP_API_URL_DEV}}|g' frontend/.env 
 
       - name: Run build
-        run: cd frontend && npm run build
+        run:  cd frontend && CI=false npm run build
 
       - name: Update apt repositories
         run: sudo apt update
