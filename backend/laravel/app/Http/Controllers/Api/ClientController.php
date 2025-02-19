@@ -5,11 +5,19 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\ClientResource;
 use App\Models\Client;
 use App\Models\ClientAddress;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
 {
+    protected $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+      $this->fileUploadService = $fileUploadService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -69,10 +77,15 @@ class ClientController extends Controller
         
         // Check if image is set to 'default'
     if ($request->input("image") !== 'default') {
-        $image = $request->file('image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('images/client'), $imageName);
-        $model->image = '/images/client/' . $imageName;
+        // $image = $request->file('image');
+        // $imageName = time() . '.' . $image->getClientOriginalExtension();
+        // $image->move(public_path('images/client'), $imageName);
+        // $model->image = '/images/client/' . $imageName;
+
+        $file = $request->file('image');
+        $fileUrl = $this->fileUploadService->uploadFile($file, "client");
+    
+        $model->image = $fileUrl;
     } else {
         // If image is 'default', set the image field to 'default'
         $model->image = 'default';

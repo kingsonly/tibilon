@@ -1,5 +1,5 @@
 import React from "react";
-import mediaIcon from "../assests/media-icon.png";
+import mediaIcon from "../assests/image-icon.png";
 import AppModal from "./AppModal";
 import DocumentsContent from "./DocumentsContent";
 
@@ -21,18 +21,14 @@ export default function MediaFileComponent({ document }) {
         className="flex p-[18px] flex-col items-start justify-between w-[236px] cursor-pointer"
       >
         <div className="mb-[30px]">
-          <img src={`${mediaIcon}`} alt="icon" />
+          <img src={`${mediaIcon}`} className="h-36" alt="icon" />
         </div>
         <div className="">
           <span className="font-bold text-[13px]">File</span>{" "}
           <span className="font-medium text-[12px]">{document.name}</span>{" "}
         </div>
-        <div className="">
-          <span className="font-bold text-[13px]">Category</span>{" "}
-          <span className="font-medium text-[12px]">{document.category}</span>{" "}
-        </div>
         <div>
-          <span>Date</span> <span>{document.date}</span>{" "}
+          <span className="font-bold text-[13px]">Date</span> <span className="font-medium text-[12px]">{new Date(document.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })} </span>{" "}
         </div>
       </div>
     </div>

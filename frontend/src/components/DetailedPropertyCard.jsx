@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Button } from "@mui/material";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { imageBaseUrl } from "../services/apiservices/urls";
 import DialogModal from "./DialogModal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -104,7 +103,7 @@ export default function DetailedPropertyCard(props) {
 
           <div className="w-[100%] h-[300px]">
             <img
-              src={`${imageBaseUrl}${project?.cover_image}`}
+              src={`${project?.cover_image}`}
               alt="project"
               className="w-[100%] h-[100%] object-cover"
               style={{ width: "100%" }}
@@ -129,7 +128,7 @@ export default function DetailedPropertyCard(props) {
                     <div className="w-[25px] h-[25px]">
                       <img
                         className="w-[100%] h-[100%]"
-                        src={`${imageBaseUrl}${amnty?.amenity?.image}`}
+                        src={`${amnty?.amenity?.image}`}
                         alt="icon"
                       />
                     </div>{" "}

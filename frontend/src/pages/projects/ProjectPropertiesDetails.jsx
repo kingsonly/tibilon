@@ -279,7 +279,7 @@ export default function ProjectPropertiesDetails() {
         /> */}
         <img
           // src={project?.cover_image}
-          src={`${imageBaseUrl}${property?.cover_image}`}
+          src={`${property?.cover_image}`}
           alt="project"
           className="w-[100%] h-[300px]"
           style={{ width: "100%" }}

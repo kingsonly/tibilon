@@ -1,5 +1,4 @@
 import React from "react";
-import { imageBaseUrl } from "../services/apiservices/urls";
 import { Document, Page } from "@react-pdf/renderer";
 import { Viewer } from "react-doc-viewer";
 
@@ -17,12 +16,12 @@ export default function DocumentsContent({ document }) {
 
     const validDocExtensions = ["docx", "doc", "xlsx", "xls"];
 
-    const fileUrl = `${imageBaseUrl}/${document.file}`
+    const fileUrl = `${document.file}`
 
     console.log(fileUrl)
 
     if (validImageExtensions.includes(extentionType)) {
-      return <img src={`${imageBaseUrl}/${document.file}`} />;
+      return <img src={`${document.file}`} />;
     } else if (extentionType == "pdf") {
       return (
         <Document file={fileUrl}>
@@ -30,10 +29,10 @@ export default function DocumentsContent({ document }) {
         </Document>      
       );
     } else if (validDocExtensions.includes(extentionType)) {
-      return <Viewer file={`${imageBaseUrl}/${document.file}`} />;
+      return <Viewer file={`${document.file}`} />;
 
     } else {
-      return <img src={`${imageBaseUrl}/${document.file}`} />;
+      return <img src={`${document.file}`} />;
     }
   }
 

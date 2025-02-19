@@ -49,7 +49,7 @@ export default function ProjectProperties() {
         response.data.data[index]["SN"] = i;
         response.data.data[index][
           "image"
-        ] = `https://api.tibilon.skillzserver.com/public/${response.data.data[index]["image"]}`;
+        ] = `${response.data.data[index]["image"]}`;
         i++;
       });
 

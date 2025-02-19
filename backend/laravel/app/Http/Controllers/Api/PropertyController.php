@@ -17,6 +17,7 @@ use App\Models\PropertyAmenities;
 use App\Models\PropertyClient;
 use App\Models\PropertyPayment;
 use App\Models\PropertySalesAgent;
+use App\Services\FileUploadService;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
 use Illuminate\Http\Request;
@@ -27,6 +28,12 @@ use NumberToWords\NumberToWords;
 
 class PropertyController extends Controller
 {
+  protected $fileUploadService;
+
+  public function __construct(FileUploadService $fileUploadService)
+  {
+    $this->fileUploadService = $fileUploadService;
+  }
   /**
    * Display a listing of the resource.
    */
@@ -77,11 +84,16 @@ class PropertyController extends Controller
     $model->project_id = $request->input('project');
 
     //save image
-    $image = $request->file('image');
-    $imageName = time() . '.' . $image->getClientOriginalExtension();
-    $image->move(public_path('images/property'), $imageName);
+    // $image = $request->file('image');
+    // $imageName = time() . '.' . $image->getClientOriginalExtension();
+    // $image->move(public_path('images/property'), $imageName);
 
-    $model->cover_image = '/images/property/' . $imageName;
+    // $model->cover_image = '/images/property/' . $imageName;
+
+    $file = $request->file('image');
+    $fileUrl = $this->fileUploadService->uploadFile($file, "property");
+
+    $model->cover_image = $fileUrl;
     $model->description = $request->input('description');
     $model->log_user_id = $loggedinuser->id;
     $model->amount = $request->input('amount');
@@ -139,6 +151,18 @@ class PropertyController extends Controller
       $model->description = $request->input('description');
       $model->log_user_id = $model->log_user_id;
       $model->status = $model->status;
+      $amount = $request->input("amount");
+      if ($amount !== null) {
+        $model->amount = $amount;
+      }
+
+
+      if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $fileUrl = $this->fileUploadService->uploadFile($file, "property");
+        $model->cover_image = $fileUrl;
+    }
+
       if ($model->save()) {
         return response()->json(["status" => "success", "message" => "You have successfully updted the record"], 200);
       } else {
@@ -297,14 +321,19 @@ class PropertyController extends Controller
       }
       $getProperty->save();
       // take payment id and use it to create property payment relationship
-      $image = $request->file('proofOfPayment');
-      $imageName = time() . '.' . $image->getClientOriginalExtension();
-      $image->move(public_path('images/proofofpayment'), $imageName);
+      // $image = $request->file('proofOfPayment');
+      // $imageName = time() . '.' . $image->getClientOriginalExtension();
+      // $image->move(public_path('images/proofofpayment'), $imageName);
+
+
+      $file = $request->file('proofOfPayment');
+      $fileUrl = $this->fileUploadService->uploadFile($file, "proofofpayment");
+      $propertyPaymentModel->prof_of_payment = $fileUrl;
 
       $propertyPaymentModel->property_id = $request->input("property");
       $propertyPaymentModel->payment_id = $paymentModel->id;
       $propertyPaymentModel->log_user_id = $loggedinuser->id;
-      $propertyPaymentModel->prof_of_payment = '/images/proofofpayment/' . $imageName;
+      // $propertyPaymentModel->prof_of_payment = '/images/proofofpayment/' . $imageName;
       $propertyPaymentModel->status = PropertyPayment::Default;
       if ($propertyPaymentModel->save()) {
         $getProperty = Property::with(["agent", "client", "payments"])->find($request->input("property"));
@@ -328,7 +357,7 @@ class PropertyController extends Controller
     return response()->json(["status" => "error"], 400);
   }
 
-public function deletePayment(string $id)
+  public function deletePayment(string $id)
   {
     $payment = Payment::find($id);
     if (!empty($payment)) {
@@ -387,7 +416,7 @@ public function deletePayment(string $id)
   {
     $validator = Validator::make($request->all(), [
       //'propertyAmenity' => 'required',
-      'amenity' => 'required', 
+      'amenity' => 'required',
       "quantity" => 'required',
     ]);
 
@@ -742,7 +771,7 @@ public function deletePayment(string $id)
 
     $pdfDirectory = public_path('/pdfs/');
     if (!file_exists($pdfDirectory)) {
-        mkdir($pdfDirectory, 0777, true); // Create the directory recursively
+      mkdir($pdfDirectory, 0777, true); // Create the directory recursively
     }
 
     $pdfFilePath = public_path('/pdfs/' . $filename);
