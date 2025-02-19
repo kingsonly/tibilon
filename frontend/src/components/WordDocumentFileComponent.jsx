@@ -6,10 +6,6 @@ import DocumentsContent from "./DocumentsContent";
 export default function WordDocumentFileComponent({ document }) {
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
-  console.log(document)
-
-
-  // https://api.tibilon.skillzserver.com/public/
   return (
     <div>
       <AppModal
@@ -25,7 +21,7 @@ export default function WordDocumentFileComponent({ document }) {
           <div
             className="border-2 rounded w-[200px] h-[48px] bg-[#40A74E] text-white flex items-center text-[15px] font-bold justify-center cursor-pointer"
           >
-            <a href={`https://api.tibilon.skillzserver.com/public/${document.file}`}>Download and view</a>
+            <a href={`${document.file}`}>Download and view</a>
           </div>
         </div>
       </AppModal>

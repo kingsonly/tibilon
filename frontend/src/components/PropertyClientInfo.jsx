@@ -93,7 +93,7 @@ export default function PropertyClientInfo({ payments, projectId, property }) {
                 <div className="w-[155px] h-[197px] mb-5">
                   <img
                     className="w-[100%] h-[100%] object-contain"
-                    src={`${imageBaseUrl}${property?.client?.image}`}
+                    src={`${property?.client?.image}`}
                   />
                 </div>
               </div>

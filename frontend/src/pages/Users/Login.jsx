@@ -93,12 +93,12 @@ export default function Login() {
                 <div className=" ">
                     <div className="flex justify-center h-[120px]"><img src={Logo} alt="logo" /></div>
                     <div className="flex justify-center text-[15px] font-medium mt-[15px]">CONSTRUCTION | REAL ESTATE | FACILITY MANAGEMENT</div>
-                    <div className="w-[410px] flex justify-center text-[10px] mt-[17px] text-slate-400">
+                    {/* <div className="w-[410px] flex justify-center text-[10px] mt-[17px] text-slate-400">
                         Lorem Ipsum is simply dummy text of the printing
                         and typesetting industry. Lorem Ipsum has been the
                         industry's standard dummy text ever since the 1500s,
                         when an unknown printer took
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="flex items-center justify-center w-[50%] bg-no-repeat bg-cover  bg-center h-screen bg-[url(https://tibilonconstruction.com.ng/wp-content/uploads/2022/03/IMG-20211103-WA00002.jpg)]">
