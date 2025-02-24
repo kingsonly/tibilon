@@ -19,7 +19,7 @@ export default function WordDocument() {
     var token = localStorage.getItem("token");
     try {
       const response = await axios.post(`${process.env.REACT_APP_API_URL}/document`, 
-      {project:id,fileType:"Word Document"}, {
+      {project:id,fileType:"word"}, {
 
         headers: {
           Authorization: `Bearer ${token}`,

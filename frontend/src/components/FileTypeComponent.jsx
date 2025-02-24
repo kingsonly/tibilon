@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import pdfIcon from "../assests/pdf-icon-file.svg";
 import docsIcon from "../assests/docs-icon.svg";
-import mediaIcon from "../assests/media-icon.png";
+import mediaIcon from "../assests/image-icon.png";
 import { AiFillDelete, AiFillEdit, AiFillEye } from "react-icons/ai";
 import DialogModal from "./DialogModal";
 
