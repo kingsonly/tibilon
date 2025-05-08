@@ -4,11 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Resources\DocumentResource;
 use App\Models\Document;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProjectDocumentsController extends Controller
 {
+
+    protected $fileUploadService;
+
+    public function __construct(FileUploadService $fileUploadService)
+    {
+      $this->fileUploadService = $fileUploadService;
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -61,13 +71,27 @@ class ProjectDocumentsController extends Controller
             return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
         }
         $loggedinuser = auth()->guard('sanctum')->user();
-        $image = $request->file('file');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
+
         $project = $request->input("project");
-        $image->move(public_path('images/projects_document/' . $project), $imageName);
+
+        $file = $request->file('file');
+        $fileUrl = $this->fileUploadService->uploadFile($file, "projects_document/{$project}");        
+    
+       
+
+        // $image = $request->file('file');
+        // $imageName = time() . '.' . $image->getClientOriginalExtension();
+    
+        // $image->move(public_path('images/projects_document/' . $project), $imageName);
+
 
         $model = new Document();
-        $model->file_path = 'images/projects_document/' . $project . '/' . $imageName;
+
+        $model->file_path = $fileUrl;
+
+
+
+        // $model->file_path = 'images/projects_document/' . $project . '/' . $imageName;
         $model->project_id = $request->input('project');
         $model->document_title = $request->input('title');
         $model->file_type = $request->input('fileType');

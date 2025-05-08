@@ -5,11 +5,21 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\ProjectResource;
 use App\Models\Address;
 use App\Models\Project;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
 {
+
+    protected $fileUploadService;
+
+  public function __construct(FileUploadService $fileUploadService)
+  {
+    $this->fileUploadService = $fileUploadService;
+  }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -58,12 +68,21 @@ class ProjectController extends Controller
         $projectAddress->save();
 
         // upload image to the server 
-        $image = $request->file('image');
+        // $image = $request->file('image');
         $model = new Project();
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('images/project'), $imageName);
+
+        // $imageName = time() . '.' . $image->getClientOriginalExtension();
+        // $image->move(public_path('images/project'), $imageName);
+        // $model->image = '/images/project/' . $imageName;
+
+
+        $file = $request->file('image');
+        $fileUrl = $this->fileUploadService->uploadFile($file, "project");
+    
+        $model->image = $fileUrl;
+
         $model->name = $request->input("name");
-        $model->image = '/images/project/' . $imageName;
+
         $model->project_manager_user_id = $request->input("manager");
         $model->address_id = $projectAddress->id;
         $model->description = $request->input("description");

@@ -5,12 +5,22 @@ namespace App\Http\Controllers\Api;
 use App\Http\Resources\AmenitiesList;
 use App\Http\Resources\AmenityShow;
 use App\Models\Amenities;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Validator;
 
 class AmenityController extends Controller
 {
+
+    protected $fileUploadService;
+
+  public function __construct(FileUploadService $fileUploadService)
+  {
+    $this->fileUploadService = $fileUploadService;
+  }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -38,13 +48,20 @@ class AmenityController extends Controller
             return response()->json(['status' => 'error', 'message' => "ensure that all required filed are properly filled "], 400);
         }
         $loggedinuser = auth()->guard('sanctum')->user();
-        $image = $request->file('image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('images/amenities'), $imageName);
+
+        // $image = $request->file('image');
+        // $imageName = time() . '.' . $image->getClientOriginalExtension();
+        // $image->move(public_path('images/amenities'), $imageName);
+
+        $file = $request->file('image');
+        $fileUrl = $this->fileUploadService->uploadFile($file, "amenities");
+    
+       
 
         $model = new Amenities();
         $model->name = $request->input('name');
-        $model->image = '/images/amenities/' . $imageName;
+        // $model->image = '/images/amenities/' . $imageName;
+        $model->image = $fileUrl;
         $model->log_user_id = $loggedinuser->id;
         $model->status = Amenities::DefaultStatus;
 
@@ -89,11 +106,15 @@ class AmenityController extends Controller
 
             $model->name = $request->input('name');
 
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/amenities'), $imageName);
+            // $image = $request->file('image');
+            // $imageName = time() . '.' . $image->getClientOriginalExtension();
+            // $image->move(public_path('images/amenities'), $imageName);
 
-            $model->image = '/images/amenities/' . $imageName;
+            $file = $request->file('image');
+            $fileUrl = $this->fileUploadService->uploadFile($file, "amenities");
+        
+
+            $model->image = $fileUrl;
 
             if ($model->save()) {
                 return response()->json(["status" => "success", "message" => "You have successfully updted the record"], 200);

@@ -94,8 +94,12 @@ export default function AddDocumentModal(props) {
         break;
       case "word":
         // Accept Word documents and text files
-        if (!selectedFile.type.includes("application/msword") &&
-        !selectedFile.type.includes("application/vnd.openxmlformats-officedocument.wordprocessingml.document") && !selectedFile.type.includes("text")) {
+        if (
+          !selectedFile.type.includes("application/msword") &&
+          !selectedFile.type.includes("application/vnd.openxmlformats-officedocument.wordprocessingml.document") &&
+          !selectedFile.type.includes("text/plain") && 
+          !selectedFile.type.includes("application/rtf") 
+        ) {
           setStatus("error");
           setMessage("Invalid file type. Please upload a Word document or a text file.");
           setShow(true);

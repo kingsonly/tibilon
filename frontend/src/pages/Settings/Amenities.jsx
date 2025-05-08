@@ -47,7 +47,7 @@ export default function Amenities() {
         response.data.data[index]["SN"] = i;
         response.data.data[index][
           "image"
-        ] = `https://api.tibilon.skillzserver.com/public/${response.data.data[index]["image"]}`;
+        ] = `${response.data.data[index]["image"]}`;
         i++;
       });
 
@@ -76,7 +76,7 @@ export default function Amenities() {
         response.data.data[index]["SN"] = i;
         response.data.data[index][
           "image"
-        ] = `${imageBaseUrl}/${response.data.data[index]["image"]}`;
+        ] = `${response.data.data[index]["image"]}`;
         i++;
       });
 

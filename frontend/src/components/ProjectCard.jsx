@@ -36,8 +36,8 @@ export default function ProjectCard({ projectData,from,fetchMoreDataProps,hasMor
                   <div
                     className={`w-[20%]  mr-[10px] `}
                     style={{
-                      background: `url(https://api.tibilon.skillzserver.com/public${project.image})`,
-                      backgroundSize: "contain",
+                      background: `url(${project.image})`,
+                      backgroundSize: "cover",
                       backgroundPosition: "center",
                       backgroundRepeat: "no-repeat",
                     }}
